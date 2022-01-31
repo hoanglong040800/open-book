@@ -1,4 +1,4 @@
-import { tokenData } from 'common/constants/common.constant'
+import { SESSION_USER_FIELDS, WEB_NAME } from 'common/constants/common.constant'
 import fetchSignin from 'modules/auth/api/auth.api'
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
@@ -21,64 +21,63 @@ const options = {
   // only true in development
   debug: true,
 
-  pages: {
-    newUser: '/settings',
-  },
-
   providers: [
     Providers.Credentials({
-      name: 'Theses Share',
+      name: WEB_NAME,
 
       credentials: {
         email: {
           label: 'Email',
           type: 'email',
         },
-        password: { label: 'Mật khẩu', type: 'password' },
+        password: { label: 'Password', type: 'password' },
       },
 
       async authorize(credentials) {
         try {
           const user = await fetchSignin(process.env.API_URL, credentials)
+          console.log('-----------------------------------------------------------')
           // console.log('-- authorize --', { credentials, user })
 
-          if (user.status) {
-            return user
-          } else {
-            return null
-          }
+          if (user.status) return user
         } catch (e) {
-          return null
+          console.log(e)
         }
+
+        return null
       },
     }),
   ],
 
   callbacks: {
     jwt: async (token, user) => {
-      // console.log('-- jwt --', { token, user })
-
       // assign user (return from authorize) -> token
       // user obj will available only 1st time jwt callback is called
       // from the 2nd time, user will be undefined
       if (user) {
-        token['access_token'] = user['access_token']
-        token.user = {}
-        tokenData.map(item => (token.user[item] = user.data[item]))
+        const newUser = {
+          access_token: user.access_token,
+          user: {
+            ...user.data
+          }
+        }
+
+        return newUser
       }
 
-      return Promise.resolve(token)
+      else {
+        // console.log('-- jwt token --', { token })
+        return token
+      }
     },
 
     session: async (session, token) => {
-      // console.log('-- session --', { session, token })
-
       // assign token data to session
       // beacause session reset everytime useSession() is called
-      session['access_token'] = token['access_token']
-      tokenData.map(item => (session.user[item] = token.user[item]))
+      const newSession = { expires: session.expires, ...token }
+      // console.log('-- final session --', { session, token })
 
-      return Promise.resolve(session)
+      return newSession
     },
   },
 }

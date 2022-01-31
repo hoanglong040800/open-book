@@ -1,5 +1,8 @@
+// ====== WEBSITE NAME =====
+export const WEB_NAME='Ebook Share'
+
 // ==== SESSION ======
-export const tokenData = ["id", "email", "full_name", "gender", "user_name"];
+export const SESSION_USER_FIELDS = ["id", "email", "full_name", "gender", "user_name"];
 
 // ======== nav links ======
 function getUrlQuery(name, value) {
