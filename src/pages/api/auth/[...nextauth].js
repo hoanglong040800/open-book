@@ -1,4 +1,5 @@
 import { WEB_NAME } from 'common/constants/common.constant'
+import { setAuthorization } from 'common/utils/api.util'
 import fetchSignin from 'modules/auth/api/auth.api'
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
@@ -31,10 +32,7 @@ const options = {
 
       async authorize(credentials) {
         try {
-          const data = await fetchSignin(process.env.API_URL, credentials)
-          // console.log('-----------------------------------------------------------')
-          // console.log('-- authorize --', { credentials, data })
-
+          const data = await fetchSignin(credentials)
           return data
         } catch (e) {
           throw e
@@ -44,12 +42,12 @@ const options = {
   ],
 
   callbacks: {
-    jwt: async (token, user) => {
+    jwt: async (token, data) => {
       // assign user (return from authorize) -> token
       // user obj will available only 1st time jwt callback is called
       // from the 2nd time, user will be undefined
-      if (user) {
-        return user
+      if (data) {
+        return data
       } else {
         // console.log('-- jwt token --', { token })
         return token
@@ -59,8 +57,8 @@ const options = {
     session: async (session, token) => {
       // assign token data to session
       // beacause session reset everytime useSession() is called
+      // console.log('token', token.access_token)
       const newSession = { expires: session.expires, ...token }
-      // console.log('-- final session --', { session, token })
       return newSession
     },
   },

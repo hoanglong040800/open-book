@@ -1,14 +1,12 @@
+import { getUserProfile } from 'modules/users/api/users.api'
 import Head from 'next/head'
-
-export async function getServerSideProps() {
-  return {
-    props: {
-
-    },
-  }
-}
+import { useEffect } from 'react'
 
 export default function Home() {
+  useEffect(() => {
+    const profile = getUserProfile()
+  }, [])
+
   return (
     <>
       <Head>
