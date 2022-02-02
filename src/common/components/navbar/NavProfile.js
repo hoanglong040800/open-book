@@ -9,7 +9,6 @@ import { AccountCircle } from "@material-ui/icons";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { signOut, useSession } from "next-auth/client";
-import { getNameFromEmail } from "common/utils/common.util";
 
 export default function NavProfile() {
   const router = useRouter();
