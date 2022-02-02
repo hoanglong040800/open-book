@@ -1,3 +1,5 @@
+import axios from "axios"
+
 export function handleApiResponse(resObj) {
   if (resObj.status === 200) {
     return resObj.data
@@ -6,4 +8,8 @@ export function handleApiResponse(resObj) {
   else {
     throw new Error(resObj.message)
   }
+}
+
+export function setAuthorization(token) {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 }

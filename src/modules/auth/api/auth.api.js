@@ -1,8 +1,9 @@
+import { API_URL } from "common/constants/url.constant"
 import { handleApiResponse } from "common/utils/api.util"
 
-export default async function fetchSignin(apiUrl, credentials) {
+export default async function fetchSignin(credentials) {
   try {
-    const res = await fetch(`${apiUrl}/login`, {
+    const res = await fetch(`${API_URL}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -17,9 +18,9 @@ export default async function fetchSignin(apiUrl, credentials) {
   }
 }
 
-export async function fetchSignup(apiUrl, data) {
+export async function fetchSignup(data) {
   try {
-    const res = await fetch(`${apiUrl}/signup`, {
+    const res = await fetch(`${API_URL}/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

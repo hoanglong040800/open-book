@@ -6,8 +6,15 @@ import 'common/styles/global.css'
 import DefaultLayout from 'common/layouts/DefaultLayout'
 import { Provider as SessionProvider } from 'next-auth/client'
 import Auth from 'modules/auth/components/Auth'
+import axios from 'axios'
+
 
 export default function MyApp({ Component, pageProps }) {
+  if (typeof window !== 'undefined') {
+    // axios.defaults.headers.common['Authorization'] = localStorage['access_token']
+    axios.defaults.baseURL = process.env.API_URL
+  }
+
   return (
     <>
       <Head>
