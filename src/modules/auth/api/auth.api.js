@@ -1,3 +1,5 @@
+import { handleApiResponse } from "common/utils/api.util"
+
 export default async function fetchSignin(apiUrl, credentials) {
   try {
     const res = await fetch(`${apiUrl}/login`, {
@@ -7,10 +9,9 @@ export default async function fetchSignin(apiUrl, credentials) {
       },
       body: JSON.stringify(credentials),
     })
-
     const resObj = await res.json()
 
-    return resObj
+    return handleApiResponse(resObj)
   } catch (e) {
     return null
   }

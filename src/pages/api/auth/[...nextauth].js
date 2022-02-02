@@ -1,4 +1,4 @@
-import { SESSION_USER_FIELDS, WEB_NAME } from 'common/constants/common.constant'
+import { WEB_NAME } from 'common/constants/common.constant'
 import fetchSignin from 'modules/auth/api/auth.api'
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
@@ -14,10 +14,6 @@ const options = {
     jwt: true,
   },
 
-  jwt: {
-    secret: 'INp8IvdIyeMcoGAgFGoA61DdBglwwSqnXJZkgz8PSnw',
-  },
-
   // only true in development
   debug: true,
 
@@ -26,25 +22,23 @@ const options = {
       name: WEB_NAME,
 
       credentials: {
-        email: {
-          label: 'Email',
-          type: 'email',
+        user_name: {
+          label: 'Username',
+          type: 'text',
         },
         password: { label: 'Password', type: 'password' },
       },
 
       async authorize(credentials) {
         try {
-          const user = await fetchSignin(process.env.API_URL, credentials)
-          console.log('-----------------------------------------------------------')
-          // console.log('-- authorize --', { credentials, user })
+          const data = await fetchSignin(process.env.API_URL, credentials)
+          // console.log('-----------------------------------------------------------')
+          // console.log('-- authorize --', { credentials, data })
 
-          if (user.status) return user
+          return data
         } catch (e) {
-          console.log(e)
+          throw e
         }
-
-        return null
       },
     }),
   ],
@@ -55,17 +49,8 @@ const options = {
       // user obj will available only 1st time jwt callback is called
       // from the 2nd time, user will be undefined
       if (user) {
-        const newUser = {
-          access_token: user.access_token,
-          user: {
-            ...user.data
-          }
-        }
-
-        return newUser
-      }
-
-      else {
+        return user
+      } else {
         // console.log('-- jwt token --', { token })
         return token
       }
@@ -76,7 +61,6 @@ const options = {
       // beacause session reset everytime useSession() is called
       const newSession = { expires: session.expires, ...token }
       // console.log('-- final session --', { session, token })
-
       return newSession
     },
   },
