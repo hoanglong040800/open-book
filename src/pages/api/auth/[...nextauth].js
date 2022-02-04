@@ -1,5 +1,4 @@
 import { WEB_NAME } from 'common/constants/common.constant'
-import { setAuthorization } from 'common/utils/api.util'
 import fetchSignin from 'modules/auth/api/auth.api'
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
@@ -33,6 +32,8 @@ const options = {
       async authorize(credentials) {
         try {
           const data = await fetchSignin(credentials)
+          console.log('-------------------')
+          console.log('--- authorize ---', credentials, data)
           return data
         } catch (e) {
           throw e
@@ -57,8 +58,8 @@ const options = {
     session: async (session, token) => {
       // assign token data to session
       // beacause session reset everytime useSession() is called
-      // console.log('token', token.access_token)
-      const newSession = { expires: session.expires, ...token }
+      console.log('token', token.access_token)
+      const newSession = { ...token, expires: session.expires }
       return newSession
     },
   },

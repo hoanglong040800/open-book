@@ -1,5 +1,5 @@
+import HeadTitle from 'common/components/headtitle/HeadTitle'
 import { getUserProfile } from 'modules/users/api/users.api'
-import Head from 'next/head'
 import { useEffect } from 'react'
 
 export default function Home() {
@@ -9,9 +9,7 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>Trang chủ</title>
-      </Head>
+      <HeadTitle page='home' />
 
       <h1>Home Page</h1>
     </>

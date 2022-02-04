@@ -10,6 +10,9 @@ export function handleApiResponse(resObj) {
   }
 }
 
-export function setAuthorization(token) {
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+export function setRequestConfig() {
+  if (typeof window !== 'undefined') {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage['access_token']}`
+    axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL
+  }
 }
