@@ -1,8 +1,10 @@
 // ====== WEBSITE NAME =====
-export const WEB_NAME='Ebook Share'
+export const WEB_NAME = 'Ebook Share'
 
-// ==== SESSION ======
-export const SESSION_USER_FIELDS = ["id", "email", "full_name", "gender", "user_name"];
+export const USER_ROLES = {
+  viewer: 'user',
+  editor: 'editor',
+}
 
 // ======== nav links ======
 function getUrlQuery(name, value) {
