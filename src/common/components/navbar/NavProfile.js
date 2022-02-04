@@ -60,8 +60,8 @@ export default function NavProfile() {
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         transformOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <MenuItem onClick={handleSelectProfile}>
-          Profile
+        <MenuItem onClick={handleSelectProfile} >
+          <b>{session.user.full_name || session.user.user_name}</b>
         </MenuItem>
 
         <MenuItem onClick={handleSignout}>Log out</MenuItem>
@@ -70,14 +70,8 @@ export default function NavProfile() {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   icon: {
-    color: [theme.palette.primary.main],
-  },
-
-  full_name: {
-    fontWeight: "bold",
-    padding: 0,
-    margin: 0,
+    color: theme.palette.primary.main,
   },
 }));
