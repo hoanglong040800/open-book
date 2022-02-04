@@ -12,31 +12,45 @@ export default function Footer() {
             <Typography
               variant="h5"
               align="center"
-              className={classes.footerHead}
+              className={classes.footerHeading}
             >
-              Theses Share
+              EBook Share
             </Typography>
 
             <Typography variant="subtitle1" align="center" gutterBottom>
               <span className={classes.link}>
-                <Link href="/">Trang chủ</Link>
+                <Link href="/">Home page</Link>
               </span>
               <span className={classes.whiteLine}>|</span>
               <span className={classes.link}>
-                <Link href="/about">Về chúng tôi</Link>
+                <Link href="/about">About us</Link>
               </span>
             </Typography>
           </Grid>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={4}>
+            <Typography variant="h6" className={classes.infoHeading}>
+              About us
+            </Typography>
             <Typography variant="subtitle2" className={classes.info}>
-              <div>Địa chỉ: 503B Minh Phụng, Phường 9, Quận 11, TP.HCM</div>
-              <div>SĐT: (+84) 9633623</div>
-              <div>Email: 18520093@gm.uit.edu.vn</div>
+              EBook Share is a website where Lorem ipsum, dolor sit amet
+              consectetur adipisicing elit. Aspernatur, blanditiis.
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Typography variant="h6" className={classes.infoHeading}>
+              Social media
+            </Typography>
+            <Typography variant="subtitle2" className={classes.info}>
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+              Voluptatum, provident ducimus, iure consequuntur fuga quos
+              inventore possimus natus quod facere rem sapiente neque
+              perferendis ad alias iusto sint, aliquid magnam.
             </Typography>
           </Grid>
         </Grid>
-        <Typography variant="subtitle2" align="center">
-          Copyright &copy; 2021 Theses Share
+        <hr className={classes.lineBreak} />
+        <Typography variant="subtitle2" className={classes.copyright}>
+          Copyright &copy; 2021 EBook Share
         </Typography>
       </Container>
     </footer>
@@ -46,8 +60,8 @@ export default function Footer() {
 const useStyle = makeStyles((theme) => ({
   footer: {
     backgroundColor: theme.palette.primary.main,
-    color: "#ddd",
-    padding: "1.5rem 0 0.5rem",
+    color: "#fff",
+    padding: "0.5rem 0",
   },
 
   container: {
@@ -55,22 +69,25 @@ const useStyle = makeStyles((theme) => ({
   },
 
   [theme.breakpoints.down("sm")]: {
-    info: {
-      textAlign: "center",
+    infoHeading: {
+      marginTop: "1.25rem",
     },
   },
 
   [theme.breakpoints.up("md")]: {
     info: {
-      borderRight: "1px solid #ddd",
-      paddingRight: "1rem",
-      textAlign: "right",
+      borderLeft: "1px solid #fff",
+      padding: "0 1rem",
     },
   },
 
-  footerHead: {
+  footerHeading: {
     color: "white",
     fontWeight: "bold",
+  },
+
+  infoHeading: {
+    marginBottom: "0.3rem",
   },
 
   link: {
@@ -81,5 +98,13 @@ const useStyle = makeStyles((theme) => ({
 
   whiteLine: {
     padding: "0 10px",
+  },
+
+  lineBreak: {
+    opacity: 0.4,
+  },
+
+  copyright: {
+    opacity: 0.4,
   },
 }));

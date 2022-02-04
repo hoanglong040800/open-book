@@ -36,7 +36,7 @@ export default function NavProfile() {
       ? signOut({ callbackUrl: "/" })
       : signOut({ redirect: false });
 
-    localStorage.clear()
+    localStorage.clear();
     handleClose();
   }
 
@@ -69,9 +69,9 @@ export default function NavProfile() {
           Bookmarks
         </MenuItem>
 
-        <MenuItem onClick={() => handleSelect("/settings")}>Cài đặt</MenuItem>
+        <MenuItem onClick={() => handleSelect("/settings")}>Settings</MenuItem>
 
-        <MenuItem onClick={handleSignout}>Đăng xuất</MenuItem>
+        <MenuItem onClick={handleSignout}>Log out</MenuItem>
       </Menu>
     </>
   );

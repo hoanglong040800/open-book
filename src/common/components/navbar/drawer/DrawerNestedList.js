@@ -1,29 +1,29 @@
-import { Box, Collapse, List, ListItem, ListItemText } from '@material-ui/core'
-import { ExpandLess, ExpandMore } from '@material-ui/icons'
-import { makeStyles } from '@material-ui/styles'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { Box, Collapse, List, ListItem, ListItemText } from "@material-ui/core";
+import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import { makeStyles } from "@material-ui/styles";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 export default function DrawerNestedList({ title, list, onCloseDrawer }) {
-  const mui = useStyles()
-  const router = useRouter()
-  const [open, setOpen] = useState(false)
+  const mui = useStyles();
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
 
   function handleToggleList() {
-    setOpen(!open)
+    setOpen(!open);
   }
 
   function handleClickItem(query) {
     router.push(
       {
-        pathname: '/explore',
+        pathname: "/explore",
         query: query,
       },
       undefined,
       { shallow: true }
-    )
+    );
 
-    onCloseDrawer()
+    onCloseDrawer();
   }
 
   return (
@@ -38,7 +38,7 @@ export default function DrawerNestedList({ title, list, onCloseDrawer }) {
         <List>
           {
             //
-            list.map(item => (
+            list.map((item) => (
               <ListItem
                 button
                 className={mui.listItem}
@@ -51,12 +51,12 @@ export default function DrawerNestedList({ title, list, onCloseDrawer }) {
         </List>
       </Collapse>
     </Box>
-  )
+  );
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   listItem: {
     paddingLeft: theme.spacing(3),
-    borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
+    borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
   },
-}))
+}));

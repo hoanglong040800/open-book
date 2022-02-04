@@ -1,24 +1,32 @@
-import { createTheme } from '@material-ui/core'
-import { red, blueGrey, lightGreen, grey } from '@material-ui/core/colors'
+import { createTheme } from "@material-ui/core";
+import {
+  red,
+  blueGrey,
+  green,
+  grey,
+  deepOrange,
+  orange,
+  teal,
+} from "@material-ui/core/colors";
 
 const theme = createTheme({
   palette: {
     primary: {
-      light: blueGrey[600],
-      main: blueGrey[700],
-      dark: blueGrey[800],
+      light: deepOrange[400],
+      main: deepOrange[500],
+      dark: deepOrange[600],
     },
     secondary: {
-      light: grey[200],
-      main: grey[300],
-      dark: grey[400],
+      light: teal[200],
+      main: teal[400],
+      dark: teal[600],
     },
     error: {
       main: red[400],
     },
 
     background: {
-      default: '#fff',
+      default: "#fff",
     },
   },
 
@@ -34,9 +42,9 @@ const theme = createTheme({
 
   typography: {
     button: {
-      textTransform: 'inherit',
+      textTransform: "inherit",
     },
   },
-})
+});
 
-export default theme
+export default theme;
