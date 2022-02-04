@@ -5,7 +5,7 @@ import {
   Typography,
 } from '@material-ui/core'
 
-export default function Loading({ text = 'Đang tải', theme = 'light' }) {
+export default function Loading({ text = 'Loading', theme = 'light' }) {
   const mui = useStyles()
 
   return (

@@ -1,6 +1,6 @@
 import { WEB_NAME } from "common/constants/common.constant";
 import Head from "next/head";
-import { toTitleCase } from 'common/utils/ui.util'
+import { toTitleCase } from 'common/utils/common.util'
 
 export default function HeadTitle({ page = '' }) {
   return (
