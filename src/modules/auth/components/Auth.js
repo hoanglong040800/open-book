@@ -6,8 +6,6 @@ export default function Auth({ children }) {
   const [session, loading] = useSession()
   const isSignin = !!session?.user
 
-  // console.log('Auth', { session, isSignin, loading })
-
   useEffect(() => {
     if (loading) return // Do nothing while loading
     if (!isSignin) signIn() // If not authenticated, force log in

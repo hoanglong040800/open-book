@@ -72,14 +72,14 @@ export default function SignUp({ apiUrl, nextauthUrl }) {
     res.status
       ? setSnackbarProps(alertSignUp.success)
       : res.message.includes('duplicate')
-      ? setSnackbarProps(alertSignUp.duplicate)
-      : setSnackbarProps(alertSignUp.error)
+        ? setSnackbarProps(alertSignUp.duplicate)
+        : setSnackbarProps(alertSignUp.error)
 
     setOpenSnackbar(true)
   }
 
   function onError(error) {
-    console.log('ERROR', error)
+
   }
 
   return (

@@ -1,5 +1,6 @@
 import { WEB_NAME } from 'common/constants/common.constant'
-import fetchSignin from 'modules/auth/api/auth.api'
+import fetchLogin from 'modules/auth/api/auth.api'
+
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
 
@@ -31,7 +32,7 @@ const options = {
 
       async authorize(credentials) {
         try {
-          const data = await fetchSignin(credentials)
+          const data = await fetchLogin(credentials)
           return data
         } catch (e) {
           throw e

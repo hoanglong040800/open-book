@@ -1,6 +1,4 @@
-import { handleApiResponse } from "common/utils/api.util"
-
-export default async function fetchSignin(credentials) {
+export default async function fetchLogin(credentials) {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
       method: 'POST',
@@ -11,7 +9,7 @@ export default async function fetchSignin(credentials) {
     })
     const resObj = await res.json()
 
-    return handleApiResponse(resObj)
+    return resObj.data
   } catch (e) {
     return null
   }
