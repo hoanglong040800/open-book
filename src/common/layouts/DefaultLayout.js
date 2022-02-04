@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles'
 import Footer from 'common/components/footer/Footer'
 import NavLeftDrawer from 'common/components/navbar/drawer/NavLeftDrawer'
 import Navbar from 'common/components/navbar/Navbar'
-import { useEffect, useState } from 'react'
+import {  useEffect, useState } from 'react'
 import { useSession } from 'next-auth/client'
 
 export default function DefaultLayout({ children }) {
@@ -13,11 +13,8 @@ export default function DefaultLayout({ children }) {
 
   useEffect(() => {
     if (!isLoading && session) {
-      // alert('can set local storage')
       window.localStorage['access_token'] = session.access_token
     }
-    // else alert('false')
-
   }, [session, isLoading])
 
   return (

@@ -36,7 +36,7 @@ export default function NavProfile() {
       ? signOut({ callbackUrl: "/" })
       : signOut({ redirect: false });
 
-    window.localStorage.clear()
+    localStorage.clear()
     handleClose();
   }
 
