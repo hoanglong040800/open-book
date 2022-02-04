@@ -32,8 +32,6 @@ const options = {
       async authorize(credentials) {
         try {
           const data = await fetchSignin(credentials)
-          console.log('-------------------')
-          console.log('--- authorize ---', credentials, data)
           return data
         } catch (e) {
           throw e
@@ -50,7 +48,6 @@ const options = {
       if (data) {
         return data
       } else {
-        // console.log('-- jwt token --', { token })
         return token
       }
     },
@@ -58,7 +55,7 @@ const options = {
     session: async (session, token) => {
       // assign token data to session
       // beacause session reset everytime useSession() is called
-      console.log('token', token.access_token)
+      // console.log('token', token.access_token)
       const newSession = { ...token, expires: session.expires }
       return newSession
     },

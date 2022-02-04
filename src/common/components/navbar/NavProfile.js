@@ -12,7 +12,7 @@ import { signOut, useSession } from "next-auth/client";
 
 export default function NavProfile() {
   const router = useRouter();
-  const [session, loading] = useSession();
+  const [session] = useSession();
   const mui = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -24,7 +24,12 @@ export default function NavProfile() {
     setAnchorEl(null);
   }
 
-  function handleSelect(route) {
+  function handleSelectProfile() {
+    const profileRoute = `user/${session.user.user_name}`
+    handleRouting(profileRoute)
+  }
+
+  function handleRouting(route) {
     router.push(route);
     handleClose();
   }
@@ -55,23 +60,11 @@ export default function NavProfile() {
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         transformOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <MenuItem onClick={() => handleSelect(`/${session.user.user_name}`)}>
-          <p className={mui.full_name}>{session.user.user_name}</p>
+        <MenuItem onClick={handleSelectProfile}>
+          Profile
         </MenuItem>
 
-        <Divider variant="middle" />
-
-        <MenuItem
-          onClick={() =>
-            handleSelect(`/${session.user.user_name}?tab=bookmark`)
-          }
-        >
-          Bookmarks
-        </MenuItem>
-
-        <MenuItem onClick={() => handleSelect("/settings")}>Cài đặt</MenuItem>
-
-        <MenuItem onClick={handleSignout}>Đăng xuất</MenuItem>
+        <MenuItem onClick={handleSignout}>Log out</MenuItem>
       </Menu>
     </>
   );

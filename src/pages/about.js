@@ -1,14 +1,12 @@
+import HeadTitle from "common/components/headtitle/HeadTitle";
 import { useSession } from "next-auth/client";
-import Head from "next/head";
 
 export default function About() {
   const [session] = useSession()
 
   return (
     <>
-      <Head>
-        <title>About page</title>
-      </Head>
+      <HeadTitle page='about' />
 
       <h1>About page</h1>
 
