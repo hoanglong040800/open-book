@@ -1,17 +1,24 @@
-export const alertSignUp={
+export const REGISTER_ALERT = {
   success: {
     severity: 'success',
-    message: 'Đăng ký thành công. Đang đăng nhập',
-  },
-
-  error: {
-    severity: 'error',
-    message: 'Có lỗi xảy ra. Vui lòng thử lại sau',
+    message: 'Register successfully. Auto signup for you',
   },
 
   duplicate: {
     severity: 'error',
     message:
-      'Email hoặc username đã có người sử dụng. Vui lòng chọn email khác',
+      'User already exists. Please choose another',
+  },
+}
+
+export const COMMON_ALERT = {
+  internet: {
+    severity: 'error',
+    message: 'The server is temporary down',
+  },
+
+  error: {
+    severity: 'error',
+    message: 'Something is wrong',
   },
 }

@@ -1,19 +1,13 @@
 import * as yup from "yup";
 
-export const signupSchema = yup.object().shape({
-  email: yup.string().required("Chưa nhập email").email("Không phải email"),
+export const REGISTER_SCHEMA = yup.object().shape({
+  user_name: yup.string().required().label("Username"),
 
-  user_name: yup.string().required("Chưa nhập username"),
+  email: yup.string().email().required().label('Email'),
 
-  password: yup
-    .string()
-    .required("Chưa nhập mật khẩu")
-    .min(1, "Mật khẩu tối thiểu 8 kí tự")
-    .max(20, "Mật khẩu không được quá 20 kí tự"),
+  password: yup.string().required().min(1).max(20).label("Password"),
 
-  password_confirmation: yup
-    .string()
-    .oneOf([yup.ref("password"), null], "Không trùng với mật khẩu"),
+  password_confirmation: yup.string().oneOf([yup.ref("password"), null], "Do not match with password"),
 });
 
 export const rsPswdSchema = yup.object().shape({

@@ -1,13 +1,14 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Box, Button } from '@material-ui/core'
 import AlertSnackbar from 'common/components/alertsnackbar/AlertSnackbar'
+import SubmitButton from 'common/components/button/SubmitButton'
+import HeadTitle from 'common/components/headtitle/HeadTitle'
 import TextFieldController from 'common/components/input/TextFieldController'
-import { alertSignUp } from 'common/constants/alert.constant'
-import { CALLBACK_SIGNUP } from 'common/constants/url.constant'
-import { signupSchema } from 'common/schema/form-validation.schema'
-import { fetchSignup } from 'modules/auth/api/auth.api'
-import { getSession, signIn } from 'next-auth/client'
-import Head from 'next/head'
+import { COMMON_ALERT, REGISTER_ALERT } from 'common/constants/alert.constant'
+import { CALLBACK_REGISTER } from 'common/constants/url.constant'
+import FormLayout from 'common/layouts/FormLayout'
+import { REGISTER_SCHEMA } from 'common/schema/form-validation.schema'
+import { fetchRegister } from 'modules/auth/api/auth.api'
+import { getSession, signin, signIn } from 'next-auth/client'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -25,25 +26,22 @@ export async function getServerSideProps(ctx) {
 
   return {
     props: {
-      apiUrl: process.env.API_URL,
-      nextauthUrl: process.env.NEXTAUTH_URL,
     },
   }
 }
 
-export default function SignUp({ apiUrl, nextauthUrl }) {
+export default function Register() {
   const {
     watch,
-    register,
     control,
     formState: { errors },
     handleSubmit,
-    setValue,
-    reset,
   } = useForm({
-    resolver: yupResolver(signupSchema),
+    resolver: yupResolver(REGISTER_SCHEMA),
     defaultValues: {
-
+      user_name: 'user1',
+      password: '1',
+      password_confirmation: '1',
     },
   })
 
@@ -53,56 +51,55 @@ export default function SignUp({ apiUrl, nextauthUrl }) {
     message: '',
   })
 
-  function handleCloseSnackbar() {
-    setOpenSnackbar(false)
+  async function onSubmit(credentials) {
+    const res = await fetchRegister(credentials)
 
-    if (snackbarProps.severity === 'success') {
-      signIn('credentials', {
-        email: watch('email'),
-        password: watch('password'),
-        redirect: true,
-        callbackUrl: `${CALLBACK_SIGNUP}`,
-      })
-    }
-  }
-
-  async function onSubmit(data) {
-    const res = await fetchSignup(apiUrl, data)
-
-    res.status
-      ? setSnackbarProps(alertSignUp.success)
-      : res.message.includes('duplicate')
-        ? setSnackbarProps(alertSignUp.duplicate)
-        : setSnackbarProps(alertSignUp.error)
-
+    setSnackbarProps(
+      res.status === 200
+        ? REGISTER_ALERT.success
+        : res.status === 503
+          ? COMMON_ALERT.internet
+          : res.message.includes('exists')
+            ? REGISTER_ALERT.duplicate
+            : COMMON_ALERT.error
+    )
     setOpenSnackbar(true)
   }
 
   function onError(error) {
+    console.clear()
+    console.log(error)
+  }
 
+  function handleCloseSnackbar() {
+    if (snackbarProps.severity === 'success') {
+      signIn('credentials', {
+        user_name: watch('user_name'),
+        password: watch('password'),
+        redirect: true,
+        callbackUrl: `/`,
+      })
+    }
+
+    setOpenSnackbar(false)
   }
 
   return (
     <>
-      <Head>
-        <title>Sign Up</title>
-      </Head>
+      <HeadTitle page='register' />
 
-      <Box display="flex" flexDirection="column" mx="auto" maxWidth="500px">
-        <h1>Sign Up</h1>
-
+      <FormLayout title='register'>
         <TextFieldController
-          name="email"
-          label="Email"
+          name="user_name"
+          label="Username"
           required
-          type="email"
           control={control}
           errors={errors}
         />
 
         <TextFieldController
-          name="user_name"
-          label="Username"
+          name="email"
+          label="Email"
           required
           control={control}
           errors={errors}
@@ -126,16 +123,11 @@ export default function SignUp({ apiUrl, nextauthUrl }) {
           errors={errors}
         />
 
-        <Box display="flex" justifyContent="flex-end" mt={3}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit(onSubmit, onError)}
-          >
-            Sign Up
-          </Button>
-        </Box>
-      </Box>
+        <SubmitButton
+          text="Register"
+          onClick={handleSubmit(onSubmit, onError)}
+        />
+      </FormLayout>
 
       <AlertSnackbar
         open={openSnackbar}
