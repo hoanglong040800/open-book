@@ -1,7 +1,6 @@
 import {
   AppBar,
   Box,
-  Button,
   Container,
   IconButton,
   makeStyles,
@@ -9,11 +8,12 @@ import {
 } from "@material-ui/core";
 import NavLink from "./NavLink";
 import NavProfile from "./NavProfile";
-import { signIn, useSession } from "next-auth/client";
+import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
 import NavLogo from "./NavLogo";
 import { Menu } from "@material-ui/icons";
 import NavSearchBar from "./search/NavSearchBar";
+import NavAuthButton from "./NavAuthButton";
 
 export default function Navbar({ onOpenDrawer }) {
   const router = useRouter();
@@ -21,7 +21,7 @@ export default function Navbar({ onOpenDrawer }) {
   const [session, loading] = useSession();
 
   return (
-    <AppBar position="fixed" color="primary">
+    <AppBar position="fixed" color="default">
       <Toolbar>
         <Container maxWidth="xl">
           <Box className={classes.toolbar}>
@@ -46,29 +46,7 @@ export default function Navbar({ onOpenDrawer }) {
             <Box display="flex" alignItems="center">
               <NavSearchBar />
 
-              {session ? (
-                <NavProfile />
-              ) : (
-                <Box display="flex">
-                  <Button
-                    color="inherit"
-                    size="small"
-                    style={{ marginRight: 5 }}
-                    onClick={() => router.push("/signup")}
-                  >
-                    Sign up
-                  </Button>
-
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    size="small"
-                    onClick={signIn}
-                  >
-                    Log in
-                  </Button>
-                </Box>
-              )}
+              {session ? <NavProfile /> : <NavAuthButton />}
             </Box>
           </Box>
         </Container>

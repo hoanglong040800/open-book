@@ -1,1 +1,1 @@
-export const CALLBACK_SIGNUP='/'
+export const CALLBACK_REGISTER='/'

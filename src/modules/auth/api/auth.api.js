@@ -1,3 +1,5 @@
+import axios from "axios"
+
 export default async function fetchLogin(credentials) {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
@@ -15,6 +17,6 @@ export default async function fetchLogin(credentials) {
   }
 }
 
-export async function fetchSignup(credentials) {
-  
+export async function fetchRegister(credentials) {
+  return axios.post('register', credentials)
 }

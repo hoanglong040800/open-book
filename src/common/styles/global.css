@@ -37,38 +37,12 @@ a {
   background: rgba(0, 0, 0, 0.15);
 }
 
-/* === MUI data grid === */
-.MuiDataGrid-columnHeaderTitle {
-  font-weight: bold !important;
+/* ==== MUI Input ==== */
+
+.MuiFormControl-marginNormal{
+  margin: 18px 0 !important;
 }
 
-.MuiDataGrid-root .MuiDataGrid-cell {
-  white-space: pre-wrap !important;
-  line-height: inherit !important;
-  padding: 10px 10px !important;
-}
-
-/*  */
-.MuiDataGrid-root {
+.MuiFormHelperText-root{
   font-size: 0.875rem !important;
-}
-
-/* MUI data grid focus outline */
-.MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
-.MuiDataGrid-root .MuiDataGrid-cell:focus {
-  outline: 0.5px solid rgba(0, 0, 0, 0.1) !important;
-}
-
-.MuiDataGrid-root .MuiDataGrid-columnHeader:focus-within,
-.MuiDataGrid-root .MuiDataGrid-cell:focus-within {
-  outline: none !important;
-}
-
-/* styling rows */
-.MuiDataGrid-row {
-  cursor: pointer;
-}
-
-.Mui-even {
-  background-color: rgba(0, 0, 0, 0.02);
 }

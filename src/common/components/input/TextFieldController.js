@@ -9,6 +9,7 @@ export default function TextFieldController({
   required = false,
   defaultValue = '',
   type = 'text',
+  variant = "outlined"
 }) {
   return (
     <FormControl margin="normal" fullWidth>
@@ -19,6 +20,7 @@ export default function TextFieldController({
         render={({ field }) => (
           <TextField
             {...field}
+            variant={variant}
             type={type}
             label={label}
             required={required}

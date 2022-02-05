@@ -6,11 +6,11 @@ import 'common/styles/global.css'
 import DefaultLayout from 'common/layouts/DefaultLayout'
 import { Provider as SessionProvider } from 'next-auth/client'
 import Auth from 'modules/auth/components/Auth'
-import { setRequestConfig } from 'common/utils/api.util'
+import { setApiConfig } from 'common/config/api.config'
 
 
 export default function MyApp({ Component, pageProps }) {
-  setRequestConfig()
+  setApiConfig()
 
   return (
     <>
