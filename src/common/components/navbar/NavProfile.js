@@ -8,6 +8,7 @@ import { AccountCircle } from "@material-ui/icons";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { signOut, useSession } from "next-auth/client";
+import { USER_ROLES } from "common/constants/common.constant";
 
 export default function NavProfile() {
   const router = useRouter();
@@ -23,14 +24,14 @@ export default function NavProfile() {
     setAnchorEl(null);
   }
 
-  function handleSelectProfile() {
-    const profileRoute = `user/${session.user.user_name}`
-    handleRouting(profileRoute)
-  }
-
   function handleRouting(route) {
     router.push(route);
     handleClose();
+  }
+
+  function handleSelectProfile() {
+    const profileRoute = `user/${session.user.user_name}`
+    handleRouting(profileRoute)
   }
 
   function handleSignout() {
@@ -62,6 +63,13 @@ export default function NavProfile() {
         <MenuItem onClick={handleSelectProfile} >
           <b>{session.user.full_name || session.user.user_name}</b>
         </MenuItem>
+
+        {
+          session && session.user.role === USER_ROLES.editor &&
+          <MenuItem onClick={() => handleRouting('/books/new')}>
+            Add Book
+          </MenuItem>
+        }
 
         <MenuItem onClick={handleSignout}>Log out</MenuItem>
       </Menu>
