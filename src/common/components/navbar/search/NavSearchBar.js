@@ -73,7 +73,7 @@ export default function NavSearchBar() {
     <div className={mui.root}>
       <SearchBar
         value={stateValue}
-        placeholder="Search by title or keyword"
+        placeholder="title or keyword"
         onChange={handleChange}
         onRequestSearch={handleSearch}
         onCancelSearch={handleChange}

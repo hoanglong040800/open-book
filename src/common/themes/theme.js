@@ -4,14 +4,14 @@ import { red, deepOrange, teal } from "@material-ui/core/colors";
 const theme = createTheme({
   palette: {
     primary: {
-      light: deepOrange[200],
-      main: deepOrange[300],
-      dark: deepOrange[400],
-    },
-    secondary: {
       light: teal[200],
       main: teal[400],
       dark: teal[600],
+    },
+    secondary: {
+      light: deepOrange[300],
+      main: deepOrange[400],
+      dark: deepOrange[500],
     },
     error: {
       main: red[400],

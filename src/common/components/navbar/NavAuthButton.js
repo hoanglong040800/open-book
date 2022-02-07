@@ -1,18 +1,19 @@
-import { Box, Button } from "@material-ui/core"
-import { signIn } from "next-auth/client"
-import { useRouter } from "next/router"
+import { Box, Button } from "@material-ui/core";
+import { signIn } from "next-auth/client";
+import { useRouter } from "next/router";
 
 export default function NavAuthButton() {
-  const router = useRouter()
-  
+  const router = useRouter();
+
   function handleRoutingRegister() {
-    router.push("/register")
+    router.push("/register");
   }
 
   return (
     <Box display="flex">
       <Button
         color="inherit"
+        variant="outlined"
         size="small"
         style={{ marginRight: 5 }}
         onClick={handleRoutingRegister}
@@ -29,5 +30,5 @@ export default function NavAuthButton() {
         Login
       </Button>
     </Box>
-  )
+  );
 }
