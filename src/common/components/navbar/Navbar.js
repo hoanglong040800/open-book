@@ -32,19 +32,18 @@ export default function Navbar({ onOpenDrawer }) {
                   <Menu color="inherit" />
                 </IconButton>
               </Box>
-
               <Box className={classes.desktop}>
                 <Box mr={1}>
                   <NavLogo />
                 </Box>
 
                 <NavLink />
-                <NavSearchBar />
               </Box>
             </Box>
 
             {/* right side */}
             <Box display="flex" alignItems="center">
+              <NavSearchBar />
               {session ? <NavProfile /> : <NavAuthButton />}
             </Box>
           </Box>
