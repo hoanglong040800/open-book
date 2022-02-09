@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getUserProfile } from "modules/users/api/users.api";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import { useSession } from "next-auth/client"
 
 export default function ViewProfile() {
   const classes = useStyle();
@@ -24,6 +25,8 @@ export default function ViewProfile() {
   };
 
   const [profile, setProfile] = useState({});
+  const [session] = useSession()
+  const router=useRouter()
 
   useEffect(async () => {
     const res = await getUserProfile();
@@ -33,6 +36,9 @@ export default function ViewProfile() {
   return (
     <>
       <HeadTitle page="profile" />
+
+      <pre>{JSON.stringify(session, null, 2)}</pre>
+
       <Grid container>
         <Grid item xs={12} sm={4} className={classes.profileTitle}>
           <h1>Profile</h1>
@@ -42,31 +48,31 @@ export default function ViewProfile() {
             <h3>Username</h3>
           </Grid>
           <Grid {...gridItemProperty.value}>
-            <p>{profile.user_name}</p>
+            <p>{profile?.user_name}</p>
           </Grid>
           <Grid {...gridItemProperty.property}>
             <h3>Email</h3>
           </Grid>
           <Grid {...gridItemProperty.value}>
-            <p>{profile.email}</p>
+            <p>{profile?.email}</p>
           </Grid>
           <Grid {...gridItemProperty.property}>
             <h3>Full name</h3>
           </Grid>
           <Grid {...gridItemProperty.value}>
-            <p>{profile.full_name}</p>
+            <p>{profile?.full_name}</p>
           </Grid>
           <Grid {...gridItemProperty.property}>
             <h3>Role</h3>
           </Grid>
           <Grid {...gridItemProperty.value}>
-            <p>{profile.role}</p>
+            <p>{profile?.role}</p>
           </Grid>
           <Grid {...gridItemProperty.property}>
             <h3>Gender</h3>
           </Grid>
           <Grid {...gridItemProperty.value}>
-            <p>{profile.gender}</p>
+            <p>{profile?.gender}</p>
           </Grid>
         </Grid>
       </Grid>
