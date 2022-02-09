@@ -13,17 +13,17 @@ import { COMMON_ALERT } from "common/constants/alert.constant";
 export default function EditProfile() {
   const {
     watch,
+    reset,
     control,
     formState: { errors },
     handleSubmit,
   } = useForm({
     defaultValues: {
-      full_name: 'Viewer',
-      gender: 'male',
+
     }
   });
 
-  const [profile, setProfile] = useState({})
+  const [profile, setProfile] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarProps, setSnackbarProps] = useState({
@@ -35,6 +35,7 @@ export default function EditProfile() {
     setIsLoading(true)
     const data = await getUserProfile()
     setProfile(data)
+    reset(data)
 
     setIsLoading(false)
   }, [])
@@ -44,8 +45,7 @@ export default function EditProfile() {
   }
 
   async function onSubmit(input) {
-    console.clear()
-    const res = await updateUserProfile('viewer', input)
+    const res = await updateUserProfile(profile.user_name, input)
 
     setSnackbarProps(
       res ? COMMON_ALERT.success : COMMON_ALERT.error
@@ -61,41 +61,39 @@ export default function EditProfile() {
       <HeadTitle page="edit profile" />
 
 
-      {
-        isLoading ? <Loading /> : <Box display="flex" flexDirection="column" mx="auto" maxWidth="500px">
-          <h1>Edit profile</h1>
 
-          <TextFieldController
-            name="full_name"
-            label="Full name"
-            defaultValue={profile?.full_name}
-            required
-            control={control}
-            errors={errors}
-          />
+      <Box display="flex" flexDirection="column" mx="auto" maxWidth="500px">
+        <h1>Edit profile</h1>
 
-          <SelectController
-            name="gender"
-            label="Gender"
-            defaultValue={profile?.gender}
-            control={control}
-            errors={errors}
+        <TextFieldController
+          name="full_name"
+          label="Full name"
+          required
+          control={control}
+          errors={errors}
+        />
+
+        <SelectController
+          name="gender"
+          label="Gender"
+          control={control}
+          errors={errors}
+        >
+          <MenuItem value="male">Male</MenuItem>
+          <MenuItem value="female">Female</MenuItem>
+        </SelectController>
+
+        <Box display="flex" justifyContent="flex-end" mt={3}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit(onSubmit, onError)}
           >
-            <MenuItem value="male">Male</MenuItem>
-            <MenuItem value="female">Female</MenuItem>
-          </SelectController>
-
-          <Box display="flex" justifyContent="flex-end" mt={3}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleSubmit(onSubmit, onError)}
-            >
-              Save
-            </Button>
-          </Box>
+            Save
+          </Button>
         </Box>
-      }
+      </Box>
+
 
       <AlertSnackbar
         open={openSnackbar}

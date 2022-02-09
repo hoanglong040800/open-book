@@ -5,5 +5,6 @@ export function getUserProfile() {
 }
 
 export function updateUserProfile(user_name, data) {
+  console.log(user_name)
   return axios.patch(`profile/${user_name}`, data).then(res => res)
 }
