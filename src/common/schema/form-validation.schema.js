@@ -32,13 +32,14 @@ const BOOK_INFO_SHAPE = {
 export const ADD_BOOK_SCHEMA = yup.object().shape({
   file: yup
     .mixed()
-    .test("required", "Please upload book", (value) => value.length)
+    .test("required", "Books is required", (value) => value.length)
     .test("fileSize", "File exceeds 10MB", (value) =>
       value.length ? value[0].size <= 1000000 : false
     ),
 
   thumbnail: yup
     .mixed()
+    .test("required", "Thumbnail is required", (value) => value.length)
     .test("fileSize", "File exceeds 1MB", (value) =>
       value.length
         ? value[0].size <= 1000000

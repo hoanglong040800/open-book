@@ -1,17 +1,20 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { MenuItem } from '@material-ui/core'
+import AlertSnackbar from 'common/components/alertsnackbar/AlertSnackbar'
 import SubmitButton from 'common/components/button/SubmitButton'
 import HeadTitle from 'common/components/headtitle/HeadTitle'
 import AutocompleteController from 'common/components/input/AutocompleteController'
 import SelectController from 'common/components/input/SelectController'
 import TextAreaController from 'common/components/input/TextAreaController'
 import TextFieldController from 'common/components/input/TextFieldController'
+import { COMMON_ALERT } from 'common/constants/alert.constant'
 import { USER_ROLES } from 'common/constants/common.constant'
 import FormLayout from 'common/layouts/FormLayout'
 import { ADD_BOOK_SCHEMA } from 'common/schema/form-validation.schema'
 import { addBook } from 'modules/books/api/books.api'
 import UploadFile from 'modules/upload/components/UploadFile'
 import { getSession } from 'next-auth/client'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import slugify from 'slugify'
 
@@ -59,6 +62,12 @@ export default function NewBook({ session }) {
     },
   })
 
+  const [openSnackbar, setOpenSnackbar] = useState(false)
+  const [alertProps, setAlertProps] = useState({
+    severity: '',
+    message: '',
+  })
+
   const genres = [
     {
       id: 1,
@@ -90,11 +99,20 @@ export default function NewBook({ session }) {
     console.clear()
     data.slug = slugify(data.name)
     const res = await addBook(data)
-    console.log({ res })
+    setAlertProps(
+      res.status === 200
+        ? COMMON_ALERT.success
+        : COMMON_ALERT.error
+    )
+    setOpenSnackbar(true)
   }
 
   function onError(error) {
     console.log(error)
+  }
+
+  function handleCloseSnackbar() {
+    setOpenSnackbar(false)
   }
 
   return (
@@ -106,6 +124,15 @@ export default function NewBook({ session }) {
           name='file'
           label='Upload Book'
           accept='.pdf'
+          required
+          register={register}
+          errors={errors}
+        />
+
+        <UploadFile
+          name='thumbnail'
+          label='Upload Thumbnail'
+          accept='image/png, image/gif, image/jpeg'
           required
           register={register}
           errors={errors}
@@ -137,14 +164,6 @@ export default function NewBook({ session }) {
           required
           setValue={setValue}
           control={control}
-          errors={errors}
-        />
-
-        <UploadFile
-          name='thumbnail'
-          label='Upload Thumbnail'
-          accept='image/png, image/gif, image/jpeg'
-          register={register}
           errors={errors}
         />
 
@@ -193,6 +212,13 @@ export default function NewBook({ session }) {
           onClick={handleSubmit(onSubmit, onError)}
         />
       </FormLayout>
+
+      <AlertSnackbar
+        open={openSnackbar}
+        onClose={handleCloseSnackbar}
+        severity={alertProps.severity}
+        message={alertProps.message}
+      />
     </>
   )
 }
