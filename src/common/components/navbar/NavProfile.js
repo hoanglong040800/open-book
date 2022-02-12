@@ -1,9 +1,4 @@
-import {
-  IconButton,
-  makeStyles,
-  Menu,
-  MenuItem,
-} from "@material-ui/core";
+import { IconButton, makeStyles, Menu, MenuItem } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -22,6 +17,12 @@ export default function NavProfile() {
 
   function handleClose() {
     setAnchorEl(null);
+  }
+
+
+  function handleSelectProfile() {
+    const profileRoute = `user/${session.user.user_name}`;
+    handleRouting(profileRoute);
   }
 
   function handleRouting(route) {
@@ -60,7 +61,7 @@ export default function NavProfile() {
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         transformOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <MenuItem onClick={handleSelectProfile} >
+        <MenuItem onClick={handleSelectProfile}>
           <b>{session.user.full_name || session.user.user_name}</b>
         </MenuItem>
 
@@ -77,8 +78,8 @@ export default function NavProfile() {
   );
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   icon: {
-    color: theme.palette.primary.main,
+    color: "#fff",
   },
 }));

@@ -1,5 +1,5 @@
-import Link from 'next/link'
-import Image from 'next/image'
+import Link from "next/link";
+import Image from "next/image";
 
 export default function NavLogo({ className }) {
   return (
@@ -8,12 +8,12 @@ export default function NavLogo({ className }) {
         <a>
           <Image
             src="/logo.png"
-            alt="logo-theses-share"
+            alt="logo-ebook-share"
             width={35}
             height={30}
           />
         </a>
       </Link>
     </div>
-  )
+  );
 }

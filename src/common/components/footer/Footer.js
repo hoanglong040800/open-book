@@ -32,8 +32,10 @@ export default function Footer() {
               About us
             </Typography>
             <Typography variant="subtitle2" className={classes.info}>
-              EBook Share is a website where Lorem ipsum, dolor sit amet
-              consectetur adipisicing elit. Aspernatur, blanditiis.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam,
+              autem voluptatibus aperiam consectetur architecto libero sit aut
+              id? Eos corrupti minima provident eum pariatur et suscipit, nemo
+              dignissimos modi veniam?
             </Typography>
           </Grid>
           <Grid item xs={12} md={4}>
@@ -41,14 +43,17 @@ export default function Footer() {
               Social media
             </Typography>
             <Typography variant="subtitle2" className={classes.info}>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-              Voluptatum, provident ducimus, iure consequuntur fuga quos
-              inventore possimus natus quod facere rem sapiente neque
-              perferendis ad alias iusto sint, aliquid magnam.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere,
+              quod?
             </Typography>
           </Grid>
         </Grid>
-        <hr className={classes.lineBreak} />
+        <br />
+        <hr
+          style={{
+            color: "rgba(255,255,255,0.5)",
+          }}
+        />
         <Typography variant="subtitle2" className={classes.copyright}>
           Copyright &copy; 2021 EBook Share
         </Typography>
@@ -78,6 +83,7 @@ const useStyle = makeStyles((theme) => ({
     info: {
       borderLeft: "1px solid #fff",
       padding: "0 1rem",
+      minHeight: "80%",
     },
   },
 
@@ -87,6 +93,7 @@ const useStyle = makeStyles((theme) => ({
   },
 
   infoHeading: {
+    letterSpacing: 1.3,
     marginBottom: "0.3rem",
   },
 
@@ -100,11 +107,7 @@ const useStyle = makeStyles((theme) => ({
     padding: "0 10px",
   },
 
-  lineBreak: {
-    opacity: 0.4,
-  },
-
   copyright: {
-    opacity: 0.4,
+    opacity: 0.5,
   },
 }));

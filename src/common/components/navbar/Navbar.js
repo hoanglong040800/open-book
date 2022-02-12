@@ -21,7 +21,7 @@ export default function Navbar({ onOpenDrawer }) {
   const [session, loading] = useSession();
 
   return (
-    <AppBar position="fixed" color="default">
+    <AppBar position="fixed" color="primary">
       <Toolbar>
         <Container maxWidth="xl">
           <Box className={classes.toolbar}>
@@ -33,19 +33,18 @@ export default function Navbar({ onOpenDrawer }) {
                 </IconButton>
               </Box>
 
-              <Box className={classes.desktop} alignItems="center">
+              <Box className={classes.desktop}>
                 <Box mr={1}>
                   <NavLogo />
                 </Box>
 
                 <NavLink />
+                <NavSearchBar />
               </Box>
             </Box>
 
             {/* right side */}
             <Box display="flex" alignItems="center">
-              <NavSearchBar />
-
               {session ? <NavProfile /> : <NavAuthButton />}
             </Box>
           </Box>
