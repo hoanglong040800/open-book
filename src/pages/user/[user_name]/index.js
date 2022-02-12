@@ -23,7 +23,7 @@ export default function ViewProfile() {
     },
   };
 
-  const [profile, setProfile] = useState({});
+  const [profile, setProfile] = useState();
 
   useEffect(async () => {
     const res = await getUserProfile();
@@ -33,43 +33,45 @@ export default function ViewProfile() {
   return (
     <>
       <HeadTitle page="profile" />
-      <Grid container>
-        <Grid item xs={12} sm={4} className={classes.profileTitle}>
-          <h1>Profile</h1>
+      {profile && (
+        <Grid container>
+          <Grid item xs={12} sm={4} className={classes.profileTitle}>
+            <h1>Profile</h1>
+          </Grid>
+          <Grid item xs={12} sm={8} container className={classes.infoContainer}>
+            <Grid {...gridItemProperty.property}>
+              <h3>Username</h3>
+            </Grid>
+            <Grid {...gridItemProperty.value}>
+              <p>{profile.user_name}</p>
+            </Grid>
+            <Grid {...gridItemProperty.property}>
+              <h3>Email</h3>
+            </Grid>
+            <Grid {...gridItemProperty.value}>
+              <p>{profile.email}</p>
+            </Grid>
+            <Grid {...gridItemProperty.property}>
+              <h3>Full name</h3>
+            </Grid>
+            <Grid {...gridItemProperty.value}>
+              <p>{profile.full_name}</p>
+            </Grid>
+            <Grid {...gridItemProperty.property}>
+              <h3>Role</h3>
+            </Grid>
+            <Grid {...gridItemProperty.value}>
+              <p>{profile.role}</p>
+            </Grid>
+            <Grid {...gridItemProperty.property}>
+              <h3>Gender</h3>
+            </Grid>
+            <Grid {...gridItemProperty.value}>
+              <p>{profile.gender}</p>
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={8} container className={classes.infoContainer}>
-          <Grid {...gridItemProperty.property}>
-            <h3>Username</h3>
-          </Grid>
-          <Grid {...gridItemProperty.value}>
-            <p>{profile.user_name}</p>
-          </Grid>
-          <Grid {...gridItemProperty.property}>
-            <h3>Email</h3>
-          </Grid>
-          <Grid {...gridItemProperty.value}>
-            <p>{profile.email}</p>
-          </Grid>
-          <Grid {...gridItemProperty.property}>
-            <h3>Full name</h3>
-          </Grid>
-          <Grid {...gridItemProperty.value}>
-            <p>{profile.full_name}</p>
-          </Grid>
-          <Grid {...gridItemProperty.property}>
-            <h3>Role</h3>
-          </Grid>
-          <Grid {...gridItemProperty.value}>
-            <p>{profile.role}</p>
-          </Grid>
-          <Grid {...gridItemProperty.property}>
-            <h3>Gender</h3>
-          </Grid>
-          <Grid {...gridItemProperty.value}>
-            <p>{profile.gender}</p>
-          </Grid>
-        </Grid>
-      </Grid>
+      )}
     </>
   );
 }
