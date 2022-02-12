@@ -3,46 +3,64 @@ import { Box, Button, MenuItem } from "@material-ui/core";
 import AlertSnackbar from "common/components/alertsnackbar/AlertSnackbar";
 import HeadTitle from "common/components/headtitle/HeadTitle";
 import SelectController from "common/components/input/SelectController";
-import TextAreaController from "common/components/input/TextAreaController";
 import TextFieldController from "common/components/input/TextFieldController";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { getUserProfile, updateUserProfile } from 'modules/users/api/users.api'
+import Loading from 'common/components/loading/Loading'
+import { COMMON_ALERT } from "common/constants/alert.constant";
 
-export default function EditProfile({}) {
+export default function EditProfile() {
   const {
     watch,
+    reset,
     control,
     formState: { errors },
     handleSubmit,
   } = useForm({
-    defaultValues: {},
+    defaultValues: {
+
+    }
   });
 
+  const [profile, setProfile] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarProps, setSnackbarProps] = useState({
     severity: "",
     message: "",
   });
 
+  useEffect(async () => {
+    setIsLoading(true)
+    const data = await getUserProfile()
+    setProfile(data)
+    reset(data)
+
+    setIsLoading(false)
+  }, [])
+
   function handleCloseSnackbar() {
     setOpenSnackbar(false);
   }
 
-  function onSubmit(input) {
-    console.log(input);
-    setSnackbarProps({
-      severity: "success",
-      message: "Edit success",
-    });
+  async function onSubmit(input) {
+    const res = await updateUserProfile(profile.user_name, input)
+
+    setSnackbarProps(
+      res ? COMMON_ALERT.success : COMMON_ALERT.error
+    )
 
     setOpenSnackbar(true);
   }
 
-  function onError(error) {}
+  function onError(error) { }
 
   return (
     <>
       <HeadTitle page="edit profile" />
+
+
 
       <Box display="flex" flexDirection="column" mx="auto" maxWidth="500px">
         <h1>Edit profile</h1>
@@ -75,6 +93,7 @@ export default function EditProfile({}) {
           </Button>
         </Box>
       </Box>
+
 
       <AlertSnackbar
         open={openSnackbar}

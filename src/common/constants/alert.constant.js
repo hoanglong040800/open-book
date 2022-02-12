@@ -12,6 +12,11 @@ export const REGISTER_ALERT = {
 }
 
 export const COMMON_ALERT = {
+  success: {
+    severity: 'success',
+    message: 'Success',
+  },
+
   internet: {
     severity: 'error',
     message: 'The server is temporary down',
