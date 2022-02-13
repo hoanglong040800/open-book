@@ -103,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
 
   searchbar: {
     width: "100%",
-    maxWidth: 400,
+    maxWidth: 500,
     padding: 0,
     height: 35,
 

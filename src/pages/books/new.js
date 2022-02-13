@@ -7,10 +7,10 @@ import AutocompleteController from 'common/components/input/AutocompleteControll
 import SelectController from 'common/components/input/SelectController'
 import TextAreaController from 'common/components/input/TextAreaController'
 import TextFieldController from 'common/components/input/TextFieldController'
-import { COMMON_ALERT } from 'common/constants/alert.constant'
-import { USER_ROLES } from 'common/constants/common.constant'
+import { GENRES, USER_ROLES } from 'common/constants/common.constant'
 import FormLayout from 'common/layouts/FormLayout'
 import { ADD_BOOK_SCHEMA } from 'common/schema/form-validation.schema'
+import { handleSimpleServiceError } from 'common/utils/common.util'
 import { addBook } from 'modules/books/api/books.api'
 import UploadFile from 'modules/upload/components/UploadFile'
 import { getSession } from 'next-auth/client'
@@ -68,42 +68,10 @@ export default function NewBook({ session }) {
     message: '',
   })
 
-  const genres = [
-    {
-      id: 1,
-      name_en: 'Life'
-    },
-    {
-      id: 2,
-      name_en: 'Business'
-    },
-    {
-      id: 3,
-      name_en: 'Comic'
-    },
-    {
-      id: 4,
-      name_en: 'Health'
-    },
-    {
-      id: 5,
-      name_en: 'History'
-    },
-    {
-      id: 6,
-      name_en: 'Technology'
-    },
-  ]
-
   async function onSubmit(data) {
-    console.clear()
     data.slug = slugify(data.name)
     const res = await addBook(data)
-    setAlertProps(
-      res.status === 200
-        ? COMMON_ALERT.success
-        : COMMON_ALERT.error
-    )
+    setAlertProps(handleSimpleServiceError(res))
     setOpenSnackbar(true)
   }
 
@@ -113,6 +81,7 @@ export default function NewBook({ session }) {
 
   function handleCloseSnackbar() {
     setOpenSnackbar(false)
+    router.push(`/books/${slugify(watch('name'))}`)
   }
 
   return (
@@ -158,9 +127,9 @@ export default function NewBook({ session }) {
         <AutocompleteController
           name='genres'
           label='Genres'
-          options={genres}
+          options={GENRES}
           optionLabel='name_en'
-          defaultValue={genres}
+          defaultValue={GENRES}
           required
           setValue={setValue}
           control={control}
