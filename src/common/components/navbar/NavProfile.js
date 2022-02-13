@@ -1,4 +1,4 @@
-import { Button, IconButton, makeStyles, Menu, MenuItem } from "@material-ui/core";
+import { IconButton, makeStyles, Menu, MenuItem } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
 import { useRouter } from "next/router";
 import { useState } from "react";
