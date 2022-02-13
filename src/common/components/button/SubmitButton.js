@@ -5,7 +5,7 @@ export default function SubmitButton({ text = 'Submit', onClick }) {
     <Box display="flex" justifyContent="flex-end" mt={3}>
       <Button
         variant="contained"
-        color="primary"
+        color="secondary"
         onClick={onClick}
       >
         {text}

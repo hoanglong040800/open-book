@@ -1,5 +1,6 @@
 import { Container, Grid, makeStyles, Typography } from "@material-ui/core";
 import Link from "next/link";
+import { WEB_NAME } from 'common/constants/common.constant'
 
 export default function Footer() {
   const classes = useStyle();
