@@ -1,5 +1,7 @@
+import { MOCKUP_BOOK } from "common/constants/common.constant";
+
 export default function BookCard({ item }) {
   return (
-    <p style={{ border: '1px solid black', height: '300px' }}>#{item}</p>
+    <p>#{item} USE MOCKUP_BOOK constant to display info</p>
   )
 }

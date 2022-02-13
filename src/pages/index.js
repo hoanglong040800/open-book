@@ -14,7 +14,7 @@ export default function Home() {
 
     setTimeout(() => {
       setBooks(books.concat(Array.from({ length: 8 })));
-    }, 1000);
+    }, 500);
   }
 
   return (
