@@ -39,12 +39,12 @@ export default function Navbar({ onOpenDrawer }) {
                 </Box>
 
                 <NavLink />
-                <NavSearchBar />
               </Box>
             </Box>
 
             {/* right side */}
             <Box display="flex" alignItems="center">
+              <NavSearchBar />
               {session ? <NavProfile /> : <NavAuthButton />}
             </Box>
           </Box>
