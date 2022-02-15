@@ -4,10 +4,12 @@ import AlertSnackbar from 'common/components/alertsnackbar/AlertSnackbar'
 import HeadTitle from 'common/components/headtitle/HeadTitle'
 import SelectController from 'common/components/input/SelectController'
 import TextFieldController from 'common/components/input/TextFieldController'
-import { useEffect, useState, useLayoutEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { getUserProfile, updateUserProfile } from 'modules/users/api/users.api'
 import { COMMON_ALERT } from 'common/constants/alert.constant'
+import { EDIT_PROFILE_SCHEMA } from 'common/schema/form-validation.schema'
+import { useRouter } from 'next/router'
 
 export default function EditProfile() {
 	const {
@@ -17,9 +19,11 @@ export default function EditProfile() {
 		formState: { errors },
 		handleSubmit,
 	} = useForm({
+		resolver: yupResolver(EDIT_PROFILE_SCHEMA),
 		defaultValues: {},
 	})
 
+	const router = useRouter()
 	const [profile, setProfile] = useState(null)
 	const [openSnackbar, setOpenSnackbar] = useState(false)
 	const [snackbarProps, setSnackbarProps] = useState({
@@ -38,6 +42,9 @@ export default function EditProfile() {
 	}, [])
 
 	function handleCloseSnackbar() {
+		snackbarProps.severity === 'success' &&
+			router.push(`/user/${profile.user_name}`)
+
 		setOpenSnackbar(false)
 	}
 

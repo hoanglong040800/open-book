@@ -24,7 +24,7 @@ axiosClient.interceptors.response.use(
 	},
 
 	err => {
-		if (err.response) return Promise.resolve(err.response.data)
+		if (err.response) return err.response.data
 
 		return {
 			status: 503,
