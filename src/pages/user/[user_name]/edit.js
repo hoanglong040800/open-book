@@ -1,105 +1,101 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, Button, MenuItem } from "@material-ui/core";
-import AlertSnackbar from "common/components/alertsnackbar/AlertSnackbar";
-import HeadTitle from "common/components/headtitle/HeadTitle";
-import SelectController from "common/components/input/SelectController";
-import TextFieldController from "common/components/input/TextFieldController";
-import { useEffect, useState, useLayoutEffect } from "react";
-import { useForm } from "react-hook-form";
-import { getUserProfile, updateUserProfile } from "modules/users/api/users.api";
-import Loading from "common/components/loading/Loading";
-import { COMMON_ALERT } from "common/constants/alert.constant";
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Box, Button, MenuItem } from '@material-ui/core'
+import AlertSnackbar from 'common/components/alertsnackbar/AlertSnackbar'
+import HeadTitle from 'common/components/headtitle/HeadTitle'
+import SelectController from 'common/components/input/SelectController'
+import TextFieldController from 'common/components/input/TextFieldController'
+import { useEffect, useState, useLayoutEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { getUserProfile, updateUserProfile } from 'modules/users/api/users.api'
+import { COMMON_ALERT } from 'common/constants/alert.constant'
 
 export default function EditProfile() {
-  const {
-    watch,
-    reset,
-    control,
-    formState: { errors },
-    handleSubmit,
-  } = useForm({
-    defaultValues: {},
-  });
+	const {
+		watch,
+		reset,
+		control,
+		formState: { errors },
+		handleSubmit,
+	} = useForm({
+		defaultValues: {},
+	})
 
-  const [profile, setProfile] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarProps, setSnackbarProps] = useState({
-    severity: "",
-    message: "",
-  });
+	const [profile, setProfile] = useState(null)
+	const [openSnackbar, setOpenSnackbar] = useState(false)
+	const [snackbarProps, setSnackbarProps] = useState({
+		severity: '',
+		message: '',
+	})
 
-  useLayoutEffect(() => {
-    async function getUserInfo() {
-      setIsLoading(true);
-      const data = await getUserProfile();
-      setProfile(data);
-      reset(data);
-      setIsLoading(false);
-    }
-    getUserInfo();
-  }, []);
+	useEffect(() => {
+		async function getUserInfo() {
+			const data = await getUserProfile()
+			setProfile(data)
+			reset(data)
+		}
 
-  function handleCloseSnackbar() {
-    setOpenSnackbar(false);
-  }
+		getUserInfo()
+	}, [])
 
-  async function onSubmit(input) {
-    const res = await updateUserProfile(profile.user_name, input);
+	function handleCloseSnackbar() {
+		setOpenSnackbar(false)
+	}
 
-    setSnackbarProps(res ? COMMON_ALERT.success : COMMON_ALERT.error);
+	async function onSubmit(input) {
+		const res = await updateUserProfile(profile.user_name, input)
 
-    setOpenSnackbar(true);
-  }
+		setSnackbarProps(res ? COMMON_ALERT.success : COMMON_ALERT.error)
+		setOpenSnackbar(true)
+	}
 
-  function onError(error) {
-    console.log(error);
-  }
+	function onError(error) {
+		console.log(error)
+	}
 
-  return (
-    <>
-      <HeadTitle page="edit profile" />
+	return (
+		<>
+			<HeadTitle page="edit profile" />
 
-      <Box display="flex" flexDirection="column" mx="auto" maxWidth="500px">
-        <h1>Edit profile</h1>
+			<Box display="flex" flexDirection="column" mx="auto" maxWidth="500px">
+				<h1>Edit profile</h1>
 
-        <TextFieldController
-          name="full_name"
-          label="Full name"
-          required
-          control={control}
-          errors={errors}
-        />
+				<TextFieldController
+					name="full_name"
+					label="Full name"
+					required
+					control={control}
+					errors={errors}
+				/>
 
-        <SelectController
-          name="gender"
-          label="Gender"
-          control={control}
-          errors={errors}
-        >
-          <MenuItem value="male">Male</MenuItem>
-          <MenuItem value="female">Female</MenuItem>
-        </SelectController>
+				<SelectController
+					name="gender"
+					label="Gender"
+					control={control}
+					errors={errors}
+				>
+					<MenuItem value="male">Male</MenuItem>
+					<MenuItem value="female">Female</MenuItem>
+				</SelectController>
 
-        <Box display="flex" justifyContent="flex-end" mt={3}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit(onSubmit, onError)}
-          >
-            Save
-          </Button>
-        </Box>
-      </Box>
+				<Box display="flex" justifyContent="flex-end" mt={3}>
+					<Button
+						variant="contained"
+						color="primary"
+						onClick={handleSubmit(onSubmit, onError)}
+					>
+						Save
+					</Button>
+				</Box>
+			</Box>
 
-      <AlertSnackbar
-        open={openSnackbar}
-        onClose={handleCloseSnackbar}
-        severity={snackbarProps.severity}
-        message={snackbarProps.message}
-      />
-    </>
-  );
+			<AlertSnackbar
+				open={openSnackbar}
+				onClose={handleCloseSnackbar}
+				severity={snackbarProps.severity}
+				message={snackbarProps.message}
+			/>
+		</>
+	)
 }
 
-EditProfile.auth = true;
+EditProfile.auth = true

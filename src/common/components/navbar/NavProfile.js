@@ -19,7 +19,7 @@ export default function NavProfile() {
   }
 
   function handleSelectProfile() {
-    const profileRoute = `user/${session.user.user_name}`;
+    const profileRoute = `/user/${session.user.user_name}`;
     handleRouting(profileRoute);
   }
 
