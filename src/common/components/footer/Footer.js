@@ -1,6 +1,6 @@
 import { Container, Grid, makeStyles, Typography } from "@material-ui/core";
 import Link from "next/link";
-import { WEB_NAME } from 'common/constants/common.constant'
+import { WEB_NAME } from "common/constants/common.constant";
 
 export default function Footer() {
   const classes = useStyle();
@@ -15,7 +15,7 @@ export default function Footer() {
               align="center"
               className={classes.footerHeading}
             >
-              EBook Share
+              {WEB_NAME}
             </Typography>
 
             <Typography variant="subtitle1" align="center" gutterBottom>

@@ -9,9 +9,9 @@ const theme = createTheme({
       dark: teal[600],
     },
     secondary: {
-      light: deepOrange[400],
+      light: deepOrange[300],
       main: deepOrange[500],
-      dark: deepOrange[600],
+      dark: deepOrange[700],
     },
     error: {
       main: red[400],
