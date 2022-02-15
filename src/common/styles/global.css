@@ -39,10 +39,15 @@ a {
 
 /* ==== MUI Input ==== */
 
-.MuiFormControl-marginNormal{
-  margin: 18px 0 !important;
+.MuiFormControl-fullWidth{
+  margin: 15px 0 !important;
 }
 
 .MuiFormHelperText-root{
   font-size: 0.875rem !important;
+}
+
+.MuiFormLabel-root{
+  padding: 0 5px !important;
+  background: #fff !important;
 }

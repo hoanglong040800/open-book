@@ -9,11 +9,13 @@ export default function SelectController({
   children,
   defaultValue = "",
   required = false,
+  variant = 'outlined'
 }) {
   return (
     <FormControl
       margin="normal"
       fullWidth
+      variant={variant}
       required={required}
       error={!!errors[name]}
     >

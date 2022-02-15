@@ -23,6 +23,6 @@ export const COMMON_ALERT = {
 
   error: {
     severity: "error",
-    message: "Something is wrong",
+    message: "Something is wrong. Please try again",
   },
 };

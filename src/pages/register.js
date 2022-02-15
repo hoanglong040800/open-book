@@ -46,7 +46,7 @@ export default function Register() {
   })
 
   const [openSnackbar, setOpenSnackbar] = useState(false)
-  const [snackbarProps, setSnackbarProps] = useState({
+  const [alertProps, setAlertProps] = useState({
     severity: '',
     message: '',
   })
@@ -54,7 +54,7 @@ export default function Register() {
   async function onSubmit(credentials) {
     const res = await fetchRegister(credentials)
 
-    setSnackbarProps(
+    setAlertProps(
       res.status === 200
         ? REGISTER_ALERT.success
         : res.status === 503
@@ -72,7 +72,7 @@ export default function Register() {
   }
 
   function handleCloseSnackbar() {
-    if (snackbarProps.severity === 'success') {
+    if (alertProps.severity === 'success') {
       signIn('credentials', {
         user_name: watch('user_name'),
         password: watch('password'),
@@ -132,8 +132,8 @@ export default function Register() {
       <AlertSnackbar
         open={openSnackbar}
         onClose={handleCloseSnackbar}
-        severity={snackbarProps.severity}
-        message={snackbarProps.message}
+        severity={alertProps.severity}
+        message={alertProps.message}
       />
     </>
   )

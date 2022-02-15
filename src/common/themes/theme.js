@@ -10,8 +10,8 @@ const theme = createTheme({
     },
     secondary: {
       light: deepOrange[300],
-      main: deepOrange[400],
-      dark: deepOrange[500],
+      main: deepOrange[500],
+      dark: deepOrange[700],
     },
     error: {
       main: red[400],
