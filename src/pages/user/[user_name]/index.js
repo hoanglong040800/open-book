@@ -1,9 +1,10 @@
 import HeadTitle from "common/components/headtitle/HeadTitle";
 import { useEffect, useState } from "react";
 import { getUserProfile } from "modules/users/api/users.api";
-import { Grid } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useSession } from "next-auth/client";
+import { useRouter } from "next/router";
 
 export default function ViewProfile() {
   const classes = useStyle();
@@ -28,16 +29,23 @@ export default function ViewProfile() {
   const [session] = useSession();
   const router = useRouter();
 
-  useEffect(async () => {
-    const res = await getUserProfile();
-    setProfile(res);
+  useEffect(() => {
+    async function getUserInfo() {
+      const res = await getUserProfile();
+      setProfile(res);
+    }
+    getUserInfo();
   }, []);
+
+  function handleEdit() {
+    router.push(`/user/${session.user.user_name}/edit`);
+  }
 
   return (
     <>
       <HeadTitle page="profile" />
 
-      <pre>{JSON.stringify(session, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(session, null, 2)}</pre> */}
 
       <Grid container>
         <Grid item xs={12} sm={4} className={classes.profileTitle}>
@@ -74,6 +82,11 @@ export default function ViewProfile() {
           <Grid {...gridItemProperty.value}>
             <p>{profile?.gender}</p>
           </Grid>
+          {session?.user.user_name === router.query.user_name && (
+            <Button variant="contained" color="primary" onClick={handleEdit}>
+              Edit
+            </Button>
+          )}
         </Grid>
       </Grid>
     </>
