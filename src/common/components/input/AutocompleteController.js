@@ -13,6 +13,7 @@ export default function AutocompleteController({
   defaultValue = [],
   required = false,
   limitTags = 5,
+  variant = 'outlined',
 }) {
   function handleOnChange(value) {
     setValue(name, value, { shouldValidate: true })
@@ -27,7 +28,7 @@ export default function AutocompleteController({
           options={options}
           getOptionLabel={option => option[optionLabel]}
           getOptionSelected={(option, value) => option.id === value.id}
-          noOptionsText="Không có dữ liệu"
+          noOptionsText="No data"
           defaultValue={defaultValue}
           limitTags={limitTags}
           multiple
@@ -43,6 +44,7 @@ export default function AutocompleteController({
           }
           renderInput={params => (
             <TextField
+              variant={variant}
               label={label}
               required={required}
               error={!!errors[name]}

@@ -28,3 +28,28 @@ export const navlinks = [
     ],
   },
 ];
+
+//  =============== MOCK DATA =========
+
+export const GENRES = [
+  {
+    id: 1,
+    name_en: 'Life'
+  },
+  {
+    id: 2,
+    name_en: 'Business'
+  },
+  {
+    id: 3,
+    name_en: 'Comic'
+  },
+  {
+    id: 4,
+    name_en: 'Health'
+  },
+  {
+    id: 5,
+    name_en: 'History'
+  },
+]

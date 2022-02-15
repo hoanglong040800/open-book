@@ -1,8 +1,9 @@
-import { IconButton, makeStyles, Menu, MenuItem } from "@material-ui/core";
+import { Button, IconButton, makeStyles, Menu, MenuItem } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { signOut, useSession } from "next-auth/client";
+import { USER_ROLES } from "common/constants/common.constant";
 
 export default function NavProfile() {
   const router = useRouter();
@@ -39,9 +40,13 @@ export default function NavProfile() {
     handleClose();
   }
 
+  function forwardAddBook() {
+    router.push('/books/new')
+  }
+
   return (
     <>
-      <IconButton size="small" onClick={handleOpen}>
+      <IconButton size="medium" onClick={handleOpen}>
         <AccountCircle fontSize="large" className={mui.icon} />
       </IconButton>
 
@@ -57,6 +62,13 @@ export default function NavProfile() {
         <MenuItem onClick={handleSelectProfile}>
           <b>{session.user.full_name || session.user.user_name}</b>
         </MenuItem>
+
+        {
+          session && session.user.role === USER_ROLES.editor &&
+          <MenuItem onClick={() => handleRouting('/books/new')}>
+            Add Book
+          </MenuItem>
+        }
 
         <MenuItem onClick={handleSignout}>Log out</MenuItem>
       </Menu>
