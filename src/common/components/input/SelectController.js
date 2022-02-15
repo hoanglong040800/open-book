@@ -1,5 +1,5 @@
-import { FormControl, InputLabel, Select } from '@material-ui/core'
-import { Controller } from 'react-hook-form'
+import { FormControl, InputLabel, Select } from "@material-ui/core";
+import { Controller } from "react-hook-form";
 
 export default function SelectController({
   name,
@@ -7,7 +7,7 @@ export default function SelectController({
   control,
   errors,
   children,
-  defaultValue = '',
+  defaultValue = "",
   required = false,
   variant = 'outlined'
 }) {
@@ -28,5 +28,5 @@ export default function SelectController({
         render={({ field }) => <Select {...field}>{children}</Select>}
       />
     </FormControl>
-  )
+  );
 }

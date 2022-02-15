@@ -32,7 +32,6 @@ export default function Navbar({ onOpenDrawer }) {
                   <Menu color="inherit" />
                 </IconButton>
               </Box>
-
               <Box className={classes.desktop}>
                 <Box mr={1}>
                   <NavLogo />
