@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosClient from "common/config/api.config";
 import { uploadFile } from "modules/upload/api/upload.api";
 
 export async function addBook(data) {
@@ -17,13 +17,13 @@ export async function addBook(data) {
 }
 
 export function addBookInfo(data) {
-  return axios.post('books', data)
+  return axiosClient.post('books', data)
 }
 
 export function getBookById(id) {
-  return axios.get(`books/${id}`).then(res => res.data)
+  return axiosClient.get(`books/${id}`)
 }
 
 export function updateBookInfo(id, data) {
-  return axios.patch(`books/${id}`, data)
+  return axiosClient.patch(`books/${id}`, data)
 }

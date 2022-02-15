@@ -19,11 +19,11 @@ const BOOK_INFO_SHAPE = {
 
   publisher: yup.string().max(255).label('Publisher'),
 
-  published_year: yup.number().notRequired().nullable().min(0).max(new Date().getFullYear()).label('Published Year'),
+  published_year: yup.number().typeError('Required').required().min(0).max(new Date().getFullYear()).label('Published Year'),
 
   language: yup.string().max(255).label('Language'),
 
-  pages: yup.number().notRequired().nullable().min(0).label('Page'),
+  pages: yup.number().typeError('Required').required().min(0).label('Page'),
 
   summary: yup.string().max(500).label('Summary')
 }
@@ -51,4 +51,10 @@ export const ADD_BOOK_SCHEMA = yup.object().shape({
 
 export const EDIT_BOOK_SCHEMA=yup.object().shape({
   ...BOOK_INFO_SHAPE
+})
+
+export const EDIT_PROFILE_SCHEMA=yup.object().shape({
+  full_name: yup.string().required().max(255).label('Full name'),
+
+  gender: yup.string().label('Gender')
 })
