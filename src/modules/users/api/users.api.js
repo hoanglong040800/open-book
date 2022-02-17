@@ -1,5 +1,5 @@
-import axios from "axios"
+import axios from "axios";
 
 export function getUserProfile() {
-  return axios.get(`profile`).then(res => res.data)
+  return axios.get(`profile`).then((res) => res.data);
 }
