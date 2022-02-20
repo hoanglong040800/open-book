@@ -1,10 +1,10 @@
-import axios from "axios";
+import axiosClient from "common/config/api.config";
 
 export function uploadFile(file) {
   const formData = new FormData()
   formData.append('file', file)
 
-  return axios.post('upload', formData, {
+  return axiosClient.post('upload', formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }

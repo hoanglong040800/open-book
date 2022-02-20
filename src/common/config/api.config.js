@@ -1,27 +1,35 @@
-import axios from "axios"
+import axios from 'axios'
 
-export function setApiConfig() {
-  axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL
-  if (typeof window !== 'undefined' && localStorage['access_token'] !== undefined) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage['access_token']}`
-  }
+const axiosClient = axios.create({
+	baseURL: process.env.NEXT_PUBLIC_API_URL,
+	headers: {
+		'Content-Type': 'application/json',
+	},
+})
 
-  axios.defaults.headers.post['Content-Type'] = 'application/json'
-  axios.defaults.headers.put['Content-Type'] = 'application/json'
-  axios.defaults.headers.patch['Content-Type'] = 'application/json'
+axiosClient.interceptors.request.use(async config => {
+	if (
+		typeof window !== 'undefined' &&
+		localStorage['access_token'] !== undefined
+	) {
+		config.headers['Authorization'] = `Bearer ${localStorage['access_token']}`
+	}
 
-  axios.interceptors.response.use(
-    res => {
-      return Promise.resolve(res.data)
-    },
-    err => {
-      if (err.response)
-        return Promise.resolve(err.response.data)
+	return config
+})
 
-      return {
-        status: 503,
-        message: 'Server Down'
-      }
-    }
-  )
-}
+axiosClient.interceptors.response.use(
+	res => {
+		return res.data
+	},
+
+	err => {
+		if (err.response) return err.response.data
+
+		return {
+			status: 503,
+			message: 'Server Down',
+		}
+	},
+)
+export default axiosClient

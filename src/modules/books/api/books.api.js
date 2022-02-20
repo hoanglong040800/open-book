@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosClient from "common/config/api.config";
 import { uploadFile } from "modules/upload/api/upload.api";
 
 export async function addBook(data) {

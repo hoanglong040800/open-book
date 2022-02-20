@@ -5,79 +5,79 @@ import { useState } from "react";
 import { signOut, useSession } from "next-auth/client";
 import { USER_ROLES } from "common/constants/common.constant";
 
+
 export default function NavProfile() {
-  const router = useRouter();
-  const [session] = useSession();
-  const mui = useStyles();
-  const [anchorEl, setAnchorEl] = useState(null);
+	const router = useRouter()
+	const [session] = useSession()
+	const mui = useStyles()
+	const [anchorEl, setAnchorEl] = useState(null)
 
-  function handleOpen(e) {
-    setAnchorEl(e.currentTarget);
-  }
+	function handleOpen(e) {
+		setAnchorEl(e.currentTarget)
+	}
 
-  function handleClose() {
-    setAnchorEl(null);
-  }
+	function handleClose() {
+		setAnchorEl(null)
+	}
 
-  function handleSelectProfile() {
-    const profileRoute = `user/${session.user.user_name}`;
-    handleRouting(profileRoute);
-  }
+	function handleSelectProfile() {
+		const profileRoute = `/user/${session.user.user_name}`
+		handleRouting(profileRoute)
+	}
 
-  function handleRouting(route) {
-    router.push(route);
-    handleClose();
-  }
+	function handleRouting(route) {
+		router.push(route)
+		handleClose()
+	}
 
-  function handleSignout() {
-    const regEx = /settings|new|edit/;
+	function handleSignout() {
+		const regEx = /settings|new|edit/
 
-    regEx.test(router.pathname)
-      ? signOut({ callbackUrl: "/" })
-      : signOut({ redirect: false });
+		regEx.test(router.pathname)
+			? signOut({ callbackUrl: '/' })
+			: signOut({ redirect: false })
 
-    localStorage.clear();
-    handleClose();
-  }
+		localStorage.clear()
+		handleClose()
+	}
 
-  function forwardAddBook() {
-    router.push('/books/new')
-  }
+	function forwardAddBook() {
+		router.push('/books/new')
+	}
 
-  return (
-    <>
-      <IconButton size="medium" onClick={handleOpen}>
-        <AccountCircle fontSize="large" className={mui.icon} />
-      </IconButton>
+	return (
+		<>
+			<IconButton size="medium" onClick={handleOpen}>
+				<AccountCircle fontSize="large" className={mui.icon} />
+			</IconButton>
 
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        keepMounted
-        getContentAnchorEl={null}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-        transformOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <MenuItem onClick={handleSelectProfile}>
-          <b>{session.user.full_name || session.user.user_name}</b>
-        </MenuItem>
+			<Menu
+				anchorEl={anchorEl}
+				open={Boolean(anchorEl)}
+				onClose={handleClose}
+				keepMounted
+				getContentAnchorEl={null}
+				anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+				transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+			>
+				<MenuItem onClick={handleSelectProfile}>
+					<b>{session.user.user_name}</b>
+				</MenuItem>
 
-        {
-          session && session.user.role === USER_ROLES.editor &&
-          <MenuItem onClick={() => handleRouting('/books/new')}>
-            Add Book
-          </MenuItem>
-        }
+				{session && session.user.role === USER_ROLES.editor && (
+					<MenuItem onClick={() => handleRouting('/books/new')}>
+						Add Book
+					</MenuItem>
+				)}
 
-        <MenuItem onClick={handleSignout}>Log out</MenuItem>
-      </Menu>
-    </>
-  );
+				<MenuItem onClick={handleSignout}>Log out</MenuItem>
+			</Menu>
+		</>
+	)
 }
 
-const useStyles = makeStyles((theme) => ({
-  icon: {
-    color: "#fff",
-  },
-}));
+const useStyles = makeStyles(theme => ({
+	icon: {
+		color: '#fff',
+	},
+}))

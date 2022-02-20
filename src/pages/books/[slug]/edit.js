@@ -14,160 +14,160 @@ import { handleSimpleServiceError } from 'common/utils/common.util'
 import { getBookById, updateBookInfo } from 'modules/books/api/books.api'
 import { getSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
-import { useLayoutEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import slugify from 'slugify'
 
 export async function getServerSideProps(ctx) {
-  const session = await getSession(ctx)
+	const session = await getSession(ctx)
+	const isEditor = session.user.role === USER_ROLES.viewer
 
-  if (session.user.role === USER_ROLES.viewer)
-    return {
-      notFound: true
-    }
+	if (isEditor)
+		return {
+			notFound: true,
+		}
 
-  return {
-    props: {
-      slug: ctx.query.slug
-    }
-  }
+	return {
+		props: {
+			slug: ctx.query.slug,
+			session,
+		},
+	}
 }
 
-export default function NewBook({ slug }) {
-  const {
-    watch,
-    reset,
-    control,
-    formState: { errors },
-    setValue,
-    handleSubmit,
-  } = useForm({
-    resolver: yupResolver(EDIT_BOOK_SCHEMA),
-    defaultValues: {},
-  })
-  const router = useRouter()
-  const [bookInfo, setBookInfo] = useState()
-  const [openSnackbar, setOpenSnackbar] = useState(false)
-  const [alertProps, setAlertProps] = useState({
-    severity: '',
-    message: '',
-  })
+export default function NewBook({ slug, session }) {
+	const {
+		watch,
+		reset,
+		control,
+		formState: { errors },
+		setValue,
+		handleSubmit,
+	} = useForm({
+		resolver: yupResolver(EDIT_BOOK_SCHEMA),
+		defaultValues: {},
+	})
+	const router = useRouter()
+	const [bookInfo, setBookInfo] = useState()
+	const [openSnackbar, setOpenSnackbar] = useState(false)
+	const [alertProps, setAlertProps] = useState({
+		severity: '',
+		message: '',
+	})
 
-  // -- function --
+	useEffect(() => {
+		async function getBookInfo() {
+			const res = await getBookById(slug)
+			setBookInfo(res.data)
+			reset(res.data)
+		}
 
-  useLayoutEffect(() => {
-    async function getBookInfo() {
-      const data = await getBookById(slug)
-      setBookInfo(data)
-      reset({ genres: GENRES, ...data }) //testing
-    }
+		getBookInfo()
+	}, [])
 
-    getBookInfo()
-  }, [])
+	// -- function --
 
-  async function onSubmit(data) {
-    data.slug = slugify(data.name)
-    const res = await updateBookInfo(bookInfo.owner_id, data)
-    setAlertProps(handleSimpleServiceError(res))
-    setOpenSnackbar(true)
-  }
+	async function onSubmit(data) {
+		data.slug = slugify(data.name)
+		const res = await updateBookInfo(bookInfo.owner_id, data)
+		setAlertProps(handleSimpleServiceError(res))
+		setOpenSnackbar(true)
+	}
 
-  function onError(error) {
-    console.log(error)
-  }
+	function onError(error) {
+		console.log(error)
+	}
 
-  function handleCloseSnackbar() {
-    setOpenSnackbar(false)
-    router.push(`/books/${slugify(watch('name'))}`)
-  }
+	function handleCloseSnackbar() {
+		setOpenSnackbar(false)
+		alertProps.severity === 'success' &&
+			router.push(`/books/${slugify(watch('name'))}`)
+	}
 
-  // -- render --
+	// -- render --
 
-  return (
-    <>
-      <HeadTitle page='Edit book' />
+	return (
+		<>
+			<HeadTitle page="Edit book" />
 
-      <FormLayout title='Edit book'>
-        <TextFieldController
-          name="name"
-          label="Name"
-          required
-          control={control}
-          errors={errors}
-        />
+			<FormLayout title="Edit book">
+				<TextFieldController
+					name="name"
+					label="Name"
+					required
+					control={control}
+					errors={errors}
+				/>
 
-        <TextFieldController
-          name="authors"
-          label="Authors"
-          required
-          control={control}
-          errors={errors}
-        />
+				<TextFieldController
+					name="authors"
+					label="Authors"
+					required
+					control={control}
+					errors={errors}
+				/>
 
-        <AutocompleteController
-          name='genres'
-          label='Genres'
-          options={GENRES}
-          optionLabel='name_en'
-          defaultValue={GENRES}
-          required
-          setValue={setValue}
-          control={control}
-          errors={errors}
-        />
+				<AutocompleteController
+					name="genres"
+					label="Genres"
+					options={GENRES}
+					optionLabel="name_en"
+					defaultValue={GENRES}
+					required
+					setValue={setValue}
+					control={control}
+					errors={errors}
+				/>
 
-        <TextFieldController
-          name="publisher"
-          label="Publisher"
-          control={control}
-          errors={errors}
-        />
+				<TextFieldController
+					name="publisher"
+					label="Publisher"
+					control={control}
+					errors={errors}
+				/>
 
-        <TextFieldController
-          name="published_year"
-          label="Published Year"
-          type='number'
-          control={control}
-          errors={errors}
-        />
+				<TextFieldController
+					name="published_year"
+					label="Published Year"
+					type="number"
+					control={control}
+					errors={errors}
+				/>
 
-        <SelectController
-          name='language'
-          label='Language'
-          control={control}
-          errors={errors}
-        >
-          <MenuItem value='en'>English</MenuItem>
-          <MenuItem value='vn'>Vietnamese</MenuItem>
-        </SelectController>
+				<SelectController
+					name="language"
+					label="Language"
+					control={control}
+					errors={errors}
+				>
+					<MenuItem value="en">English</MenuItem>
+					<MenuItem value="vn">Vietnamese</MenuItem>
+				</SelectController>
 
-        <TextFieldController
-          name="pages"
-          label="Pages"
-          type='number'
-          control={control}
-          errors={errors}
-        />
+				<TextFieldController
+					name="pages"
+					label="Pages"
+					type="number"
+					control={control}
+					errors={errors}
+				/>
 
-        <TextAreaController
-          name="summary"
-          label="Summary"
-          control={control}
-          errors={errors}
-        />
+				<TextAreaController
+					name="summary"
+					label="Summary"
+					control={control}
+					errors={errors}
+				/>
 
-        <SubmitButton
-          text='Edit'
-          onClick={handleSubmit(onSubmit, onError)}
-        />
-      </FormLayout>
+				<SubmitButton text="Edit" onClick={handleSubmit(onSubmit, onError)} />
+			</FormLayout>
 
-      <AlertSnackbar
-        open={openSnackbar}
-        onClose={handleCloseSnackbar}
-        severity={alertProps.severity}
-        message={alertProps.message}
-      />
-    </>
-  )
+			<AlertSnackbar
+				open={openSnackbar}
+				onClose={handleCloseSnackbar}
+				severity={alertProps.severity}
+				message={alertProps.message}
+			/>
+		</>
+	)
 }

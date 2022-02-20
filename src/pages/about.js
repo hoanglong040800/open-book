@@ -1,16 +1,16 @@
-import HeadTitle from "common/components/headtitle/HeadTitle";
-import { useSession } from "next-auth/client";
+import HeadTitle from 'common/components/headtitle/HeadTitle'
+import { useSession } from 'next-auth/client'
 
 export default function About() {
-  const [session] = useSession()
+	const [session] = useSession()
 
-  return (
-    <>
-      <HeadTitle page='about' />
+	return (
+		<>
+			<HeadTitle page="about" />
 
-      <h1>About page</h1>
+			<h1>About page</h1>
 
-      <pre>{JSON.stringify(session, null, 2)}</pre>
-    </>
-  );
+			<pre>{JSON.stringify(session, null, 2)}</pre>
+		</>
+	)
 }
