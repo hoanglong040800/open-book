@@ -1,15 +1,10 @@
-import {
-	Button,
-	IconButton,
-	makeStyles,
-	Menu,
-	MenuItem,
-} from '@material-ui/core'
-import { AccountCircle } from '@material-ui/icons'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
-import { signOut, useSession } from 'next-auth/client'
-import { USER_ROLES } from 'common/constants/common.constant'
+import { IconButton, makeStyles, Menu, MenuItem } from "@material-ui/core";
+import { AccountCircle } from "@material-ui/icons";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { signOut, useSession } from "next-auth/client";
+import { USER_ROLES } from "common/constants/common.constant";
+
 
 export default function NavProfile() {
 	const router = useRouter()
