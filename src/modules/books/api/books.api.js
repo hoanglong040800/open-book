@@ -16,20 +16,24 @@ export async function addBook(data) {
 	return addBookInfo(data)
 }
 
-export function addBookInfo(data) {
+export async function addBookInfo(data) {
 	return axiosClient.post('books', data)
 }
 
-export function getAllBooks() {
+export async function getAllBooks() {
 	return axiosClient.get(`books`).then(res => {
 		return res.data
 	})
 }
 
-export function getBookById(id) {
+export async function getBookById(id) {
 	return axiosClient.get(`books/${id}`).then(res => res.data)
 }
 
-export function updateBookInfo(id, data) {
+export async function getBookBySlug(slug) {
+	return axiosClient.get(`books/slug/${slug}`).then(res => res.data)
+}
+
+export async function updateBookInfo(id, data) {
 	return axiosClient.patch(`books/${id}`, data)
 }

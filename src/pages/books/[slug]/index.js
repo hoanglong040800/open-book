@@ -1,60 +1,73 @@
-import { Container, Grid, Typography } from '@material-ui/core'
 import HeadTitle from 'common/components/headtitle/HeadTitle'
-import { getBookById } from 'modules/books/api/books.api'
+import { getBookBySlug } from 'modules/books/api/books.api'
 import { addRating, getRatingByBookId } from 'modules/rating/api/rating.api'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import ImageContainer from 'modules/books/components/detail/ImageContainer'
-import MainInfo from 'modules/books/components/detail/MainInfo'
-import Description from 'modules/books/components/detail/Description'
-import Tags from 'modules/books/components/detail/Tags'
-import MoreInfo from 'modules/books/components/detail/MoreInfo'
 import RatingItem from 'modules/rating/components/RatingItem'
-import { useSession } from 'next-auth/client'
+import { getSession } from 'next-auth/client'
+import DetailBookContainer from 'modules/books/components/detail/DetailBookContainer'
+import RatingContainer from 'modules/rating/components/RatingContainer'
 
 export async function getServerSideProps(ctx) {
+	const session = await getSession(ctx)
 	return {
 		props: {
+			session,
 			slug: ctx.query.slug,
 		},
 	}
 }
 
-export default function ViewBook({ slug }) {
-	const gridProps = {
-		imgSection: {
-			xs: 12,
-			md: 4,
-			lg: 3,
-		},
-
-		infoSection: {
-			xs: 12,
-			md: 8,
-			lg: 9,
-		},
-	}
-
-	const tags = [
-		'romance',
-		'fantasy',
-		'thriller',
-		'philosophy',
-		'history',
-		'war',
-	]
-
-	const [session, isLoading] = useSession()
-	const [isCommented, setIsCommented] = useState(true)
-	const [bookInfo, setBookInfo] = useState()
-
+export default function ViewBook({ session, slug }) {
+	const [canComment, setCanComment] = useState(false)
+	const [bookInfo, setBookInfo] = useState(null)
 	const [rating, setRating] = useState({
 		comment: '',
 		point: 1,
 	})
+	const [ratingList, setRatingList] = useState(null)
+	const [pointOverall, setPointOverall] = useState(0)
 
-	// display comments and ratings
-	const [ratingList, setRatingList] = useState()
+	/*
+	 *  Hook
+	 */
+
+	useEffect(() => {
+		console.clear()
+		if (!bookInfo) getBookInfo()
+		else if (!ratingList) getRatings()
+	}, [bookInfo])
+
+	/*
+	 *  Async Functions
+	 */
+
+	async function getBookInfo() {
+		const data = await getBookBySlug(slug)
+		setBookInfo(data)
+	}
+
+	async function getRatings() {
+		const data = await getRatingByBookId(bookInfo.id)
+		setPointOverall(data?.point_overall)
+		setRatingList(data?.rating)
+		checkCanComment(data, session)
+	}
+
+	async function handleSubmitRating() {
+		await addRating(bookInfo.id, rating)
+		getRatings()
+	}
+
+	/*
+	 *  Functions
+	 */
+
+	function checkCanComment(data, session) {
+		session.user && setCanComment(true)
+		data?.rating.find(item => item.user.id == session.user.id) &&
+			setCanComment(false)
+	}
 
 	function handleChangeComment(event) {
 		setRating(prev => ({
@@ -70,79 +83,45 @@ export default function ViewBook({ slug }) {
 		}))
 	}
 
-	async function handleSubmitRating() {
-		const res = await addRating(bookInfo.id, rating)
-		getRatings()
-		console.log(rating)
-		console.log(res)
-	}
-
-	async function getRatings() {
-		const data = await getRatingByBookId(slug)
-
-		data?.rating.map(item => {
-			if (item.user.id === session?.user.id) {
-				setIsCommented(false)
-			}
-		})
-
-		setRatingList(data)
-	}
-
-	useEffect(() => {
-		async function getBookInfo() {
-			const data = await getBookById(slug)
-			setBookInfo(data)
-		}
-
-		getBookInfo()
-		getRatings()
-	}, [])
+	/*
+	 *  JSX
+	 */
 
 	return (
 		<>
 			<HeadTitle page="detail" />
-			{bookInfo && (
-				<Container>
-					<Grid container spacing={4}>
-						<Grid
-							container
-							item
-							justifyContent="center"
-							{...gridProps.imgSection}
-						>
-							<ImageContainer thumbnail={bookInfo.thumbnail.link_storage} />
-						</Grid>
-						<Grid item {...gridProps.infoSection}>
-							<MainInfo
-								title={bookInfo.name}
-								authors={bookInfo.authors}
-								view={bookInfo.view}
+
+			<div style={styles.container}>
+				<DetailBookContainer bookInfo={bookInfo} />
+
+				<RatingContainer>
+					{canComment && (
+						<>
+							<RatingItem
+								comment={rating.comment}
+								point={rating.point}
+								onChangePoint={handleChangePoint}
+								onChangeComment={handleChangeComment}
+								handleSubmitRating={handleSubmitRating}
 							/>
-							<br />
-							<MoreInfo
-								publishedYear={bookInfo.published_year}
-								pages={bookInfo.pages}
-								publisher={bookInfo.publisher}
-							/>
-							<Description summary={bookInfo.summary} />
-							<Tags tags={tags} />
-						</Grid>
-						{session && isCommented && (
-							<Grid item xs={12}>
-								<RatingItem
-									comment={rating.comment}
-									point={rating.point}
-									onChangePoint={handleChangePoint}
-									onChangeComment={handleChangeComment}
-									handleSubmitRating={handleSubmitRating}
-								/>
-							</Grid>
-						)}
-					</Grid>
+						</>
+					)}
+
+					<h3>Total rating: {pointOverall}</h3>
 					<pre>{JSON.stringify(ratingList, null, 2)}</pre>
-				</Container>
-			)}
+				</RatingContainer>
+			</div>
 		</>
 	)
+}
+
+/*
+ * Style
+ */
+
+const styles = {
+	container: {
+		maxWidth: '1000px',
+		margin: '0 auto',
+	},
 }

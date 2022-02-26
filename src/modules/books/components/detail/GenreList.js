@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core'
 import React from 'react'
 
-export default function Tags({ tags }) {
+export default function GenreList({ genres }) {
 	return (
 		<div
 			style={{
@@ -11,9 +11,9 @@ export default function Tags({ tags }) {
 				marginTop: '20px',
 			}}
 		>
-			{tags.map((tag, index) => (
+			{genres.map((genre, index) => (
 				<Button
-					key={index}
+					key={genre.id}
 					variant="outlined"
 					color="primary"
 					style={{
@@ -21,7 +21,7 @@ export default function Tags({ tags }) {
 						fontWeight: 'normal',
 					}}
 				>
-					{tag.toUpperCase()}
+					{genre.name_en.toUpperCase()}
 				</Button>
 			))}
 		</div>
