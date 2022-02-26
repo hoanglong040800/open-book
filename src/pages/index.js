@@ -21,7 +21,9 @@ export default function Home() {
 		}, 500)
 	}
 
-	// fetch all books
+	/*
+			Hooks
+	*/
 	useEffect(() => {
 		async function getBooks() {
 			const data = await getAllBooks()
@@ -31,11 +33,12 @@ export default function Home() {
 		getBooks()
 	}, [])
 
+	/*
+			JSX
+	*/
 	return (
 		<>
 			<HeadTitle page="home" />
-
-			<h1>Home Page</h1>
 
 			{books ? (
 				<BookList list={books} next={fetchMoreData} hasMore={hasMore} />

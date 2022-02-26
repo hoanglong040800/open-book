@@ -1,10 +1,10 @@
+import { Typography } from '@material-ui/core'
 import React from 'react'
 import { useState } from 'react'
 
 export default function ReadMore({ children }) {
 	const text = children
-	// const readMore = text.length > 100 ? true : false
-
+	const character = 240
 	const [isReadMore, setIsReadMore] = useState(true)
 
 	function toggleReadMore() {
@@ -12,11 +12,21 @@ export default function ReadMore({ children }) {
 	}
 
 	return (
-		<p>
-			{isReadMore ? text.slice(0, 100) : text}
-			<span onClick={toggleReadMore} style={{ border: '1px solid red' }}>
-				{isReadMore ? '...read more' : 'show less'}
+		<>
+			<Typography variant="body1">
+				{isReadMore ? text.slice(0, character) : text}
+			</Typography>
+
+			<span onClick={toggleReadMore} style={style.span}>
+				{isReadMore ? 'Read more' : 'Show less'}
 			</span>
-		</p>
+		</>
 	)
+}
+
+const style = {
+	span: {
+		color: '#0768fa',
+		cursor: 'pointer',
+	},
 }
