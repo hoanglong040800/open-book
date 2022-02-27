@@ -67,8 +67,6 @@ export default function Register() {
   }
 
   function onError(error) {
-    console.clear()
-    console.log(error)
   }
 
   function handleCloseSnackbar() {

@@ -56,7 +56,6 @@ const options = {
     session: async (session, token) => {
       // assign token data to session
       // beacause session reset everytime useSession() is called
-      // console.log('token', token.access_token)
       const newSession = { ...token, expires: session.expires }
       return newSession
     },

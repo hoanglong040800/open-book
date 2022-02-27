@@ -79,7 +79,6 @@ export default function NewBook({ session }) {
 	}
 
 	function onError(error) {
-		console.log(error)
 	}
 
 	function handleCloseSnackbar() {

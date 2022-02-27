@@ -26,6 +26,10 @@ export async function getAllBooks() {
 	})
 }
 
+export async function getBooksByFilter(params) {
+	return axiosClient.get('books/filter', { params })
+}
+
 export async function getBookById(id) {
 	return axiosClient.get(`books/${id}`).then(res => res.data)
 }

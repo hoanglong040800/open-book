@@ -1,50 +1,47 @@
 import HeadTitle from 'common/components/headtitle/HeadTitle'
-import { getAllBooks } from 'modules/books/api/books.api'
+import { getBooksByFilter } from 'modules/books/api/books.api'
 import BookList from 'modules/books/components/booklist/BookList'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import Loading from 'common/components/loading/Loading'
+import { BOOK_LIMIT } from 'common/constants/common.constant'
 
 export default function Home() {
-	const [books, setBooks] = useState()
+	const [books, setBooks] = useState([])
+	const [params, setParams] = useState({
+		cursor: null,
+		limit: BOOK_LIMIT,
+	})
 	const [hasMore, setHasMore] = useState(true)
 
-	function fetchMoreData() {
-		// only have 18 books at the moment
-		if (books.length >= 18) {
-			setHasMore(false)
-			return
-		}
-
-		setTimeout(() => {
-			setBooks(books.concat(Array.from({ length: 8 })))
-		}, 500)
-	}
-
 	/*
-			Hooks
-	*/
+	 *	Hooks
+	 */
 	useEffect(() => {
-		async function getBooks() {
-			const data = await getAllBooks()
-			setBooks(data)
-			console.log(data)
-		}
-		getBooks()
+		console.clear()
+		getNextBooks()
 	}, [])
 
 	/*
-			JSX
-	*/
+	 * Async Functions
+	 */
+	async function getNextBooks() {
+		const res = await getBooksByFilter(params)
+		if (res.data == null) {
+			setHasMore(false)
+			return
+		}
+		setParams({ ...params, cursor: res.paging.next_cursor })
+		setBooks([...books, ...res.data])
+	}
+
+	/*
+	 *	JSX
+	 */
 	return (
 		<>
 			<HeadTitle page="home" />
 
-			{books ? (
-				<BookList list={books} next={fetchMoreData} hasMore={hasMore} />
-			) : (
-				<Loading />
-			)}
+			<BookList list={books} next={getNextBooks} hasMore={hasMore} />
 		</>
 	)
 }
