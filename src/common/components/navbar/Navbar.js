@@ -9,16 +9,14 @@ import {
 import NavLink from './NavLink'
 import NavProfile from './NavProfile'
 import { useSession } from 'next-auth/client'
-import { useRouter } from 'next/router'
 import NavLogo from './NavLogo'
 import { Menu } from '@material-ui/icons'
 import NavSearchBar from './search/NavSearchBar'
 import NavAuthButton from './NavAuthButton'
 
 export default function Navbar({ onOpenDrawer }) {
-	const router = useRouter()
 	const classes = useStyles()
-	const [session, loading] = useSession()
+	const [session] = useSession()
 
 	return (
 		<AppBar position="fixed" color="primary">

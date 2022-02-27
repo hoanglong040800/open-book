@@ -16,15 +16,14 @@ export default function NavLinkMenu({ name, lists }) {
 	}
 
 	function handleClickItem(item) {
-		alert(item)
-		// router.push(
-		//   {
-		//     pathname: '/explore',
-		//     query: item.query,
-		//   },
-		//   undefined,
-		//   { shallow: true }
-		// )
+		router.push(
+		  {
+		    pathname: '/books/filter',
+		    query: {genre: item.id},
+		  },
+		  undefined,
+		  { shallow: true }
+		)
 	}
 
 	return (
@@ -47,8 +46,8 @@ export default function NavLinkMenu({ name, lists }) {
 				{
 					//
 					lists.map(item => (
-						<MenuItem key={item.name} onClick={() => handleClickItem(item)}>
-							{item.name}
+						<MenuItem key={item.id} onClick={() => handleClickItem(item)}>
+							{item.name_en}
 						</MenuItem>
 					))
 				}
