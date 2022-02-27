@@ -56,7 +56,6 @@ export default function EditProfile() {
 	}
 
 	function onError(error) {
-		console.log(error)
 	}
 
 	return (

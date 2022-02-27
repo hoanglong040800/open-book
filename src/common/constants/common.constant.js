@@ -6,6 +6,8 @@ export const USER_ROLES = {
   editor: "editor",
 };
 
+export const BOOK_LIMIT=8
+
 // ======== nav links ======
 function getUrlQuery(name, value) {
   return {
