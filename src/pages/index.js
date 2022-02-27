@@ -17,7 +17,6 @@ export default function Home() {
 	 *	Hooks
 	 */
 	useEffect(() => {
-		console.clear()
 		getNextBooks()
 	}, [])
 

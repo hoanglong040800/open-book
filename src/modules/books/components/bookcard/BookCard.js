@@ -10,30 +10,22 @@ import Link from 'next/link'
 
 export default function BookCard({ item }) {
 	const classes = useStyles()
-	const {
-		id,
-		thumbnail,
-		name,
-		rating,
-		view,
-		slug,
-	} = item
+	const { id, thumbnail, name, rating, view, slug } = item
 
 	return (
 		<Link href={`books/${slug}`} passHref>
-			<Card>
+			<Card className={classes.card}>
 				<CardActionArea>
 					<CardMedia
 						component="img"
 						alt={name}
-						height={300}
 						title={name}
 						image={thumbnail.link_storage}
 						className={classes.bookCover}
 					/>
 
 					<CardContent>
-						<Typography gutterBottom variant="h5" className={classes.title}>
+						<Typography gutterBottom variant="h6" className={classes.title}>
 							{name}
 						</Typography>
 						<div className={classes.lowerSection}>
@@ -61,10 +53,20 @@ export default function BookCard({ item }) {
 }
 
 const useStyles = makeStyles(theme => ({
+	card:{
+		height: 380,
+	},
+
+	bookCover: {
+		height: 250,
+		objectFit: 'contain',
+		borderBottom: '1px solid #ccc',
+	},
+
 	title: {
-		minHeight: 70,
-		marginBottom: 20,
+		height: 70,
 		letterSpacing: 0.5,
+		overflow: 'hidden'
 	},
 
 	rating: {
@@ -90,8 +92,9 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 	},
 
-	bookCover: {
-		objectFit: 'contain',
-		borderBottom: '1px solid #ccc',
+	[theme.breakpoints.down('sm')]: {
+		bookCover: {
+			height: 250,
+		},
 	},
 }))

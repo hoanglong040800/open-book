@@ -30,6 +30,10 @@ export async function getBooksByFilter(params) {
 	return axiosClient.get('books/filter', { params })
 }
 
+export async function getBooksBySearch(params) {
+	return axiosClient.get('books/search', { params })
+}
+
 export async function getBookById(id) {
 	return axiosClient.get(`books/${id}`).then(res => res.data)
 }
