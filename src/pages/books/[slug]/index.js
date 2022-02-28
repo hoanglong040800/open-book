@@ -7,6 +7,7 @@ import RatingItem from 'modules/rating/components/RatingItem'
 import { getSession } from 'next-auth/client'
 import DetailBookContainer from 'modules/books/components/detail/DetailBookContainer'
 import RatingContainer from 'modules/rating/components/RatingContainer'
+import RatingDisplay from 'modules/rating/components/RatingDisplay'
 
 export async function getServerSideProps(ctx) {
 	const session = await getSession(ctx)
@@ -107,8 +108,12 @@ export default function ViewBook({ session, slug }) {
 						</>
 					)}
 
-					<h3>Total rating: {pointOverall}</h3>
-					<pre>{JSON.stringify(ratingList, null, 2)}</pre>
+					{ratingList && (
+						<RatingDisplay
+							ratingList={ratingList}
+							pointOverall={pointOverall}
+						/>
+					)}
 				</RatingContainer>
 			</div>
 		</>
