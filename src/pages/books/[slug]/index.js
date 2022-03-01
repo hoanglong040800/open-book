@@ -65,8 +65,8 @@ export default function ViewBook({ session, slug }) {
 	 */
 
 	function checkCanComment(data, session) {
-		session.user && setCanComment(true)
-		data?.rating.find(item => item.user.id == session.user.id) &&
+		session?.user && setCanComment(true)
+		data?.rating.find(item => item.user.id == session?.user.id) &&
 			setCanComment(false)
 	}
 

@@ -3,12 +3,12 @@ import React from 'react'
 import OverallRating from './OverallRating'
 import RatingList from './RatingList'
 
-export default function RatingDisplay({ ratingList, pointOverall }) {
+export default function RatingDisplay({ ratingList, pointOverall, canDelete }) {
 	const mui = useStyle()
 	return (
 		<Grid container className={mui.container}>
 			<Grid item xs={12} md={8} className={mui.item}>
-				<RatingList ratingList={ratingList} />
+				<RatingList ratingList={ratingList} canDelete={canDelete} />
 			</Grid>
 			<Grid item xs={12} md={4} className={mui.item}>
 				<OverallRating pointOverall={pointOverall} />
@@ -25,7 +25,7 @@ const useStyle = makeStyles(theme => ({
 	[theme.breakpoints.down('sm')]: {
 		container: {
 			flexDirection: 'column-reverse',
-			gap: '5px',
+			gap: theme.spacing(1),
 		},
 	},
 }))

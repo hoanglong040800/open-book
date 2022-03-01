@@ -1,5 +1,6 @@
-import { makeStyles, Typography } from '@material-ui/core'
+import { IconButton, makeStyles, Typography } from '@material-ui/core'
 import { Rating } from '@material-ui/lab'
+import DeleteIcon from '@material-ui/icons/Delete'
 import React from 'react'
 
 export default function RatingList({ ratingList }) {
@@ -8,11 +9,18 @@ export default function RatingList({ ratingList }) {
 		<>
 			{ratingList.map(rating => (
 				<div key={rating.rating_id} className={mui.container}>
-					<Typography variant="h6">{rating.user.full_name}</Typography>
+					<div>
+						<Typography variant="h6">
+							{rating.user.full_name}
+							<Rating value={rating.point} readOnly className={mui.rating} />
+						</Typography>
 
-					<Rating value={rating.point} readOnly className={mui.rating} />
+						<Typography variant="body1">{rating.comment}</Typography>
+					</div>
 
-					<Typography variant="body1">{rating.comment}</Typography>
+					{/* <IconButton aria-label="delete comment">
+						<DeleteIcon />
+					</IconButton> */}
 				</div>
 			))}
 		</>
@@ -21,10 +29,17 @@ export default function RatingList({ ratingList }) {
 
 const useStyle = makeStyles(theme => ({
 	container: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'space-between',
 		marginBottom: theme.spacing(3),
 	},
 
+	/*
+	 * already centered
+	 */
 	rating: {
-		fontSize: '12px',
+		fontSize: '14px',
+		marginLeft: theme.spacing(2),
 	},
 }))
