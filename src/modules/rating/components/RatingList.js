@@ -3,7 +3,7 @@ import { Rating } from '@material-ui/lab'
 import DeleteIcon from '@material-ui/icons/Delete'
 import React from 'react'
 
-export default function RatingList({ ratingList }) {
+export default function RatingList({ ratingList, showDeleteButton }) {
 	const mui = useStyle()
 	return (
 		<>
@@ -18,9 +18,15 @@ export default function RatingList({ ratingList }) {
 						<Typography variant="body1">{rating.comment}</Typography>
 					</div>
 
-					{/* <IconButton aria-label="delete comment">
-						<DeleteIcon />
-					</IconButton> */}
+					{showDeleteButton === rating.user.id && (
+						<IconButton
+							aria-label="delete comment"
+							color="secondary"
+							className={mui.deleteBtn}
+						>
+							<DeleteIcon />
+						</IconButton>
+					)}
 				</div>
 			))}
 		</>
@@ -33,6 +39,11 @@ const useStyle = makeStyles(theme => ({
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		marginBottom: theme.spacing(3),
+		'&:hover': {
+			'& $deleteBtn': {
+				display: 'inline',
+			},
+		},
 	},
 
 	/*
@@ -41,5 +52,9 @@ const useStyle = makeStyles(theme => ({
 	rating: {
 		fontSize: '14px',
 		marginLeft: theme.spacing(2),
+	},
+
+	deleteBtn: {
+		display: 'none',
 	},
 }))

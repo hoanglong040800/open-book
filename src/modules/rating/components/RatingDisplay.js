@@ -3,12 +3,19 @@ import React from 'react'
 import OverallRating from './OverallRating'
 import RatingList from './RatingList'
 
-export default function RatingDisplay({ ratingList, pointOverall, canDelete }) {
+export default function RatingDisplay({
+	ratingList,
+	pointOverall,
+	showDeleteButton,
+}) {
 	const mui = useStyle()
 	return (
 		<Grid container className={mui.container}>
 			<Grid item xs={12} md={8} className={mui.item}>
-				<RatingList ratingList={ratingList} canDelete={canDelete} />
+				<RatingList
+					ratingList={ratingList}
+					showDeleteButton={showDeleteButton}
+				/>
 			</Grid>
 			<Grid item xs={12} md={4} className={mui.item}>
 				<OverallRating pointOverall={pointOverall} />

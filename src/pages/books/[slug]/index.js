@@ -112,6 +112,7 @@ export default function ViewBook({ session, slug }) {
 						<RatingDisplay
 							ratingList={ratingList}
 							pointOverall={pointOverall}
+							showDeleteButton={session?.user.id}
 						/>
 					)}
 				</RatingContainer>
