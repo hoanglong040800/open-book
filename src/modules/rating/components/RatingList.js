@@ -3,7 +3,11 @@ import { Rating } from '@material-ui/lab'
 import DeleteIcon from '@material-ui/icons/Delete'
 import React from 'react'
 
-export default function RatingList({ ratingList, showDeleteButton }) {
+export default function RatingList({
+	ratingList,
+	showDeleteButton,
+	handleDeleteRating,
+}) {
 	const mui = useStyle()
 	return (
 		<>
@@ -23,6 +27,7 @@ export default function RatingList({ ratingList, showDeleteButton }) {
 							aria-label="delete comment"
 							color="secondary"
 							className={mui.deleteBtn}
+							onClick={handleDeleteRating}
 						>
 							<DeleteIcon />
 						</IconButton>

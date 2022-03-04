@@ -7,6 +7,7 @@ export default function RatingDisplay({
 	ratingList,
 	pointOverall,
 	showDeleteButton,
+	handleDeleteRating,
 }) {
 	const mui = useStyle()
 	return (
@@ -15,6 +16,7 @@ export default function RatingDisplay({
 				<RatingList
 					ratingList={ratingList}
 					showDeleteButton={showDeleteButton}
+					handleDeleteRating={handleDeleteRating}
 				/>
 			</Grid>
 			<Grid item xs={12} md={4} className={mui.item}>
