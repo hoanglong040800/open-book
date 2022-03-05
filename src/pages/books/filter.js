@@ -1,5 +1,5 @@
 import HeadTitle from 'common/components/headtitle/HeadTitle'
-import { getBooksBySearch } from 'modules/books/api/books.api'
+import { getBooksByFilter } from 'modules/books/api/books.api'
 import BookList from 'modules/books/components/booklist/BookList'
 import { useEffect } from 'react'
 import { BOOK_LIMIT } from 'common/constants/common.constant'
@@ -10,27 +10,30 @@ export default function Filter() {
 	const router = useRouter()
 	const [books, setBooks, booksRef] = useState([])
 	const [hasMore, setHasMore] = useState(true)
-	const [params, setParams, paramsRef] = useState({
-		search_query: null,
-		cursor: null,
-		limit: BOOK_LIMIT,
-	})
+	const [params, setParams, paramsRef] = useState()
 
 	/*
 	 *	Hooks
 	 */
 	useEffect(async () => {
-		setParams({ ...params, cursor: null, search_query: router.query.q })
-	}, [router.query.q])
+		setParams({ cursor:null, limit: BOOK_LIMIT, ...router.query })
+
+		// reset value when change filter
+		if(Object.keys(router.query).length !== 0) {
+			setHasMore(true)
+			setBooks([])
+			getNextBooks()
+		}
+	}, [router.query])
 
 	/*
 	 * Async Functions
 	 */
 
 	async function getNextBooks() {
-		const res = await getBooksBySearch(paramsRef.current)
+		const res = await getBooksByFilter(paramsRef.current)
 
-		if (res.data.length == 0) {
+		if (res.data == null) {
 			setHasMore(false)
 			return
 		}
