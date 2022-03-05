@@ -1,6 +1,10 @@
 import HeadTitle from 'common/components/headtitle/HeadTitle'
 import { getBookBySlug } from 'modules/books/api/books.api'
-import { addRating, getRatingByBookId } from 'modules/rating/api/rating.api'
+import {
+	addRating,
+	deleteRating,
+	getRatingByBookId,
+} from 'modules/rating/api/rating.api'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import RatingItem from 'modules/rating/components/RatingItem'
@@ -56,7 +60,18 @@ export default function ViewBook({ session, slug }) {
 	}
 
 	async function handleSubmitRating() {
-		await addRating(bookInfo.id, rating)
+		const res = await addRating(bookInfo.id, rating)
+		console.log(res)
+		getRatings()
+	}
+
+	async function handleDeleteRating() {
+		const data = await getRatingByBookId(bookInfo.id)
+		const deleteItem = data.rating.find(
+			item => item.user.id === session?.user.id,
+		)
+		const res = await deleteRating(deleteItem.rating_id)
+		console.log(res)
 		getRatings()
 	}
 
@@ -113,6 +128,7 @@ export default function ViewBook({ session, slug }) {
 							ratingList={ratingList}
 							pointOverall={pointOverall}
 							showDeleteButton={session?.user.id}
+							handleDeleteRating={handleDeleteRating}
 						/>
 					)}
 				</RatingContainer>

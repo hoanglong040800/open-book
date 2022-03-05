@@ -16,7 +16,11 @@ export default function RatingItem({
 		<>
 			<Typography variant="h6">How did you enjoy this book?</Typography>
 
-			<Rating name="point" value={point} onChange={onChangePoint} />
+			<Rating
+				name="point"
+				value={point ? point : ''}
+				onChange={onChangePoint}
+			/>
 
 			<Typography variant="h6">Leave a comment</Typography>
 
