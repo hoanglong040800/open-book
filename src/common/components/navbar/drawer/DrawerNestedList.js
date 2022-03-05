@@ -13,14 +13,14 @@ export default function DrawerNestedList({ title, list, onCloseDrawer }) {
 		setOpen(!open)
 	}
 
-	function handleClickItem(query) {
+	function handleClickItem(item) {
 		router.push(
-			{
-				pathname: '/explore',
-				query: query,
-			},
-			undefined,
-			{ shallow: true },
+		  {
+		    pathname: '/books/filter',
+		    query: {genre: item.id},
+		  },
+		  undefined,
+		  { shallow: true }
 		)
 
 		onCloseDrawer()
@@ -42,9 +42,9 @@ export default function DrawerNestedList({ title, list, onCloseDrawer }) {
 							<ListItem
 								button
 								className={mui.listItem}
-								onClick={() => handleClickItem(item.query)}
+								onClick={() => handleClickItem(item)}
 							>
-								<ListItemText primary={item.name} />
+								<ListItemText primary={item.name_en} />
 							</ListItem>
 						))
 					}
