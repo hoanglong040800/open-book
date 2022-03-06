@@ -1,65 +1,63 @@
-import { Card, Grid, makeStyles } from '@material-ui/core'
+import { Button, Divider, Grid } from '@material-ui/core'
+import CardContainer from 'common/components/cardcontainer/CardContainer'
 import Loading from 'common/components/loading/Loading'
-import Description from './Description'
 import GenreList from './GenreList'
 import ImageContainer from './ImageContainer'
 import MainInfo from './MainInfo'
 import MoreInfo from './MoreInfo'
+import ReadMore from './Readmore'
 
-export default function DetailBookContainer({ bookInfo }) {
-	const mui = useStyles()
-
-	/*
-		JSX
-	 */
-
+export default function DetailBookContainer({ bookInfo,onClickRead }) {
 	return (
-		<Card className={mui.card}>
+		<CardContainer>
 			{bookInfo ? (
 				<Grid container spacing={4}>
-					<Grid
-						container
-						item
-						justifyContent="center"
-						{...gridProps.imgSection}
-					>
+					<Grid {...props.imgSection}>
 						<ImageContainer thumbnail={bookInfo.thumbnail.link_storage} />
 					</Grid>
 
-					<Grid item {...gridProps.infoSection}>
-						<MainInfo
-							title={bookInfo.name}
-							authors={bookInfo.authors}
-							view={bookInfo.view}
-						/>
+					<Grid item {...props.infoSection}>
+						<MainInfo bookInfo={bookInfo} />
 
-						<br />
-
-						<MoreInfo
-							publishedYear={bookInfo.published_year}
-							pages={bookInfo.pages}
-							publisher={bookInfo.publisher}
-						/>
-						<Description summary={bookInfo.summary} />
 						<GenreList genres={bookInfo.genres} />
+
+						<Button {...props.btn} onClick={onClickRead}>Read</Button>
+
+						<Divider style={styles.divider} />
+
+						<MoreInfo bookInfo={bookInfo} />
+
+						<ReadMore>{bookInfo.summary}</ReadMore>
 					</Grid>
 				</Grid>
 			) : (
 				<Loading />
 			)}
-		</Card>
+		</CardContainer>
 	)
 }
 
-const useStyles = makeStyles(theme => ({
-	card: {
-		padding: theme.spacing(3),
-		marginBotton: theme.spacing(2),
+const styles = {
+	btn: {
+		margin: '30px 0 10px 0',
 	},
-}))
 
-const gridProps = {
+	divider: {
+		margin: '20px 10vw',
+	},
+}
+
+const props = {
+	btn: {
+		variant: 'contained',
+		color: 'secondary',
+		style: styles.btn,
+	},
+
 	imgSection: {
+		container: true,
+		item: true,
+		justifyContent: 'center',
 		xs: 12,
 		md: 4,
 		lg: 3,

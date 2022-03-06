@@ -5,13 +5,9 @@ import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder'
 import BookmarkIcon from '@material-ui/icons/Bookmark'
 import { useState } from 'react'
 
-export default function MainInfo({ title, authors, view }) {
+export default function MainInfo({ bookInfo }) {
 	const [bookmark, setBookmark] = useState(false)
-
-	const bookmarkStyle = {
-		width: '40px',
-		height: '40px',
-	}
+	const { name, authors } = bookInfo
 
 	function handleClick() {
 		setBookmark(prev => !prev)
@@ -27,7 +23,7 @@ export default function MainInfo({ title, authors, view }) {
 					gap: '10px',
 				}}
 			>
-				{title}{' '}
+				{name}{' '}
 				<IconButton
 					aria-label="bookmark"
 					color="secondary"
@@ -48,17 +44,12 @@ export default function MainInfo({ title, authors, view }) {
 				}}
 			>
 				<Typography variant="subtitle1">by {authors}</Typography>
-				<Typography
-					variant="subtitle1"
-					style={{
-						display: 'flex',
-						alignItems: 'center',
-						gap: '10px',
-					}}
-				>
-					<VisibilityIcon /> {view}
-				</Typography>
 			</div>
 		</div>
 	)
+}
+
+const bookmarkStyle = {
+	width: '40px',
+	height: '40px',
 }
