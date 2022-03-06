@@ -29,7 +29,7 @@ export function FilterController({ params, onChangeFilter, genres }) {
 
 	function onClear() {
 		reset({
-			author: '',
+			authors: '',
 			genre: '',
 			sort: '',
 			language: '',
@@ -45,8 +45,8 @@ export function FilterController({ params, onChangeFilter, genres }) {
 			<Grid {...props.gridContainer}>
 				<Grid {...props.gridItem}>
 					<TextFieldController
-						label="Author"
-						name="author"
+						label="Authors"
+						name="authors"
 						control={control}
 						errors={errors}
 					/>

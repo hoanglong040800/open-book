@@ -1,4 +1,5 @@
 import { Button } from '@material-ui/core'
+import { toTitleCase } from 'common/utils/common.util'
 import { useRouter } from 'next/router'
 import React from 'react'
 
@@ -20,7 +21,7 @@ export default function GenreList({ genres }) {
 					onClick={() => onClickButton(genre.id)}
 					{...props.btn}
 				>
-					{genre.name_en.toUpperCase()}
+					{toTitleCase(genre.name_en)}
 				</Button>
 			))}
 		</div>

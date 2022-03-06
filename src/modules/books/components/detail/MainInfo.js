@@ -1,55 +1,60 @@
 import React from 'react'
-import { IconButton, Typography } from '@material-ui/core'
-import VisibilityIcon from '@material-ui/icons/Visibility'
+import { Box, IconButton, makeStyles, Typography } from '@material-ui/core'
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder'
 import BookmarkIcon from '@material-ui/icons/Bookmark'
 import { useState } from 'react'
+import Link from 'next/link'
 
 export default function MainInfo({ bookInfo }) {
 	const [bookmark, setBookmark] = useState(false)
 	const { name, authors } = bookInfo
+	const mui = useStyles()
+	const href = `/books/filter?authors=${authors}`
 
 	function handleClick() {
 		setBookmark(prev => !prev)
 	}
 
 	return (
-		<div>
-			<Typography
-				variant="h4"
-				style={{
-					display: 'flex',
-					alignItems: 'center',
-					gap: '10px',
-				}}
-			>
-				{name}{' '}
-				<IconButton
-					aria-label="bookmark"
-					color="secondary"
-					onClick={handleClick}
-				>
+		<>
+			<Box className={mui.titleContainer}>
+				<Typography variant="h4">{name}</Typography>
+
+				<IconButton color="secondary" onClick={handleClick}>
 					{bookmark ? (
-						<BookmarkIcon style={bookmarkStyle} />
+						<BookmarkIcon className={mui.bookmark} />
 					) : (
-						<BookmarkBorderIcon style={bookmarkStyle} />
+						<BookmarkBorderIcon className={mui.bookmark} />
 					)}
 				</IconButton>
+			</Box>
+
+			<Typography variant="subtitle1">
+				by{' '}
+				<Link href={href}>
+					<a className={mui.link}>{authors}</a>
+				</Link>
 			</Typography>
-			<div
-				style={{
-					display: 'flex',
-					alignItems: 'center',
-					gap: '100px',
-				}}
-			>
-				<Typography variant="subtitle1">by {authors}</Typography>
-			</div>
-		</div>
+		</>
 	)
 }
 
-const bookmarkStyle = {
-	width: '40px',
-	height: '40px',
-}
+const useStyles = makeStyles(theme => ({
+	titleContainer: {
+		display: 'flex',
+		alignItems: 'center',
+		gap: 10,
+	},
+
+	bookmark: {
+		width: 40,
+	},
+
+	link: {
+		color: theme.palette.primary.main,
+
+		'&:hover': {
+			textDecoration: 'underline',
+		},
+	},
+}))

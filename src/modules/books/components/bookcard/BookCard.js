@@ -1,50 +1,44 @@
+import {
+	Card,
+	CardActionArea,
+	CardContent,
+	CardMedia,
+	Typography,
+} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import Card from '@material-ui/core/Card'
-import CardActionArea from '@material-ui/core/CardActionArea'
-import CardContent from '@material-ui/core/CardContent'
-import CardMedia from '@material-ui/core/CardMedia'
-import Typography from '@material-ui/core/Typography'
-import StarIcon from '@material-ui/icons/Star'
-import VisibilityIcon from '@material-ui/icons/Visibility'
+import { Star, Visibility } from '@material-ui/icons'
 import Link from 'next/link'
 
 export default function BookCard({ item }) {
-	const classes = useStyles()
+	const mui = useStyles()
 	const { id, thumbnail, name, point, view, slug } = item
 
 	return (
 		<Link href={`/books/${slug}`} passHref>
-			<Card className={classes.card}>
+			<Card className={mui.card}>
 				<CardActionArea>
 					<CardMedia
 						component="img"
 						alt={name}
 						title={name}
 						image={thumbnail.link_storage}
-						className={classes.bookCover}
+						className={mui.bookCover}
 					/>
 
 					<CardContent>
-						<Typography gutterBottom variant="h6" className={classes.title}>
-							{name}
-						</Typography>
-						<div className={classes.lowerSection}>
-							<Typography
-								variant="body1"
-								color="textSecondary"
-								className={classes.rating}
-							>
-								{point}{' '}
-								<StarIcon color="secondary" className={classes.starIcon} />
-							</Typography>
-							<Typography
-								variant="body1"
-								color="textSecondary"
-								className={classes.view}
-							>
-								<VisibilityIcon className={classes.viewIcon} /> {view}
-							</Typography>
-						</div>
+						<Typography {...props.title}>{name}</Typography>
+
+						<section className={mui.lowerSection}>
+							<div className={mui.infoContainer}>
+								<Typography {...props.info}>{point}</Typography>
+								<Star color="secondary" />
+							</div>
+
+							<div className={mui.infoContainer}>
+								<Visibility />
+								<Typography {...props.info}>{view}</Typography>
+							</div>
+						</section>
 					</CardContent>
 				</CardActionArea>
 			</Card>
@@ -52,8 +46,29 @@ export default function BookCard({ item }) {
 	)
 }
 
+const styles = {
+	title: {
+		height: '70px',
+		letterSpacing: 0.5,
+		overflow: 'hidden',
+	},
+}
+
+const props = {
+	title: {
+		gutterBottom: true,
+		variant: 'h6',
+		style: styles.title,
+	},
+
+	info: {
+		variant: 'body1',
+		color: 'textSecondary',
+	},
+}
+
 const useStyles = makeStyles(theme => ({
-	card:{
+	card: {
 		height: 380,
 	},
 
@@ -63,33 +78,15 @@ const useStyles = makeStyles(theme => ({
 		borderBottom: '1px solid #ccc',
 	},
 
-	title: {
-		height: 70,
-		letterSpacing: 0.5,
-		overflow: 'hidden'
-	},
-
-	rating: {
-		display: 'flex',
-		alignItems: 'center',
-		marginRight: 'auto',
-	},
-
-	view: {
-		display: 'flex',
-		alignItems: 'center',
-	},
-
-	starIcon: {
-		marginLeft: '0.25rem',
-	},
-
-	viewIcon: {
-		marginRight: '0.35rem',
-	},
-
 	lowerSection: {
 		display: 'flex',
+		justifyContent: 'space-between',
+	},
+
+	infoContainer: {
+		display: 'flex',
+		alignItems: 'center',
+		gap: 10,
 	},
 
 	[theme.breakpoints.down('sm')]: {
