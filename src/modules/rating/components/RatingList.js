@@ -24,12 +24,12 @@ export default function RatingList({
 
 					{showDeleteButton === rating.user.id && (
 						<IconButton
-							aria-label="delete comment"
 							color="secondary"
+							size="small"
 							className={mui.deleteBtn}
 							onClick={handleDeleteRating}
 						>
-							<DeleteIcon />
+							<DeleteIcon fontSize="small" />
 						</IconButton>
 					)}
 				</div>
@@ -44,22 +44,14 @@ const useStyle = makeStyles(theme => ({
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		marginBottom: theme.spacing(3),
-		'&:hover': {
-			'& $deleteBtn': {
-				display: 'inline',
-			},
-		},
 	},
 
-	/*
-	 * already centered
-	 */
 	rating: {
 		fontSize: '14px',
 		marginLeft: theme.spacing(2),
 	},
 
 	deleteBtn: {
-		display: 'none',
+		display: 'inline',
 	},
 }))

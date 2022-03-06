@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 		fontWeight: 'normal',
 	},
 
-	[theme.breakpoints.down('sm')]: {
+	[theme.breakpoints.down('xs')]: {
 		container: {
 			flexDirection: 'column',
 			gap: '5px',
