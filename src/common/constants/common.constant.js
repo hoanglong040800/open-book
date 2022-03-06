@@ -3,7 +3,7 @@ export const WEB_NAME = 'Ebook Share'
 
 export const USER_ROLES = {
 	viewer: 'user',
-	editor: 'editor',
+	store: 'store',
 }
 
 export const BOOK_LIMIT = 8

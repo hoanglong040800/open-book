@@ -10,8 +10,8 @@ import { useState } from 'react'
 import RatingItem from 'modules/rating/components/RatingItem'
 import { getSession } from 'next-auth/client'
 import DetailBookContainer from 'modules/books/components/detail/DetailBookContainer'
-import RatingContainer from 'modules/rating/components/RatingContainer'
 import RatingDisplay from 'modules/rating/components/RatingDisplay'
+import CardContainer from 'common/components/cardcontainer/CardContainer'
 
 export async function getServerSideProps(ctx) {
 	const session = await getSession(ctx)
@@ -60,8 +60,7 @@ export default function ViewBook({ session, slug }) {
 	}
 
 	async function handleSubmitRating() {
-		const res = await addRating(bookInfo.id, rating)
-		console.log(res)
+		await addRating(bookInfo.id, rating)
 		getRatings()
 	}
 
@@ -70,8 +69,7 @@ export default function ViewBook({ session, slug }) {
 		const deleteItem = data.rating.find(
 			item => item.user.id === session?.user.id,
 		)
-		const res = await deleteRating(deleteItem.rating_id)
-		console.log(res)
+		await deleteRating(deleteItem.rating_id)
 		getRatings()
 	}
 
@@ -110,7 +108,7 @@ export default function ViewBook({ session, slug }) {
 			<div style={styles.container}>
 				<DetailBookContainer bookInfo={bookInfo} />
 
-				<RatingContainer>
+				<CardContainer>
 					{canComment && (
 						<>
 							<RatingItem
@@ -131,7 +129,7 @@ export default function ViewBook({ session, slug }) {
 							handleDeleteRating={handleDeleteRating}
 						/>
 					)}
-				</RatingContainer>
+				</CardContainer>
 			</div>
 		</>
 	)

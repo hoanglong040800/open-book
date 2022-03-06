@@ -5,21 +5,27 @@ import { useEffect } from 'react'
 import { BOOK_LIMIT } from 'common/constants/common.constant'
 import { useRouter } from 'next/router'
 import useState from 'react-usestateref'
+import { FilterController } from 'modules/books/components/filtercontroller/FilterController'
+import { getAllGenres } from 'modules/common/api/common.api'
+import { filterObject } from 'common/utils/common.util'
 
 export default function Filter() {
 	const router = useRouter()
 	const [books, setBooks, booksRef] = useState([])
 	const [hasMore, setHasMore] = useState(true)
 	const [params, setParams, paramsRef] = useState()
+	const [genres, setGenres] = useState([])
 
 	/*
 	 *	Hooks
 	 */
 	useEffect(async () => {
-		setParams({ cursor:null, limit: BOOK_LIMIT, ...router.query })
+		setParams({ cursor: null, limit: BOOK_LIMIT, ...router.query })
+
+		genres.length == 0 && getGenres()
 
 		// reset value when change filter
-		if(Object.keys(router.query).length !== 0) {
+		if (Object.keys(router.query).length !== 0) {
 			setHasMore(true)
 			setBooks([])
 			getNextBooks()
@@ -42,12 +48,33 @@ export default function Filter() {
 		setBooks([...booksRef.current, ...res.data])
 	}
 
+	async function getGenres() {
+		const data = await getAllGenres()
+		setGenres(data)
+	}
+
+	/*
+	 * Functions
+	 */
+
+	function onChangeFilter(query) {
+		// clean empty data -> cleaner url
+		const newQuery = filterObject(query, value => value !== '')
+
+		router.push({
+			pathname: '/books/filter',
+			query: newQuery,
+		})
+	}
+
 	/*
 	 *	JSX
 	 */
 	return (
 		<>
 			<HeadTitle page="Filter" />
+
+			<FilterController params={router.query} genres={genres} onChangeFilter={onChangeFilter} />
 
 			<BookList list={books} next={getNextBooks} hasMore={hasMore} />
 		</>

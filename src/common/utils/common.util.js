@@ -10,3 +10,8 @@ export function handleSimpleServiceError(res) {
 		? COMMON_ALERT.success
 		: COMMON_ALERT.error
 }
+
+export function filterObject(obj, callback) {
+  return Object.fromEntries(Object.entries(obj).
+    filter(([key, val]) => callback(val, key)));
+}

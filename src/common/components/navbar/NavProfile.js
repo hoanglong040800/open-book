@@ -64,7 +64,7 @@ export default function NavProfile() {
 					<b>{session.user.user_name}</b>
 				</MenuItem>
 
-				{session && session.user.role === USER_ROLES.editor && (
+				{session && session.user.role === USER_ROLES.store && (
 					<MenuItem onClick={() => handleRouting('/books/new')}>
 						Add Book
 					</MenuItem>

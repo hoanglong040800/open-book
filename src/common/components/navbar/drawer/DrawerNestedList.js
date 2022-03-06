@@ -1,6 +1,7 @@
 import { Box, Collapse, List, ListItem, ListItemText } from '@material-ui/core'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/styles'
+import { toTitleCase } from 'common/utils/common.util'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
@@ -44,7 +45,7 @@ export default function DrawerNestedList({ title, list, onCloseDrawer }) {
 								className={mui.listItem}
 								onClick={() => handleClickItem(item)}
 							>
-								<ListItemText primary={item.name_en} />
+								<ListItemText primary={toTitleCase(item.name_en)} />
 							</ListItem>
 						))
 					}
