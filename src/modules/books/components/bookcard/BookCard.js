@@ -10,7 +10,7 @@ import Link from 'next/link'
 
 export default function BookCard({ item }) {
 	const classes = useStyles()
-	const { id, thumbnail, name, rating, view, slug } = item
+	const { id, thumbnail, name, point, view, slug } = item
 
 	return (
 		<Link href={`books/${slug}`} passHref>
@@ -34,7 +34,7 @@ export default function BookCard({ item }) {
 								color="textSecondary"
 								className={classes.rating}
 							>
-								{rating}{' '}
+								{point}{' '}
 								<StarIcon color="secondary" className={classes.starIcon} />
 							</Typography>
 							<Typography

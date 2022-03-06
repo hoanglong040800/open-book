@@ -1,13 +1,14 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core'
 
-export default function MoreInfo({ publishedYear, publisher, pages }) {
+export default function MoreInfo({ bookInfo }) {
 	const mui = useStyles()
+	const { published_year, publisher, pages, view } = bookInfo
 
 	return (
 		<div className={mui.container}>
 			<h3>
-				Published year: <span className={mui.value}>{publishedYear}</span>
+				Published year: <span className={mui.value}>{published_year}</span>
 			</h3>
 			<h3>
 				Publisher: <span className={mui.value}>{publisher}</span>
@@ -15,6 +16,11 @@ export default function MoreInfo({ publishedYear, publisher, pages }) {
 
 			<h3>
 				Pages: <span className={mui.value}>{pages}</span>
+			</h3>
+
+			
+			<h3>
+				Views: <span className={mui.value}>{view}</span>
 			</h3>
 		</div>
 	)

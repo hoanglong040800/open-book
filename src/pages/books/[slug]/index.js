@@ -12,6 +12,7 @@ import { getSession } from 'next-auth/client'
 import DetailBookContainer from 'modules/books/components/detail/DetailBookContainer'
 import RatingDisplay from 'modules/rating/components/RatingDisplay'
 import CardContainer from 'common/components/cardcontainer/CardContainer'
+import { useRouter } from 'next/router'
 
 export async function getServerSideProps(ctx) {
 	const session = await getSession(ctx)
@@ -24,6 +25,7 @@ export async function getServerSideProps(ctx) {
 }
 
 export default function ViewBook({ session, slug }) {
+	const router = useRouter()
 	const [canComment, setCanComment] = useState(false)
 	const [bookInfo, setBookInfo] = useState(null)
 	const [rating, setRating] = useState({
@@ -38,7 +40,6 @@ export default function ViewBook({ session, slug }) {
 	 */
 
 	useEffect(() => {
-		console.clear()
 		if (!bookInfo) getBookInfo()
 		else if (!ratingList) getRatings()
 	}, [bookInfo])
@@ -78,8 +79,12 @@ export default function ViewBook({ session, slug }) {
 	 */
 
 	function checkCanComment(data, session) {
+		// logined
 		session?.user && setCanComment(true)
-		data?.rating.find(item => item.user.id == session?.user.id) &&
+
+		// check already comment
+		data.length != 0 &&
+			data?.rating.find(item => item.user.id == session?.user.id) &&
 			setCanComment(false)
 	}
 
@@ -97,6 +102,10 @@ export default function ViewBook({ session, slug }) {
 		}))
 	}
 
+	function onClickRead() {
+		router.push(`/books/${bookInfo.slug}/read`)
+	}
+
 	/*
 	 *  JSX
 	 */
@@ -106,7 +115,7 @@ export default function ViewBook({ session, slug }) {
 			<HeadTitle page="detail" />
 
 			<div style={styles.container}>
-				<DetailBookContainer bookInfo={bookInfo} />
+				<DetailBookContainer bookInfo={bookInfo} onClickRead={onClickRead} />
 
 				<CardContainer>
 					{canComment && (
