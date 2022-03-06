@@ -13,7 +13,7 @@ export default function BookCard({ item }) {
 	const { id, thumbnail, name, point, view, slug } = item
 
 	return (
-		<Link href={`books/${slug}`} passHref>
+		<Link href={`/books/${slug}`} passHref>
 			<Card className={classes.card}>
 				<CardActionArea>
 					<CardMedia
