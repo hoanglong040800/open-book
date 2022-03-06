@@ -10,7 +10,6 @@ export default function Home() {
 	const [params, setParams] = useState({
 		cursor: null,
 		limit: BOOK_LIMIT,
-		// TODO LOW: FILTER LATEST DATE
 	})
 	const [hasMore, setHasMore] = useState(true)
 

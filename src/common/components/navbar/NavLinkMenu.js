@@ -1,6 +1,7 @@
 import { Box, makeStyles, MenuItem } from '@material-ui/core'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import { toTitleCase } from 'common/utils/common.util'
 
 export default function NavLinkMenu({ name, lists }) {
 	const classes = useStyles()
@@ -47,7 +48,7 @@ export default function NavLinkMenu({ name, lists }) {
 					//
 					lists.map(item => (
 						<MenuItem key={item.id} onClick={() => handleClickItem(item)}>
-							{item.name_en}
+							{toTitleCase(item.name_en)}
 						</MenuItem>
 					))
 				}
