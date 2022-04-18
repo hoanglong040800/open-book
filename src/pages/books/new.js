@@ -58,7 +58,7 @@ export default function NewBook({ session }) {
 				},
 			],
 			publisher: 'some publisher',
-			published_year: 100,
+			published_year: 1901,
 			language: 'en',
 			pages: 250,
 			summary: 'Some awesome\nsummary',
@@ -71,21 +71,35 @@ export default function NewBook({ session }) {
 		message: '',
 	})
 
+	/*
+	 *  Async Functions
+	 */
+
 	async function onSubmit(data) {
 		data.slug = slugify(data.name)
+		// change array obj -> array int so BE can receive
+		data.genres = data.genres.map(item => item.id)
+
 		const res = await addBook(data)
 		setAlertProps(handleSimpleServiceError(res))
 		setOpenSnackbar(true)
 	}
 
-	function onError(error) {
-	}
+	/*
+	 *  Functions
+	 */
+
+	function onError(error) {}
 
 	function handleCloseSnackbar() {
 		setOpenSnackbar(false)
 		alertProps.severity === 'success' &&
 			router.push(`/books/${slugify(watch('name'))}`)
 	}
+
+	/*
+	 *  JSX
+	 */
 
 	return (
 		<>

@@ -69,13 +69,15 @@ export default function NewBook({ slug, session }) {
 
 	async function onSubmit(data) {
 		data.slug = slugify(data.name)
+		// change array obj -> array int so BE can receive
+		data.genres = data.genres.map(item => item.id)
+
 		const res = await updateBookInfo(bookInfo.owner_id, data)
 		setAlertProps(handleSimpleServiceError(res))
 		setOpenSnackbar(true)
 	}
 
-	function onError(error) {
-	}
+	function onError(error) {}
 
 	function handleCloseSnackbar() {
 		setOpenSnackbar(false)
