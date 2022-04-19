@@ -5,7 +5,7 @@ import { Box, Button, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
-import SubmitButton from 'common/components/button/SubmitButton'
+import { USER_ROLES } from 'common/constants/common.constant'
 
 export default function ViewProfile() {
 	const classes = useStyle()
@@ -30,18 +30,34 @@ export default function ViewProfile() {
 	const [session] = useSession()
 	const router = useRouter()
 
-	useEffect(() => {
-		async function getUserInfo() {
-			const data = await getUserProfile()
-			setProfile(data)
-		}
+	/*
+	 *  Hook
+	 */
 
+	useEffect(() => {
 		getUserInfo()
 	}, [])
+
+	/*
+	 *  Async Functions
+	 */
+
+	async function getUserInfo() {
+		const data = await getUserProfile()
+		setProfile(data)
+	}
+
+	/*
+	 *  Functions
+	 */
 
 	function handleEdit() {
 		router.push(`/user/${session.user.user_name}/edit`)
 	}
+
+	/*
+	 *  JSX
+	 */
 
 	return (
 		<>
@@ -49,6 +65,7 @@ export default function ViewProfile() {
 
 			<Grid container>
 				<Grid item xs={12} sm={4} className={classes.profileTitle}>
+					{/* todo: avatar based on roles */}
 					<h1>Profile</h1>
 
 					{session?.user.user_name === router.query.user_name && (
@@ -121,3 +138,5 @@ const useStyle = makeStyles(theme => ({
 		},
 	},
 }))
+
+ViewProfile.auth = true

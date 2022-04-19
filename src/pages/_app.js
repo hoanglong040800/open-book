@@ -5,7 +5,7 @@ import theme from 'common/themes/theme'
 import 'common/styles/global.css'
 import DefaultLayout from 'common/layouts/DefaultLayout'
 import { Provider as SessionProvider } from 'next-auth/client'
-import Auth from 'modules/auth/components/Auth'
+import AuthGuard from 'modules/auth/components/AuthGuard'
 
 
 export default function MyApp({ Component, pageProps }) {
@@ -26,9 +26,9 @@ export default function MyApp({ Component, pageProps }) {
             <CssBaseline />
 
             {Component.auth ? (
-              <Auth>
+              <AuthGuard allowedRole={Component?.allowedRole}>
                 <Component {...pageProps} />
-              </Auth>
+              </AuthGuard>
             ) : (
               <Component {...pageProps} />
             )}

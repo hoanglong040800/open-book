@@ -1,8 +1,9 @@
 // ====== WEBSITE NAME =====
-export const WEB_NAME = 'Ebook Share'
+export const WEB_NAME = 'Open Book'
 
 export const USER_ROLES = {
-	viewer: 'user',
+	anonymous: 'anonymous',
+	viewer: 'viewer',
 	store: 'store',
 }
 
