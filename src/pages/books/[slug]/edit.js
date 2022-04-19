@@ -11,35 +11,21 @@ import { GENRES, USER_ROLES } from 'common/constants/common.constant'
 import FormLayout from 'common/layouts/FormLayout'
 import { EDIT_BOOK_SCHEMA } from 'common/schema/form-validation.schema'
 import { handleSimpleServiceError } from 'common/utils/common.util'
-import {
-	getBookById,
-	getBookBySlug,
-	updateBookInfo,
-} from 'modules/books/api/books.api'
-import { getSession } from 'next-auth/client'
+import { getBookBySlug, updateBookInfo } from 'modules/books/api/books.api'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import slugify from 'slugify'
 
 export async function getServerSideProps(ctx) {
-	const session = await getSession(ctx)
-	const isStore = session.user.role === USER_ROLES.store
-
-	if (!isStore)
-		return {
-			notFound: true,
-		}
-
 	return {
 		props: {
 			slug: ctx.query.slug,
-			session,
 		},
 	}
 }
 
-export default function NewBook({ slug, session }) {
+export default function EditBook({ slug, session }) {
 	const {
 		watch,
 		reset,
@@ -188,3 +174,6 @@ export default function NewBook({ slug, session }) {
 		</>
 	)
 }
+
+EditBook.auth = true
+EditBook.allowedRole = USER_ROLES.store

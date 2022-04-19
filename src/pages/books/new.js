@@ -13,26 +13,10 @@ import { ADD_BOOK_SCHEMA } from 'common/schema/form-validation.schema'
 import { handleSimpleServiceError } from 'common/utils/common.util'
 import { addBook } from 'modules/books/api/books.api'
 import UploadFile from 'modules/upload/components/UploadFile'
-import { getSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import slugify from 'slugify'
-
-export async function getServerSideProps(ctx) {
-	const session = await getSession(ctx)
-
-	if (session.user.role === USER_ROLES.viewer)
-		return {
-			notFound: true,
-		}
-
-	return {
-		props: {
-			session,
-		},
-	}
-}
 
 export default function NewBook({ session }) {
 	const {
@@ -204,3 +188,6 @@ export default function NewBook({ session }) {
 		</>
 	)
 }
+
+NewBook.auth = true
+NewBook.allowedRole = USER_ROLES.store
