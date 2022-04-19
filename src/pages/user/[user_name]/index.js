@@ -6,6 +6,8 @@ import { makeStyles } from '@material-ui/styles'
 import { useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import { USER_ROLES } from 'common/constants/common.constant'
+import SubmitButton from 'common/components/button/SubmitButton'
+import FormLayout from 'common/layouts/FormLayout'
 
 export default function ViewProfile() {
 	const classes = useStyle()
@@ -55,6 +57,10 @@ export default function ViewProfile() {
 		router.push(`/user/${session.user.user_name}/edit`)
 	}
 
+	function handleViewDashboard() {
+		router.push(`/user/${session.user.user_name}/dashboard`)
+	}
+
 	/*
 	 *  JSX
 	 */
@@ -63,60 +69,64 @@ export default function ViewProfile() {
 		<>
 			<HeadTitle page="profile" />
 
-			<Grid container>
-				<Grid item xs={12} sm={4} className={classes.profileTitle}>
-					{/* todo: avatar based on roles */}
-					<h1>Profile</h1>
+			<FormLayout title="" maxWidth={600}>
+				<Grid container>
+					<Grid item xs={12} sm={4} className={classes.profileTitle}>
+						{/* todo: avatar based on roles */}
+						<h1>Profile</h1>
 
-					{session?.user.user_name === router.query.user_name && (
-						<Button variant="contained" color="primary" onClick={handleEdit}>
-							Edit
-						</Button>
-					)}
+						{session?.user.user_name === router.query.user_name && (
+							<Button variant="contained" color="primary" onClick={handleEdit}>
+								Edit
+							</Button>
+						)}
+					</Grid>
+
+					<Grid item xs={12} sm={8} container className={classes.infoContainer}>
+						<Grid {...gridItemProperty.property}>
+							<h3>Username</h3>
+						</Grid>
+
+						<Grid {...gridItemProperty.value}>
+							<p>{profile?.user_name}</p>
+						</Grid>
+
+						<Grid {...gridItemProperty.property}>
+							<h3>Email</h3>
+						</Grid>
+
+						<Grid {...gridItemProperty.value}>
+							<p>{profile?.email}</p>
+						</Grid>
+
+						<Grid {...gridItemProperty.property}>
+							<h3>Full name</h3>
+						</Grid>
+
+						<Grid {...gridItemProperty.value}>
+							<p>{profile?.full_name}</p>
+						</Grid>
+
+						<Grid {...gridItemProperty.property}>
+							<h3>Role</h3>
+						</Grid>
+
+						<Grid {...gridItemProperty.value}>
+							<p>{profile?.role}</p>
+						</Grid>
+
+						<Grid {...gridItemProperty.property}>
+							<h3>Gender</h3>
+						</Grid>
+
+						<Grid {...gridItemProperty.value}>
+							<p>{profile?.gender}</p>
+						</Grid>
+					</Grid>
 				</Grid>
 
-				<Grid item xs={12} sm={8} container className={classes.infoContainer}>
-					<Grid {...gridItemProperty.property}>
-						<h3>Username</h3>
-					</Grid>
-
-					<Grid {...gridItemProperty.value}>
-						<p>{profile?.user_name}</p>
-					</Grid>
-
-					<Grid {...gridItemProperty.property}>
-						<h3>Email</h3>
-					</Grid>
-
-					<Grid {...gridItemProperty.value}>
-						<p>{profile?.email}</p>
-					</Grid>
-
-					<Grid {...gridItemProperty.property}>
-						<h3>Full name</h3>
-					</Grid>
-
-					<Grid {...gridItemProperty.value}>
-						<p>{profile?.full_name}</p>
-					</Grid>
-
-					<Grid {...gridItemProperty.property}>
-						<h3>Role</h3>
-					</Grid>
-
-					<Grid {...gridItemProperty.value}>
-						<p>{profile?.role}</p>
-					</Grid>
-
-					<Grid {...gridItemProperty.property}>
-						<h3>Gender</h3>
-					</Grid>
-
-					<Grid {...gridItemProperty.value}>
-						<p>{profile?.gender}</p>
-					</Grid>
-				</Grid>
-			</Grid>
+				<SubmitButton text="View Dashboard" onClick={handleViewDashboard} />
+			</FormLayout>
 		</>
 	)
 }
