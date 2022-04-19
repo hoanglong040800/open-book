@@ -25,7 +25,7 @@ const BOOK_INFO_SHAPE = {
 
   pages: yup.number().typeError('Required').required().min(0).label('Page'),
 
-  summary: yup.string().max(500).label('Summary')
+  summary: yup.string().max(1000).label('Summary')
 }
 
 

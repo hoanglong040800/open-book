@@ -11,7 +11,11 @@ import { GENRES, USER_ROLES } from 'common/constants/common.constant'
 import FormLayout from 'common/layouts/FormLayout'
 import { EDIT_BOOK_SCHEMA } from 'common/schema/form-validation.schema'
 import { handleSimpleServiceError } from 'common/utils/common.util'
-import { getBookById, updateBookInfo } from 'modules/books/api/books.api'
+import {
+	getBookById,
+	getBookBySlug,
+	updateBookInfo,
+} from 'modules/books/api/books.api'
 import { getSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -20,9 +24,9 @@ import slugify from 'slugify'
 
 export async function getServerSideProps(ctx) {
 	const session = await getSession(ctx)
-	const isEditor = session.user.role === USER_ROLES.viewer
+	const isStore = session.user.role === USER_ROLES.store
 
-	if (isEditor)
+	if (!isStore)
 		return {
 			notFound: true,
 		}
@@ -55,17 +59,23 @@ export default function NewBook({ slug, session }) {
 		message: '',
 	})
 
+	/*
+	 * Hook
+	 */
+
 	useEffect(() => {
 		async function getBookInfo() {
-			const res = await getBookById(slug)
-			setBookInfo(res.data)
-			reset(res.data)
+			const data = await getBookBySlug(slug)
+			setBookInfo(data)
+			reset(data)
 		}
 
 		getBookInfo()
 	}, [])
 
-	// -- function --
+	/*
+	 *  Async Functions
+	 */
 
 	async function onSubmit(data) {
 		data.slug = slugify(data.name)
@@ -77,6 +87,10 @@ export default function NewBook({ slug, session }) {
 		setOpenSnackbar(true)
 	}
 
+	/*
+	 * Functions
+	 */
+
 	function onError(error) {}
 
 	function handleCloseSnackbar() {
@@ -85,7 +99,9 @@ export default function NewBook({ slug, session }) {
 			router.push(`/books/${slugify(watch('name'))}`)
 	}
 
-	// -- render --
+	/*
+	 *  JSX
+	 */
 
 	return (
 		<>
