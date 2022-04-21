@@ -45,3 +45,7 @@ export async function getBookBySlug(slug) {
 export async function updateBookInfo(id, data) {
 	return axiosClient.patch(`books/${id}`, data)
 }
+
+export async function deleteBook(id) {
+	return axiosClient.delete(`books/${id}`)
+}
