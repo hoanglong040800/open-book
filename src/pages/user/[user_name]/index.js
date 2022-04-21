@@ -31,6 +31,8 @@ export default function ViewProfile() {
 	const [profile, setProfile] = useState({})
 	const [session] = useSession()
 	const router = useRouter()
+	const isStore = session?.user.role === USER_ROLES.store
+	const isUserProfile = session?.user.user_name === router.query.user_name
 
 	/*
 	 *  Hook
@@ -75,7 +77,7 @@ export default function ViewProfile() {
 						{/* todo: avatar based on roles */}
 						<h1>Profile</h1>
 
-						{session?.user.user_name === router.query.user_name && (
+						{isUserProfile && (
 							<Button variant="contained" color="primary" onClick={handleEdit}>
 								Edit
 							</Button>
@@ -125,7 +127,9 @@ export default function ViewProfile() {
 					</Grid>
 				</Grid>
 
-				<SubmitButton text="View Dashboard" onClick={handleViewDashboard} />
+				{isStore && isUserProfile && (
+					<SubmitButton text="View Dashboard" onClick={handleViewDashboard} />
+				)}
 			</FormLayout>
 		</>
 	)

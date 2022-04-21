@@ -4,9 +4,9 @@ import { USER_ROLES } from 'common/constants/common.constant'
 export default function Dashboard({}) {
 	return (
 		<>
-			<HeadTitle page="dashboard" />
+			<HeadTitle page="Store Dashboard" />
 
-			<h1>Dashboard</h1>
+			
 		</>
 	)
 }
