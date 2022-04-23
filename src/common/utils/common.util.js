@@ -12,6 +12,14 @@ export function handleSimpleServiceError(res) {
 }
 
 export function filterObject(obj, callback) {
-  return Object.fromEntries(Object.entries(obj).
-    filter(([key, val]) => callback(val, key)));
+	return Object.fromEntries(
+		Object.entries(obj).filter(([key, val]) => callback(val, key)),
+	)
+}
+
+export function checkRole(session,role) {
+	if (!session) return false
+
+	if (session?.user?.role === role) return true
+	else return false
 }

@@ -7,7 +7,7 @@ export default function SubmitButton({
 	onSecondaryClick,
 }) {
 	return (
-		<Box display="flex" justifyContent="flex-end" mt={3}>
+		<Box display="flex" justifyContent="flex-end" mt={3} my={2}>
 			{textSecondary && (
 				<Button variant="contained" onClick={onSecondaryClick} style={styles.secondary}>
 					{textSecondary}

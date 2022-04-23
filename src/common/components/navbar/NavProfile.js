@@ -1,16 +1,17 @@
-import { IconButton, makeStyles, Menu, MenuItem } from "@material-ui/core";
-import { AccountCircle } from "@material-ui/icons";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { signOut, useSession } from "next-auth/client";
-import { USER_ROLES } from "common/constants/common.constant";
-
+import { IconButton, makeStyles, Menu, MenuItem } from '@material-ui/core'
+import { AccountCircle, StorefrontTwoTone } from '@material-ui/icons'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { signOut, useSession } from 'next-auth/client'
+import { checkRole } from 'common/utils/common.util'
+import { USER_ROLES } from 'common/constants/common.constant'
 
 export default function NavProfile() {
 	const router = useRouter()
 	const [session] = useSession()
 	const mui = useStyles()
 	const [anchorEl, setAnchorEl] = useState(null)
+	const isStore = checkRole(session, USER_ROLES.store)
 
 	function handleOpen(e) {
 		setAnchorEl(e.currentTarget)
@@ -41,14 +42,14 @@ export default function NavProfile() {
 		handleClose()
 	}
 
-	function forwardAddBook() {
-		router.push('/books/new')
-	}
-
 	return (
 		<>
 			<IconButton size="medium" onClick={handleOpen}>
-				<AccountCircle fontSize="large" className={mui.icon} />
+				{isStore ? (
+					<StorefrontTwoTone fontSize="large" className={mui.icon} />
+				) : (
+					<AccountCircle fontSize="large" className={mui.icon} />
+				)}
 			</IconButton>
 
 			<Menu
@@ -63,12 +64,6 @@ export default function NavProfile() {
 				<MenuItem onClick={handleSelectProfile}>
 					<b>{session.user.user_name}</b>
 				</MenuItem>
-
-				{session && session.user.role === USER_ROLES.store && (
-					<MenuItem onClick={() => handleRouting('/books/new')}>
-						Add Book
-					</MenuItem>
-				)}
 
 				<MenuItem onClick={handleSignout}>Log out</MenuItem>
 			</Menu>

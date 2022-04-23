@@ -13,10 +13,14 @@ import NavLogo from './NavLogo'
 import { Menu } from '@material-ui/icons'
 import NavSearchBar from './search/NavSearchBar'
 import NavAuthButton from './NavAuthButton'
+import { checkRole } from 'common/utils/common.util'
+import { USER_ROLES } from 'common/constants/common.constant'
+import StoreNavLink from './StoreNavLink'
 
 export default function Navbar({ onOpenDrawer }) {
 	const classes = useStyles()
 	const [session] = useSession()
+	const isStore = checkRole(session, USER_ROLES.store)
 
 	return (
 		<AppBar position="fixed" color="primary">
@@ -35,7 +39,7 @@ export default function Navbar({ onOpenDrawer }) {
 									<NavLogo />
 								</Box>
 
-								<NavLink />
+								{isStore ? <StoreNavLink /> : <NavLink />}
 							</Box>
 						</Box>
 
