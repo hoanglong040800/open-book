@@ -16,9 +16,9 @@ export default function Dashboard({}) {
 	const [selectedBook, setSelectedBook] = useState(null)
 
 	async function getAllUserBooks() {
-		// todo update api
 		const data = await getAllBooks()
-		setAllUserBooks(data)
+		const storeBooks = data.filter(book => book.owner_id === session.user.id)
+		setAllUserBooks(storeBooks)
 	}
 
 	function onEditClick(slug) {
