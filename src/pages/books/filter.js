@@ -16,9 +16,6 @@ export default function Filter() {
 	const [params, setParams, paramsRef] = useState()
 	const [genres, setGenres] = useState([])
 
-	/*
-	 *	Hooks
-	 */
 	useEffect(async () => {
 		setParams({ cursor: null, limit: BOOK_LIMIT, ...router.query })
 
@@ -32,9 +29,6 @@ export default function Filter() {
 		}
 	}, [router.query])
 
-	/*
-	 * Async Functions
-	 */
 
 	async function getNextBooks() {
 		const res = await getBooksByFilter(paramsRef.current)
@@ -67,9 +61,6 @@ export default function Filter() {
 		})
 	}
 
-	/*
-	 *	JSX
-	 */
 	return (
 		<>
 			<HeadTitle page="Filter" />

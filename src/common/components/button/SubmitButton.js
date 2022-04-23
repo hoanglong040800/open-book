@@ -14,7 +14,7 @@ export default function SubmitButton({
 				</Button>
 			)}
 
-			<Button variant="contained" color="secondary" onClick={onClick}>
+			<Button variant="contained" color="primary" onClick={onClick}>
 				{text}
 			</Button>
 		</Box>

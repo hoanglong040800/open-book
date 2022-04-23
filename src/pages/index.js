@@ -13,16 +13,10 @@ export default function Home() {
 	})
 	const [hasMore, setHasMore] = useState(true)
 
-	/*
-	 *	Hooks
-	 */
 	useEffect(() => {
 		getNextBooks()
 	}, [])
 
-	/*
-	 * Async Functions
-	 */
 	async function getNextBooks() {
 		const res = await getBooksByFilter(params)
 		if (res.data == null) {
@@ -33,9 +27,6 @@ export default function Home() {
 		setBooks([...books, ...res.data])
 	}
 
-	/*
-	 *	JSX
-	 */
 	return (
 		<>
 			<HeadTitle page="home" />
