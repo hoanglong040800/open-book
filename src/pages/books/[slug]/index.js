@@ -1,15 +1,14 @@
 import { createContext, useEffect, useState } from 'react'
 import { getSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
-import { USER_ROLES } from 'common/constants'
 import { CardContainer, HeadTitle } from 'common/components'
 import { RatingDisplay, RatingItem } from 'modules/rating/components'
 import { addRating, deleteRating, getRatingByBookId } from 'modules/rating/api'
 import { DetailBookContainer } from 'modules/books/components'
-import { getBookBySlug } from 'modules/books/api'
+import { deleteBook, getBookBySlug } from 'modules/books/api'
+import { addBookmark, deleteBookmark, getAllBookmarksByUser } from 'modules/bookmarks'
 
-
-const BookmarkContext = createContext()
+export const BookmarkContext = createContext()
 
 export async function getServerSideProps(ctx) {
 	const session = await getSession(ctx)
@@ -33,20 +32,34 @@ export default function ViewBook({ session, slug }) {
 	const [ratingList, setRatingList] = useState(null)
 	const [pointOverall, setPointOverall] = useState(0)
 	// bookmark
-	const [isBookmarked, setIsBookmarked] = useState()
-	const isViewer = session?.user.role === USER_ROLES.viewer
+	const [isBookmarked, setIsBookmarked] = useState(null)
 
 	useEffect(() => {
 		if (!bookInfo) getBookInfo()
-		else if (!ratingList) getRatings()
+		else {
+			initRatingsList()
+			initIsBookmarked()
+		}
 	}, [bookInfo])
+
+	/*
+	 * Books
+	 */
 
 	async function getBookInfo() {
 		const data = await getBookBySlug(slug)
 		setBookInfo(data)
 	}
 
-	async function getRatings() {
+	function onClickRead() {
+		router.push(`/books/${bookInfo.slug}/read`)
+	}
+
+	/*
+	 * Rating
+	 */
+
+	async function initRatingsList() {
 		const data = await getRatingByBookId(bookInfo.id)
 		setPointOverall(data?.point_overall)
 		setRatingList(data?.rating)
@@ -55,7 +68,7 @@ export default function ViewBook({ session, slug }) {
 
 	async function handleSubmitRating() {
 		await addRating(bookInfo.id, rating)
-		getRatings()
+		initRatingsList()
 	}
 
 	async function handleDeleteRating() {
@@ -64,7 +77,7 @@ export default function ViewBook({ session, slug }) {
 			item => item.user.id === session?.user.id,
 		)
 		await deleteRating(deleteItem.rating_id)
-		getRatings()
+		initRatingsList()
 	}
 
 	function checkCanComment(data, session) {
@@ -91,8 +104,18 @@ export default function ViewBook({ session, slug }) {
 		}))
 	}
 
-	function onClickRead() {
-		router.push(`/books/${bookInfo.slug}/read`)
+	/*
+	 * Bookmark
+	 */
+
+	async function initIsBookmarked() {
+		const data = await getAllBookmarksByUser()
+		setIsBookmarked(data.find(item => item.id === bookInfo.id))
+	}
+
+	async function handleToggleBookmark() {
+		isBookmarked ? await deleteBookmark(bookInfo.id) : await addBookmark(bookInfo.id)
+		setIsBookmarked(prev => !prev)
 	}
 
 	return (
@@ -100,7 +123,12 @@ export default function ViewBook({ session, slug }) {
 			<HeadTitle page="detail" />
 
 			<div style={styles.container}>
-				<BookmarkContext.Provider value={{ isBookmarked, isViewer }}>
+				<BookmarkContext.Provider
+					value={{
+						state: { isBookmarked },
+						dispatch: { handleToggleBookmark },
+					}}
+				>
 					<DetailBookContainer bookInfo={bookInfo} onClickRead={onClickRead} />
 				</BookmarkContext.Provider>
 
