@@ -21,17 +21,21 @@ export default function Dashboard({}) {
 		setAllUserBooks(storeBooks)
 	}
 
-	function onEditClick(slug) {
+	function handleEditClick(slug) {
 		router.push(`/books/${slug}/edit`)
 	}
 
-	function onDeleteClick(book) {
+	function handleDeleteClick(book) {
 		setSelectedBook(book)
 		setIsOpenConfirmModal(true)
 	}
 
 	function handleCloseConfirmModal() {
 		setIsOpenConfirmModal(false)
+	}
+
+	function handleAddBookClick() {
+		router.push('/books/new')
 	}
 
 	async function handleDeleteBook(bookId) {
@@ -49,10 +53,12 @@ export default function Dashboard({}) {
 
 			<h1>Dashboard of your {!isLoadingSession && session.user.full_name}</h1>
 
+			<SubmitButton text="Add book" onClick={handleAddBookClick} />
+
 			<BooksManageTable
 				rows={allUserBooks}
-				onEditClick={onEditClick}
-				onDeleteClick={onDeleteClick}
+				onEditClick={handleEditClick}
+				onDeleteClick={handleDeleteClick}
 			/>
 
 			<Modal

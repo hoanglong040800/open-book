@@ -56,7 +56,7 @@ export default function Footer() {
 					}}
 				/>
 				<Typography variant="subtitle2" className={classes.copyright}>
-					Copyright &copy; 2021 EBook Share
+					Copyright &copy; 2021 {WEB_NAME}
 				</Typography>
 			</Container>
 		</footer>

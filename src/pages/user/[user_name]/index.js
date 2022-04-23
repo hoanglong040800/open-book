@@ -11,22 +11,6 @@ import FormLayout from 'common/layouts/FormLayout'
 
 export default function ViewProfile() {
 	const classes = useStyle()
-	const gridItemProperty = {
-		property: {
-			item: true,
-			xs: 4,
-			sm: 5,
-			md: 4,
-			lg: 3,
-		},
-		value: {
-			item: true,
-			xs: 8,
-			sm: 7,
-			md: 8,
-			lg: 9,
-		},
-	}
 
 	const [profile, setProfile] = useState({})
 	const [session] = useSession()
@@ -34,26 +18,14 @@ export default function ViewProfile() {
 	const isStore = session?.user.role === USER_ROLES.store
 	const isUserProfile = session?.user.user_name === router.query.user_name
 
-	/*
-	 *  Hook
-	 */
-
 	useEffect(() => {
 		getUserInfo()
 	}, [])
-
-	/*
-	 *  Async Functions
-	 */
 
 	async function getUserInfo() {
 		const data = await getUserProfile()
 		setProfile(data)
 	}
-
-	/*
-	 *  Functions
-	 */
 
 	function handleEdit() {
 		router.push(`/user/${session.user.user_name}/edit`)
@@ -62,10 +34,6 @@ export default function ViewProfile() {
 	function handleViewDashboard() {
 		router.push(`/user/${session.user.user_name}/dashboard`)
 	}
-
-	/*
-	 *  JSX
-	 */
 
 	return (
 		<>
@@ -84,7 +52,14 @@ export default function ViewProfile() {
 						)}
 					</Grid>
 
-					<Grid item xs={12} sm={8} container className={classes.infoContainer}>
+					<Grid
+						item
+						container
+						xs={12}
+						sm={8}
+						alignItems="center"
+						className={classes.infoContainer}
+					>
 						<Grid {...gridItemProperty.property}>
 							<h3>Username</h3>
 						</Grid>
@@ -102,7 +77,7 @@ export default function ViewProfile() {
 						</Grid>
 
 						<Grid {...gridItemProperty.property}>
-							<h3>Full name</h3>
+							<h3>{isStore ? 'Store name' : 'Full name'}</h3>
 						</Grid>
 
 						<Grid {...gridItemProperty.value}>
@@ -117,13 +92,17 @@ export default function ViewProfile() {
 							<p>{profile?.role}</p>
 						</Grid>
 
-						<Grid {...gridItemProperty.property}>
-							<h3>Gender</h3>
-						</Grid>
+						{!isStore && (
+							<>
+								<Grid {...gridItemProperty.property}>
+									<h3>Gender</h3>
+								</Grid>
 
-						<Grid {...gridItemProperty.value}>
-							<p>{profile?.gender}</p>
-						</Grid>
+								<Grid {...gridItemProperty.value}>
+									<p>{profile?.gender}</p>
+								</Grid>
+							</>
+						)}
 					</Grid>
 				</Grid>
 
@@ -133,6 +112,23 @@ export default function ViewProfile() {
 			</FormLayout>
 		</>
 	)
+}
+
+const gridItemProperty = {
+	property: {
+		item: true,
+		xs: 4,
+		sm: 5,
+		md: 4,
+		lg: 3,
+	},
+	value: {
+		item: true,
+		xs: 8,
+		sm: 7,
+		md: 8,
+		lg: 9,
+	},
 }
 
 const useStyle = makeStyles(theme => ({
