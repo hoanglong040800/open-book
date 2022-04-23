@@ -1,18 +1,15 @@
-import HeadTitle from 'common/components/headtitle/HeadTitle'
-import { getBookBySlug } from 'modules/books/api/books.api'
-import {
-	addRating,
-	deleteRating,
-	getRatingByBookId,
-} from 'modules/rating/api/rating.api'
-import { useEffect } from 'react'
-import { useState } from 'react'
-import RatingItem from 'modules/rating/components/RatingItem'
+import { createContext, useEffect, useState } from 'react'
 import { getSession } from 'next-auth/client'
-import DetailBookContainer from 'modules/books/components/detail/DetailBookContainer'
-import RatingDisplay from 'modules/rating/components/RatingDisplay'
-import CardContainer from 'common/components/cardcontainer/CardContainer'
 import { useRouter } from 'next/router'
+import { USER_ROLES } from 'common/constants'
+import { CardContainer, HeadTitle } from 'common/components'
+import { RatingDisplay, RatingItem } from 'modules/rating/components'
+import { addRating, deleteRating, getRatingByBookId } from 'modules/rating/api'
+import { DetailBookContainer } from 'modules/books/components'
+import { getBookBySlug } from 'modules/books/api'
+
+
+const BookmarkContext = createContext()
 
 export async function getServerSideProps(ctx) {
 	const session = await getSession(ctx)
@@ -26,27 +23,23 @@ export async function getServerSideProps(ctx) {
 
 export default function ViewBook({ session, slug }) {
 	const router = useRouter()
-	const [canComment, setCanComment] = useState(false)
 	const [bookInfo, setBookInfo] = useState(null)
+	// rating
+	const [canComment, setCanComment] = useState(false)
 	const [rating, setRating] = useState({
 		comment: '',
 		point: 1,
 	})
 	const [ratingList, setRatingList] = useState(null)
 	const [pointOverall, setPointOverall] = useState(0)
-
-	/*
-	 *  Hook
-	 */
+	// bookmark
+	const [isBookmarked, setIsBookmarked] = useState()
+	const isViewer = session?.user.role === USER_ROLES.viewer
 
 	useEffect(() => {
 		if (!bookInfo) getBookInfo()
 		else if (!ratingList) getRatings()
 	}, [bookInfo])
-
-	/*
-	 *  Async Functions
-	 */
 
 	async function getBookInfo() {
 		const data = await getBookBySlug(slug)
@@ -73,10 +66,6 @@ export default function ViewBook({ session, slug }) {
 		await deleteRating(deleteItem.rating_id)
 		getRatings()
 	}
-
-	/*
-	 *  Functions
-	 */
 
 	function checkCanComment(data, session) {
 		// logined
@@ -106,16 +95,14 @@ export default function ViewBook({ session, slug }) {
 		router.push(`/books/${bookInfo.slug}/read`)
 	}
 
-	/*
-	 *  JSX
-	 */
-
 	return (
 		<>
 			<HeadTitle page="detail" />
 
 			<div style={styles.container}>
-				<DetailBookContainer bookInfo={bookInfo} onClickRead={onClickRead} />
+				<BookmarkContext.Provider value={{ isBookmarked, isViewer }}>
+					<DetailBookContainer bookInfo={bookInfo} onClickRead={onClickRead} />
+				</BookmarkContext.Provider>
 
 				<CardContainer>
 					{canComment && (
@@ -143,10 +130,6 @@ export default function ViewBook({ session, slug }) {
 		</>
 	)
 }
-
-/*
- * Style
- */
 
 const styles = {
 	container: {
