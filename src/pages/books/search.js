@@ -18,9 +18,6 @@ export default function Search() {
 		limit: BOOK_LIMIT,
 	})
 
-	/*
-	 *	Hooks
-	 */
 	useEffect(async () => {
 		setParams({ ...params, cursor: null, search_query: router.query.q })
 
@@ -30,10 +27,6 @@ export default function Search() {
 			getNextBooks()
 		}
 	}, [router.query.q])
-
-	/*
-	 * Async Functions
-	 */
 
 	async function getNextBooks() {
 		const res = await getBooksBySearch(paramsRef.current)
@@ -47,9 +40,6 @@ export default function Search() {
 		setBooks([...booksRef.current, ...res.data])
 	}
 
-	/*
-	 *	JSX
-	 */
 	return (
 		<>
 			<HeadTitle page="Search" />
