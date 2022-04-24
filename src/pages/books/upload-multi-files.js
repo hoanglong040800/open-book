@@ -1,11 +1,23 @@
+import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
 import { HeadTitle, SubmitButton } from 'common/components'
 import { USER_ROLES } from 'common/constants'
 import { FormLayout } from 'common/layouts'
 import { uploadFileWithProgress } from 'modules/upload/api/upload.api'
 import { useState } from 'react'
 
-export default function UploadThumbnails() {
+const IMAGES = {
+	type: 'images',
+	accept: 'image/png, image/gif, image/jpeg',
+}
+
+const PDF = {
+	type: 'PDF',
+	accept: '.pdf',
+}
+
+export default function UploadMultiFiles() {
 	const [selectedFiles, setSelectedFiles] = useState([])
+	const [uploadType, setUploadType] = useState(IMAGES)
 
 	function handleUploadFiles(e) {
 		const fileList = e.target.files
@@ -42,18 +54,34 @@ export default function UploadThumbnails() {
 
 		clonedSelectedFile[fileIndex].percentCompleted = percentCompleted
 
-		// need to reset [] before setstate
+		// need to reset before setstate so UI can update
 		setSelectedFiles([])
 		setSelectedFiles(clonedSelectedFile)
 	}
 
+	function handleToggleUploadType(e, value) {
+		setUploadType(value == IMAGES.type ? IMAGES : PDF)
+	}
+
 	return (
 		<>
-			<HeadTitle page="Upload Thumbnails" />
+			<HeadTitle page={`Upload ${uploadType.type}`} />
 
-			<FormLayout title="Upload Thumbnails">
-				<p>
-					Upload thumbnails here to retreive multiple links used for add
+			<FormLayout title={`Upload ${uploadType.type}`}>
+				<ToggleButtonGroup
+					value={uploadType.type}
+					exclusive
+					orientation="horizontal"
+					color="secondary"
+					size="small"
+					onChange={handleToggleUploadType}
+				>
+					<ToggleButton value="images">Images</ToggleButton>
+					<ToggleButton value="PDF">PDF</ToggleButton>
+				</ToggleButtonGroup>
+
+				<p style={{ marginTop: 30 }}>
+					Upload {uploadType.type} here to retreive multiple links used for add
 					multiple books later
 				</p>
 
@@ -61,7 +89,7 @@ export default function UploadThumbnails() {
 					multiple
 					required
 					type="file"
-					accept="image/png, image/gif, image/jpeg"
+					accept={uploadType.accept}
 					onChange={handleUploadFiles}
 				/>
 
@@ -84,5 +112,5 @@ export default function UploadThumbnails() {
 	)
 }
 
-UploadThumbnails.auth = true
-UploadThumbnails.allowedRole = USER_ROLES.store
+UploadMultiFiles.auth = true
+UploadMultiFiles.allowedRole = USER_ROLES.store

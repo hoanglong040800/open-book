@@ -10,7 +10,7 @@ import {
 	URL_ADD_BOOK,
 	URL_ADD_MULTI_BOOKS,
 	URL_EDIT_BOOK,
-	URL_UPLOAD_THUMBNAILS,
+	URL_UPLOAD_MULTI_FILES,
 } from 'common/constants'
 import Link from 'next/link'
 
@@ -79,8 +79,10 @@ export default function Dashboard({}) {
 				textSecondary="Add Multi Books"
 			/>
 
-			<Link href={URL_UPLOAD_THUMBNAILS}>
-				<a style={styles.link}>Want to prepare thumbnail links? Click here</a>
+			<Link href={URL_UPLOAD_MULTI_FILES}>
+				<a style={styles.link}>
+					Want to prepare thumbnails/pdf links? Click here
+				</a>
 			</Link>
 
 			<BooksManageTable
