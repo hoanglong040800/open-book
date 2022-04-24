@@ -58,9 +58,13 @@ export default function ViewProfile() {
 							)}
 						</div>
 
-						{isUserProfile && (
-							<Button variant="contained" color="primary" onClick={handleEdit}>
-								Edit {isStore ? 'Store' : 'Profile'}
+						{isStore && isUserProfile && (
+							<Button
+								variant="contained"
+								color="secondary"
+								onClick={handleViewDashboard}
+							>
+								View Dashboard
 							</Button>
 						)}
 					</Grid>
@@ -119,9 +123,15 @@ export default function ViewProfile() {
 					</Grid>
 				</Grid>
 
-				{isStore && isUserProfile && (
-					<SubmitButton text="View Dashboard" onClick={handleViewDashboard} />
-				)}
+				{
+					// only owner can edit
+					isUserProfile && (
+						<SubmitButton
+							text={`Edit ${isStore ? 'Store' : 'Profile'}`}
+							onClick={handleEdit}
+						/>
+					)
+				}
 			</FormLayout>
 
 			{

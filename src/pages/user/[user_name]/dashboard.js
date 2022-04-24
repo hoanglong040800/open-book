@@ -1,12 +1,19 @@
 import { useEffect, useState } from 'react'
-import HeadTitle from 'common/components/headtitle/HeadTitle'
-import { USER_ROLES } from 'common/constants/common.constant'
-import { deleteBook, getAllBooks } from 'modules/books/api/books.api'
+import { HeadTitle, SubmitButton } from 'common/components'
+import { deleteBook, getAllBooks } from 'modules/books/api'
 import BooksManageTable from 'modules/books/components/table/BooksManageTable'
 import { Divider, Fade, Modal, Paper } from '@material-ui/core'
-import SubmitButton from 'common/components/button/SubmitButton'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/client'
+import {
+	USER_ROLES,
+	URL_ADD_BOOK,
+	URL_ADD_MULTI_BOOKS,
+	URL_EDIT_BOOK,
+	URL_UPLOAD_THUMBNAILS,
+} from 'common/constants'
+import Link from 'next/link'
+import { StylesContext } from '@material-ui/styles'
 
 export default function Dashboard({}) {
 	const router = useRouter()
@@ -17,25 +24,37 @@ export default function Dashboard({}) {
 
 	async function getAllUserBooks() {
 		const data = await getAllBooks()
-		const storeBooks = data.filter(book => book.owner_id === session.user.id)
+		const storeBooks = data
+			.reverse()
+			.filter(book => book.owner_id === session.user.id)
 		setAllUserBooks(storeBooks)
 	}
 
-	function handleEditClick(slug) {
-		router.push(`/books/${slug}/edit`)
+	// add
+
+	function handleAddBookClick() {
+		router.push(URL_ADD_BOOK)
 	}
 
-	function handleDeleteClick(book) {
-		setSelectedBook(book)
-		setIsOpenConfirmModal(true)
+	function handleAddMultiClick() {
+		router.push(URL_ADD_MULTI_BOOKS)
 	}
+
+	// edit
+
+	function handleEditClick(slug) {
+		router.push(URL_EDIT_BOOK(slug))
+	}
+
+	// delete
 
 	function handleCloseConfirmModal() {
 		setIsOpenConfirmModal(false)
 	}
 
-	function handleAddBookClick() {
-		router.push('/books/new')
+	function handleDeleteClick(book) {
+		setSelectedBook(book)
+		setIsOpenConfirmModal(true)
 	}
 
 	async function handleDeleteBook(bookId) {
@@ -53,7 +72,18 @@ export default function Dashboard({}) {
 
 			<h1>Dashboard of my {!isLoadingSession && session.user.full_name}</h1>
 
-			<SubmitButton text="Add book" onClick={handleAddBookClick} />
+			<SubmitButton
+				text="Add Book"
+				onClick={handleAddBookClick}
+				onSecondaryClick={handleAddMultiClick}
+				textSecondary="Add Multi Books"
+			/>
+
+			<Link href={URL_UPLOAD_THUMBNAILS}>
+				<a style={styles.link}>
+					Want to prepare thumbnail links? Click here
+				</a>
+			</Link>
 
 			<BooksManageTable
 				rows={allUserBooks}
@@ -64,10 +94,10 @@ export default function Dashboard({}) {
 			<Modal
 				open={isOpenConfirmModal}
 				onClose={handleCloseConfirmModal}
-				style={style.modal}
+				style={styles.modal}
 			>
 				<Fade in={isOpenConfirmModal}>
-					<Paper style={style.modalContent}>
+					<Paper style={styles.modalContent}>
 						<h3>Warning</h3>
 
 						<p>
@@ -93,7 +123,7 @@ export default function Dashboard({}) {
 Dashboard.auth = true
 Dashboard.allowedRole = USER_ROLES.store
 
-const style = {
+const styles = {
 	modal: {
 		top: '30%',
 	},
@@ -102,5 +132,12 @@ const style = {
 		margin: 'auto',
 		maxWidth: 500,
 		padding: 20,
+	},
+
+	link: {
+		display: 'flex',
+		fontSize: '1rem',
+		justifyContent: 'flex-end',
+		margin: '30px 0 20px 0',
 	},
 }

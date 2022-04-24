@@ -62,7 +62,7 @@ export default function NavProfile() {
 				transformOrigin={{ vertical: 'top', horizontal: 'center' }}
 			>
 				<MenuItem onClick={handleSelectProfile}>
-					<b>{session.user.user_name}</b>
+					<b>{session?.user.full_name || session?.user.user_name}</b>
 				</MenuItem>
 
 				<MenuItem onClick={handleSignout}>Log out</MenuItem>
