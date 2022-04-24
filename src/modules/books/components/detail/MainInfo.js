@@ -1,37 +1,41 @@
-import React from 'react'
+import { useSession } from 'next-auth/client'
+import { useContext } from 'react'
 import { Box, IconButton, makeStyles, Typography } from '@material-ui/core'
-import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder'
-import BookmarkIcon from '@material-ui/icons/Bookmark'
-import { useState } from 'react'
 import Link from 'next/link'
+import { USER_ROLES } from 'common/constants'
+import { BookmarkContext } from 'pages/books/[slug]'
+import { Bookmark, BookmarkBorder } from '@material-ui/icons'
 
-export default function MainInfo({ bookInfo }) {
-	const [bookmark, setBookmark] = useState(false)
-	const { name, authors } = bookInfo
+export default function MainInfo({ bookInfo: { name, authors } }) {
 	const mui = useStyles()
-	const href = `/books/filter?authors=${authors}`
-
-	function handleClick() {
-		setBookmark(prev => !prev)
-	}
+	const [session] = useSession()
+	const filterAuthorsUrl = `/books/filter?authors=${authors}`
+	const {
+		state: { isBookmarked },
+		dispatch: { handleToggleBookmark },
+	} = useContext(BookmarkContext)
 
 	return (
 		<>
 			<Box className={mui.titleContainer}>
 				<Typography variant="h4">{name}</Typography>
 
-				<IconButton color="secondary" onClick={handleClick}>
-					{bookmark ? (
-						<BookmarkIcon className={mui.bookmark} />
-					) : (
-						<BookmarkBorderIcon className={mui.bookmark} />
-					)}
+				<IconButton color="secondary" onClick={handleToggleBookmark}>
+					{
+						/* only viewer can see bookmark */
+						session?.user.role === USER_ROLES.viewer &&
+							(isBookmarked ? (
+								<Bookmark className={mui.bookmark} />
+							) : (
+								<BookmarkBorder className={mui.bookmark} />
+							))
+					}
 				</IconButton>
 			</Box>
 
 			<Typography variant="subtitle1">
 				by{' '}
-				<Link href={href}>
+				<Link href={filterAuthorsUrl}>
 					<a className={mui.link}>{authors}</a>
 				</Link>
 			</Typography>

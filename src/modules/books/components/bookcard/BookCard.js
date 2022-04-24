@@ -11,7 +11,7 @@ import Link from 'next/link'
 
 export default function BookCard({ item }) {
 	const mui = useStyles()
-	const { id, thumbnail, name, point, view, slug } = item
+	const { thumbnail, name, point, view, slug } = item
 
 	return (
 		<Link href={`/books/${slug}`} passHref>

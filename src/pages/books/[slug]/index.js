@@ -1,18 +1,14 @@
-import HeadTitle from 'common/components/headtitle/HeadTitle'
-import { getBookBySlug } from 'modules/books/api/books.api'
-import {
-	addRating,
-	deleteRating,
-	getRatingByBookId,
-} from 'modules/rating/api/rating.api'
-import { useEffect } from 'react'
-import { useState } from 'react'
-import RatingItem from 'modules/rating/components/RatingItem'
+import { createContext, useEffect, useState } from 'react'
 import { getSession } from 'next-auth/client'
-import DetailBookContainer from 'modules/books/components/detail/DetailBookContainer'
-import RatingDisplay from 'modules/rating/components/RatingDisplay'
-import CardContainer from 'common/components/cardcontainer/CardContainer'
 import { useRouter } from 'next/router'
+import { CardContainer, HeadTitle } from 'common/components'
+import { RatingDisplay, RatingItem } from 'modules/rating/components'
+import { addRating, deleteRating, getRatingByBookId } from 'modules/rating/api'
+import { DetailBookContainer } from 'modules/books/components'
+import { deleteBook, getBookBySlug } from 'modules/books/api'
+import { addBookmark, deleteBookmark, getAllBookmarksByUser } from 'modules/bookmarks'
+
+export const BookmarkContext = createContext()
 
 export async function getServerSideProps(ctx) {
 	const session = await getSession(ctx)
@@ -26,26 +22,28 @@ export async function getServerSideProps(ctx) {
 
 export default function ViewBook({ session, slug }) {
 	const router = useRouter()
-	const [canComment, setCanComment] = useState(false)
 	const [bookInfo, setBookInfo] = useState(null)
+	// rating
+	const [canComment, setCanComment] = useState(false)
 	const [rating, setRating] = useState({
 		comment: '',
 		point: 1,
 	})
 	const [ratingList, setRatingList] = useState(null)
 	const [pointOverall, setPointOverall] = useState(0)
-
-	/*
-	 *  Hook
-	 */
+	// bookmark
+	const [isBookmarked, setIsBookmarked] = useState(null)
 
 	useEffect(() => {
 		if (!bookInfo) getBookInfo()
-		else if (!ratingList) getRatings()
+		else {
+			initRatingsList()
+			initIsBookmarked()
+		}
 	}, [bookInfo])
 
 	/*
-	 *  Async Functions
+	 * Books
 	 */
 
 	async function getBookInfo() {
@@ -53,7 +51,15 @@ export default function ViewBook({ session, slug }) {
 		setBookInfo(data)
 	}
 
-	async function getRatings() {
+	function onClickRead() {
+		router.push(`/books/${bookInfo.slug}/read`)
+	}
+
+	/*
+	 * Rating
+	 */
+
+	async function initRatingsList() {
 		const data = await getRatingByBookId(bookInfo.id)
 		setPointOverall(data?.point_overall)
 		setRatingList(data?.rating)
@@ -62,7 +68,7 @@ export default function ViewBook({ session, slug }) {
 
 	async function handleSubmitRating() {
 		await addRating(bookInfo.id, rating)
-		getRatings()
+		initRatingsList()
 	}
 
 	async function handleDeleteRating() {
@@ -71,12 +77,8 @@ export default function ViewBook({ session, slug }) {
 			item => item.user.id === session?.user.id,
 		)
 		await deleteRating(deleteItem.rating_id)
-		getRatings()
+		initRatingsList()
 	}
-
-	/*
-	 *  Functions
-	 */
 
 	function checkCanComment(data, session) {
 		// logined
@@ -102,20 +104,34 @@ export default function ViewBook({ session, slug }) {
 		}))
 	}
 
-	function onClickRead() {
-		router.push(`/books/${bookInfo.slug}/read`)
+	/*
+	 * Bookmark
+	 */
+
+	async function initIsBookmarked() {
+		const data = await getAllBookmarksByUser()
+		// check user's bookmarks contain this book
+		setIsBookmarked(data.find(item => item.id === bookInfo.id))
 	}
 
-	/*
-	 *  JSX
-	 */
+	async function handleToggleBookmark() {
+		isBookmarked ? await deleteBookmark(bookInfo.id) : await addBookmark(bookInfo.id)
+		setIsBookmarked(prev => !prev)
+	}
 
 	return (
 		<>
 			<HeadTitle page="detail" />
 
 			<div style={styles.container}>
-				<DetailBookContainer bookInfo={bookInfo} onClickRead={onClickRead} />
+				<BookmarkContext.Provider
+					value={{
+						state: { isBookmarked },
+						dispatch: { handleToggleBookmark },
+					}}
+				>
+					<DetailBookContainer bookInfo={bookInfo} onClickRead={onClickRead} />
+				</BookmarkContext.Provider>
 
 				<CardContainer>
 					{canComment && (
@@ -143,10 +159,6 @@ export default function ViewBook({ session, slug }) {
 		</>
 	)
 }
-
-/*
- * Style
- */
 
 const styles = {
 	container: {

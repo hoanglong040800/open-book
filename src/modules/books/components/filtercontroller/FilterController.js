@@ -23,10 +23,6 @@ export function FilterController({ params, onChangeFilter, genres }) {
 		}
 	}, [params])
 
-	/*
-	 * Functions
-	 */
-
 	function onClear() {
 		reset({
 			authors: '',
@@ -36,12 +32,10 @@ export function FilterController({ params, onChangeFilter, genres }) {
 		})
 	}
 
-	/*
-	 * JSX
-	 */
-
 	return (
 		<CardContainer>
+			<h1>Filter books</h1>
+
 			<Grid {...props.gridContainer}>
 				<Grid {...props.gridItem}>
 					<TextFieldController

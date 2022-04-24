@@ -1,30 +1,38 @@
-import HeadTitle from 'common/components/headtitle/HeadTitle'
 import { useEffect, useState } from 'react'
-import { getUserProfile } from 'modules/users/api/users.api'
 import { Box, Button, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
-import { USER_ROLES } from 'common/constants/common.constant'
-import SubmitButton from 'common/components/button/SubmitButton'
-import FormLayout from 'common/layouts/FormLayout'
+import { USER_ROLES } from 'common/constants'
+import { HeadTitle, SubmitButton } from 'common/components'
+import { getUserProfile } from 'modules/users/api/users.api'
+import { FormLayout } from 'common/layouts'
+import { getAllBookmarksByUser } from 'modules/bookmarks'
+import { BookList } from 'modules/books/components'
+import { StorefrontTwoTone, AccountCircle } from '@material-ui/icons'
 
 export default function ViewProfile() {
 	const classes = useStyle()
-
 	const [profile, setProfile] = useState({})
+	const [userBookmarks, setUserBookmarks] = useState(null)
 	const [session] = useSession()
 	const router = useRouter()
 	const isStore = session?.user.role === USER_ROLES.store
 	const isUserProfile = session?.user.user_name === router.query.user_name
 
 	useEffect(() => {
-		getUserInfo()
+		initUserInfo()
+		initUserBookmarks()
 	}, [])
 
-	async function getUserInfo() {
+	async function initUserInfo() {
 		const data = await getUserProfile()
 		setProfile(data)
+	}
+
+	async function initUserBookmarks() {
+		const data = await getAllBookmarksByUser()
+		setUserBookmarks(data)
 	}
 
 	function handleEdit() {
@@ -42,12 +50,17 @@ export default function ViewProfile() {
 			<FormLayout title="" maxWidth={600}>
 				<Grid container>
 					<Grid item xs={12} sm={4} className={classes.profileTitle}>
-						{/* todo: avatar based on roles */}
-						<h1>Profile</h1>
+						<div className={classes.avatar}>
+							{isStore ? (
+								<StorefrontTwoTone color="secondary" fontSize="inherit" />
+							) : (
+								<AccountCircle fontSize="inherit" />
+							)}
+						</div>
 
 						{isUserProfile && (
 							<Button variant="contained" color="primary" onClick={handleEdit}>
-								Edit
+								Edit {isStore ? 'Store' : 'Profile'}
 							</Button>
 						)}
 					</Grid>
@@ -110,6 +123,16 @@ export default function ViewProfile() {
 					<SubmitButton text="View Dashboard" onClick={handleViewDashboard} />
 				)}
 			</FormLayout>
+
+			{
+				// bookmarks for viewer only
+				isUserProfile && !isStore && userBookmarks && (
+					<Box mt={5}>
+						<h1>Your bookmarks list</h1>
+						<BookList list={userBookmarks} hasMore={false} />
+					</Box>
+				)
+			}
 		</>
 	)
 }
@@ -132,6 +155,10 @@ const gridItemProperty = {
 }
 
 const useStyle = makeStyles(theme => ({
+	avatar: {
+		fontSize: 50,
+	},
+
 	profileTitle: {
 		textAlign: 'center',
 	},
