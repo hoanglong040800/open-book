@@ -51,7 +51,7 @@ export default function Dashboard({}) {
 		<>
 			<HeadTitle page="Store Dashboard" />
 
-			<h1>Dashboard of your {!isLoadingSession && session.user.full_name}</h1>
+			<h1>Dashboard of my {!isLoadingSession && session.user.full_name}</h1>
 
 			<SubmitButton text="Add book" onClick={handleAddBookClick} />
 

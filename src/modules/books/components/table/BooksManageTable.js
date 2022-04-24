@@ -69,8 +69,7 @@ export default function BooksManageTable({
 									<TableCell align="center">{row.published_year}</TableCell>
 
 									<TableCell align="left">
-										{/* todo uncomment */}
-										{/* {row.genres.map(genre => genre.name_en).join(', ')} */}
+										{row.genres.map(genre => genre.name_en).join(', ')}
 									</TableCell>
 
 									<TableCell align="center">{row.view}</TableCell>

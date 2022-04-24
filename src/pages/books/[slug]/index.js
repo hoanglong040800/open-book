@@ -110,6 +110,7 @@ export default function ViewBook({ session, slug }) {
 
 	async function initIsBookmarked() {
 		const data = await getAllBookmarksByUser()
+		// check user's bookmarks contain this book
 		setIsBookmarked(data.find(item => item.id === bookInfo.id))
 	}
 
