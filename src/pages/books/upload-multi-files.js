@@ -3,6 +3,7 @@ import { HeadTitle, SubmitButton } from 'common/components'
 import { USER_ROLES } from 'common/constants'
 import { FormLayout } from 'common/layouts'
 import { uploadFileWithProgress } from 'modules/upload/api/upload.api'
+import UploadProgressTable from 'modules/upload/components/UploadProgressTable'
 import { useState } from 'react'
 
 const IMAGES = {
@@ -45,15 +46,18 @@ export default function UploadMultiFiles() {
 				updateProgressBar,
 			)
 
-			// console.log(fileIndex, link_storage)
+			console.log(fileIndex, link_storage)
+
+			let clonedSelectedFile = selectedFiles
+			clonedSelectedFile[fileIndex].link_storage = link_storage
+			setSelectedFiles([])
+			setSelectedFiles(clonedSelectedFile)
 		})
 	}
 
 	async function updateProgressBar(percentCompleted, fileIndex) {
 		let clonedSelectedFile = selectedFiles
-
 		clonedSelectedFile[fileIndex].percentCompleted = percentCompleted
-
 		// need to reset before setstate so UI can update
 		setSelectedFiles([])
 		setSelectedFiles(clonedSelectedFile)
@@ -94,20 +98,9 @@ export default function UploadMultiFiles() {
 				/>
 
 				<SubmitButton text="Submit" onClick={handleSubmit} />
-
-				{selectedFiles?.map((item, index) => (
-					<div
-						style={{ display: 'flex', gap: 10, alignItems: 'center' }}
-						key={index}
-					>
-						<h3>{index}</h3>
-
-						<p>{item.name}</p>
-
-						<b>{item.percentCompleted}%</b>
-					</div>
-				))}
 			</FormLayout>
+
+			<UploadProgressTable selectedFiles={selectedFiles} />
 		</>
 	)
 }
