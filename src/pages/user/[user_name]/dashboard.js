@@ -13,7 +13,6 @@ import {
 	URL_UPLOAD_THUMBNAILS,
 } from 'common/constants'
 import Link from 'next/link'
-import { StylesContext } from '@material-ui/styles'
 
 export default function Dashboard({}) {
 	const router = useRouter()
@@ -60,6 +59,7 @@ export default function Dashboard({}) {
 	async function handleDeleteBook(bookId) {
 		await deleteBook(bookId)
 		handleCloseConfirmModal()
+		setAllUserBooks(allUserBooks.filter(book => book.id != bookId))
 	}
 
 	useEffect(async () => {
@@ -80,9 +80,7 @@ export default function Dashboard({}) {
 			/>
 
 			<Link href={URL_UPLOAD_THUMBNAILS}>
-				<a style={styles.link}>
-					Want to prepare thumbnail links? Click here
-				</a>
+				<a style={styles.link}>Want to prepare thumbnail links? Click here</a>
 			</Link>
 
 			<BooksManageTable
