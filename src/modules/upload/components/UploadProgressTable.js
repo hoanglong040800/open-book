@@ -7,9 +7,14 @@ import {
 	TableHead,
 	TableRow,
 	LinearProgress,
+	IconButton,
 } from '@material-ui/core'
+import { FileCopyOutlined } from '@material-ui/icons'
 
-export default function UploadProgressTable({ selectedFiles }) {
+export default function UploadProgressTable({
+	selectedFiles,
+	handleCopyLinksToClipboard,
+}) {
 	return (
 		<>
 			<TableContainer component={Paper}>
@@ -20,7 +25,17 @@ export default function UploadProgressTable({ selectedFiles }) {
 
 							<TableCell width={300}>File names</TableCell>
 
-							<TableCell width={500}>Link</TableCell>
+							<TableCell width={500}>
+								Link
+								
+								<IconButton
+									size="small"
+									onClick={handleCopyLinksToClipboard}
+									style={styles.copyIcon}
+								>
+									<FileCopyOutlined fontSize="small" />
+								</IconButton>
+							</TableCell>
 
 							<TableCell>Percent Completed</TableCell>
 						</TableRow>
@@ -65,5 +80,9 @@ const styles = {
 	progressLabel: {
 		textAlign: 'right',
 		margin: '5px 0 0 0',
+	},
+
+	copyIcon: {
+		marginLeft: '10px',
 	},
 }

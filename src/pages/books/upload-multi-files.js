@@ -1,5 +1,5 @@
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
-import { HeadTitle, SubmitButton } from 'common/components'
+import { AlertSnackbar, HeadTitle, SubmitButton } from 'common/components'
 import { USER_ROLES } from 'common/constants'
 import { FormLayout } from 'common/layouts'
 import { uploadFileWithProgress } from 'modules/upload/api/upload.api'
@@ -19,6 +19,7 @@ const PDF = {
 export default function UploadMultiFiles() {
 	const [selectedFiles, setSelectedFiles] = useState([])
 	const [uploadType, setUploadType] = useState(IMAGES)
+	const [isAlertOpen, setIsAlertOpen] = useState(false)
 
 	function handleUploadFiles(e) {
 		const fileList = e.target.files
@@ -46,10 +47,9 @@ export default function UploadMultiFiles() {
 				updateProgressBar,
 			)
 
-			console.log(fileIndex, link_storage)
-
 			let clonedSelectedFile = selectedFiles
 			clonedSelectedFile[fileIndex].link_storage = link_storage
+			// need to reset before setstate so UI can update
 			setSelectedFiles([])
 			setSelectedFiles(clonedSelectedFile)
 		})
@@ -65,6 +65,16 @@ export default function UploadMultiFiles() {
 
 	function handleToggleUploadType(e, value) {
 		setUploadType(value == IMAGES.type ? IMAGES : PDF)
+	}
+
+	function handleCopyLinksToClipboard() {
+		const copiedLinks = selectedFiles.map(item => item.link_storage).join('\n')
+		navigator.clipboard.writeText(copiedLinks)
+		setIsAlertOpen(true)
+	}
+
+	function handleCloseAlert() {
+		setIsAlertOpen(false)
 	}
 
 	return (
@@ -100,7 +110,17 @@ export default function UploadMultiFiles() {
 				<SubmitButton text="Submit" onClick={handleSubmit} />
 			</FormLayout>
 
-			<UploadProgressTable selectedFiles={selectedFiles} />
+			<UploadProgressTable
+				selectedFiles={selectedFiles}
+				handleCopyLinksToClipboard={handleCopyLinksToClipboard}
+			/>
+
+			<AlertSnackbar
+				open={isAlertOpen}
+				onClose={handleCloseAlert}
+				severity="success"
+				message="Copied links to clipboard"
+			/>
 		</>
 	)
 }
