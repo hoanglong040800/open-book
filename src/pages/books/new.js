@@ -55,10 +55,6 @@ export default function NewBook({ session }) {
 		message: '',
 	})
 
-	/*
-	 *  Async Functions
-	 */
-
 	async function onSubmit(data) {
 		data.slug = slugify(data.name)
 		// change array obj -> array int so BE can receive
@@ -69,21 +65,15 @@ export default function NewBook({ session }) {
 		setOpenSnackbar(true)
 	}
 
-	/*
-	 *  Functions
-	 */
+	function onError(data){
 
-	function onError(error) {}
+	}
 
 	function handleCloseSnackbar() {
 		setOpenSnackbar(false)
 		alertProps.severity === 'success' &&
 			router.push(`/books/${slugify(watch('name'))}`)
 	}
-
-	/*
-	 *  JSX
-	 */
 
 	return (
 		<>
@@ -129,7 +119,6 @@ export default function NewBook({ session }) {
 					label="Genres"
 					options={GENRES}
 					optionLabel="name_en"
-					defaultValue={GENRES}
 					required
 					setValue={setValue}
 					control={control}

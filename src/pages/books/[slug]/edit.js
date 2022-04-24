@@ -1,21 +1,23 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { MenuItem } from '@material-ui/core'
-import AlertSnackbar from 'common/components/alertsnackbar/AlertSnackbar'
-import SubmitButton from 'common/components/button/SubmitButton'
-import HeadTitle from 'common/components/headtitle/HeadTitle'
-import AutocompleteController from 'common/components/input/AutocompleteController'
-import SelectController from 'common/components/input/SelectController'
-import TextAreaController from 'common/components/input/TextAreaController'
-import TextFieldController from 'common/components/input/TextFieldController'
-import { GENRES, USER_ROLES } from 'common/constants/common.constant'
-import FormLayout from 'common/layouts/FormLayout'
-import { EDIT_BOOK_SCHEMA } from 'common/schema/form-validation.schema'
-import { handleSimpleServiceError } from 'common/utils/common.util'
-import { getBookBySlug, updateBookInfo } from 'modules/books/api/books.api'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import slugify from 'slugify'
+import { MenuItem } from '@material-ui/core'
+import {
+	AlertSnackbar,
+	SubmitButton,
+	HeadTitle,
+	AutocompleteController,
+	SelectController,
+	TextAreaController,
+	TextFieldController,
+} from 'common/components'
+import { GENRES, USER_ROLES } from 'common/constants'
+import { FormLayout } from 'common/layouts'
+import { EDIT_BOOK_SCHEMA } from 'common/schema'
+import { handleSimpleServiceError } from 'common/utils'
+import { getBookBySlug, updateBookInfo } from 'modules/books/api'
 
 export async function getServerSideProps(ctx) {
 	return {
@@ -38,16 +40,12 @@ export default function EditBook({ slug, session }) {
 		defaultValues: {},
 	})
 	const router = useRouter()
-	const [bookInfo, setBookInfo] = useState()
+	const [bookInfo, setBookInfo] = useState(null)
 	const [openSnackbar, setOpenSnackbar] = useState(false)
 	const [alertProps, setAlertProps] = useState({
 		severity: '',
 		message: '',
 	})
-
-	/*
-	 * Hook
-	 */
 
 	useEffect(() => {
 		async function getBookInfo() {
@@ -59,10 +57,6 @@ export default function EditBook({ slug, session }) {
 		getBookInfo()
 	}, [])
 
-	/*
-	 *  Async Functions
-	 */
-
 	async function onSubmit(data) {
 		data.slug = slugify(data.name)
 		// change array obj -> array int so BE can receive
@@ -73,10 +67,6 @@ export default function EditBook({ slug, session }) {
 		setOpenSnackbar(true)
 	}
 
-	/*
-	 * Functions
-	 */
-
 	function onError(error) {}
 
 	function handleCloseSnackbar() {
@@ -85,85 +75,83 @@ export default function EditBook({ slug, session }) {
 			router.push(`/books/${slugify(watch('name'))}`)
 	}
 
-	/*
-	 *  JSX
-	 */
-
 	return (
 		<>
 			<HeadTitle page="Edit book" />
 
-			<FormLayout title="Edit book">
-				<TextFieldController
-					name="name"
-					label="Name"
-					required
-					control={control}
-					errors={errors}
-				/>
+			{bookInfo && (
+				<FormLayout title="Edit book">
+					<TextFieldController
+						name="name"
+						label="Name"
+						required
+						control={control}
+						errors={errors}
+					/>
 
-				<TextFieldController
-					name="authors"
-					label="Authors"
-					required
-					control={control}
-					errors={errors}
-				/>
+					<TextFieldController
+						name="authors"
+						label="Authors"
+						required
+						control={control}
+						errors={errors}
+					/>
 
-				<AutocompleteController
-					name="genres"
-					label="Genres"
-					options={GENRES}
-					optionLabel="name_en"
-					defaultValue={GENRES}
-					required
-					setValue={setValue}
-					control={control}
-					errors={errors}
-				/>
+					<AutocompleteController
+						name="genres"
+						label="Genres"
+						options={GENRES}
+						optionLabel="name_en"
+						defaultValue={bookInfo.genres}
+						required
+						setValue={setValue}
+						control={control}
+						errors={errors}
+					/>
 
-				<TextFieldController
-					name="publisher"
-					label="Publisher"
-					control={control}
-					errors={errors}
-				/>
+					<TextFieldController
+						name="publisher"
+						label="Publisher"
+						control={control}
+						errors={errors}
+					/>
 
-				<TextFieldController
-					name="published_year"
-					label="Published Year"
-					type="number"
-					control={control}
-					errors={errors}
-				/>
+					<TextFieldController
+						name="published_year"
+						label="Published Year"
+						type="number"
+						control={control}
+						errors={errors}
+					/>
 
-				<SelectController
-					name="language"
-					label="Language"
-					control={control}
-					errors={errors}
-				>
-					<MenuItem value="en">English</MenuItem>
-					<MenuItem value="vn">Vietnamese</MenuItem>
-				</SelectController>
+					<SelectController
+						name="language"
+						label="Language"
+						control={control}
+						errors={errors}
+					>
+						<MenuItem value="en">English</MenuItem>
+						<MenuItem value="vn">Vietnamese</MenuItem>
+					</SelectController>
 
-				<TextFieldController
-					name="pages"
-					label="Pages"
-					type="number"
-					control={control}
-					errors={errors}
-				/>
+					<TextFieldController
+						name="pages"
+						label="Pages"
+						type="number"
+						control={control}
+						errors={errors}
+					/>
 
-				<TextAreaController
-					name="summary"
-					label="Summary"
-					control={control}
-					errors={errors}
-				/>
+					<TextAreaController
+						name="summary"
+						label="Summary"
+						control={control}
+						errors={errors}
+					/>
 
-				<SubmitButton text="Edit" onClick={handleSubmit(onSubmit, onError)} />
-			</FormLayout>
+					<SubmitButton text="Edit" onClick={handleSubmit(onSubmit, onError)} />
+				</FormLayout>
+			)}
 
 			<AlertSnackbar
 				open={openSnackbar}

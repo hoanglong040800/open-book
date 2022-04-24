@@ -10,8 +10,8 @@ import {
 	TableRow,
 } from '@material-ui/core'
 import { Create, DeleteOutline } from '@material-ui/icons'
-import SubmitButton from 'common/components/button/SubmitButton'
 import { useState } from 'react'
+import Link from 'next/link'
 
 export default function BooksManageTable({
 	rows,
@@ -61,7 +61,9 @@ export default function BooksManageTable({
 							.map(row => (
 								<TableRow key={row.id}>
 									<TableCell component="th" align="left">
-										{row.name}
+										<Link href={`/books/${row.slug}`}>
+											<a>{row.name}</a>
+										</Link>
 									</TableCell>
 
 									<TableCell align="left">{row.authors}</TableCell>

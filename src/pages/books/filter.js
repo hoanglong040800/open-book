@@ -6,8 +6,8 @@ import { BOOK_LIMIT } from 'common/constants/common.constant'
 import { useRouter } from 'next/router'
 import useState from 'react-usestateref'
 import { FilterController } from 'modules/books/components/filtercontroller/FilterController'
-import { getAllGenres } from 'modules/common/api/common.api'
-import { filterObject } from 'common/utils/common.util'
+import { getAllGenres } from 'modules/core/core.api'
+import { filterObject } from 'common/utils'
 
 export default function Filter() {
 	const router = useRouter()

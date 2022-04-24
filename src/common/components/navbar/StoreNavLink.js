@@ -13,7 +13,7 @@ export default function StoreNavLink() {
 	}
 
 	function handleAddMultiBooksClick() {
-		// todo add route here
+		router.push(`/books/add-multi-books`)
 	}
 
 	return (
