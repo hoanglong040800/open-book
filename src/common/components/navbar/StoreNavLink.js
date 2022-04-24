@@ -1,5 +1,10 @@
 import { Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
+import {
+	URL_ADD_MULTI_BOOKS,
+	URL_DASHBOARD,
+	URL_UPLOAD_MULTI_FILES,
+} from 'common/constants'
 import { useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 
@@ -8,22 +13,31 @@ export default function StoreNavLink() {
 	const router = useRouter()
 	const [session] = useSession()
 
-	function handleDashboardClick() {
-		router.push(`/user/${session?.user.user_name}/dashboard`)
-	}
-
-	function handleAddMultiBooksClick() {
-		router.push(`/books/add-multi-books`)
+	function handleRouting(url) {
+		router.push(url)
 	}
 
 	return (
 		<div className={mui.root}>
-			<Button onClick={handleDashboardClick} className={mui.button}>
+			<Button
+				onClick={() => handleRouting(URL_DASHBOARD(session?.user.user_name))}
+				className={mui.button}
+			>
 				Dashboard
 			</Button>
 
-			<Button onClick={handleAddMultiBooksClick} className={mui.button}>
-				Add multi books
+			<Button
+				onClick={() => handleRouting(URL_ADD_MULTI_BOOKS)}
+				className={mui.button}
+			>
+				Add Books
+			</Button>
+
+			<Button
+				onClick={() => handleRouting(URL_UPLOAD_MULTI_FILES)}
+				className={mui.button}
+			>
+				Upload Files
 			</Button>
 		</div>
 	)
