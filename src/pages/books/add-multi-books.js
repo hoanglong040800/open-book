@@ -1,14 +1,60 @@
-import { HeadTitle, SubmitButton } from 'common/components'
-import { URL_UPLOAD_MULTI_FILES, USER_ROLES } from 'common/constants'
+import { AlertSnackbar, HeadTitle, SubmitButton } from 'common/components'
+import {
+	ACCEPT_FILE_TYPES,
+	ALERT_ADD_MULTI_BOOKS,
+	SEVERITY,
+	URL_DASHBOARD,
+	URL_UPLOAD_MULTI_FILES,
+	USER_ROLES,
+} from 'common/constants'
 import { FormLayout } from 'common/layouts'
 import Link from 'next/link'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/client'
+import { addMultiBooks } from 'modules/books/api'
 
 export default function AddMultiBooks() {
-	function handleUploadFile() {}
+	const router = useRouter()
+	const [session] = useSession()
+	const [selectedFile, setSeletedFile] = useState(null)
+	const [isOpenAlert, setIsOpenAlert] = useState(false)
+	const [alertProps, setAlertProps] = useState({
+		severity: '',
+		message: '',
+	})
 
-	function convertExcelToCsv() {}
+	function handleSelectFile(e) {
+		if (e.target.files.length === 0) return
 
-	function handleSubmit() {}
+		const file = e.target.files[0]
+		setSeletedFile(file)
+	}
+
+	async function handleSubmit() {
+		// testing only todo delete
+		const res = {
+			status: 200,
+		}
+
+		// todo uncomment
+		// const res = await addMultiBooks(selectedFile)
+
+		setAlertProps(
+			res.status === 200
+				? ALERT_ADD_MULTI_BOOKS.SUCCESS
+				: ALERT_ADD_MULTI_BOOKS.ERROR,
+		)
+		setIsOpenAlert(true)
+	}
+
+	function handleCloseAlert() {
+		if (alertProps.severity === SEVERITY.SUCCESS) {
+			router.push(URL_DASHBOARD(session.user.user_name))
+		}
+
+		setIsOpenAlert(false)
+	}
 
 	return (
 		<>
@@ -18,8 +64,9 @@ export default function AddMultiBooks() {
 				<div style={styles.description}>
 					<p>
 						Upload your excel or csv file contains basic information and links,
-						Open Book will generate genres automatically and add all ebooks for
-						you in a single click!
+						Open Book will{' '}
+						<span style={styles.bold}>generate genres automatically</span> and
+						add all ebooks for you in a single click!
 					</p>
 
 					<p>
@@ -36,14 +83,21 @@ export default function AddMultiBooks() {
 				<input
 					required
 					type="file"
-					accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-					onChange={handleUploadFile}
+					accept={ACCEPT_FILE_TYPES.ADD_MULTI_BOOKS}
+					onChange={handleSelectFile}
 				/>
 
-				<p>Accept .xlsx .csv</p>
+				<p>Accept {ACCEPT_FILE_TYPES.ADD_MULTI_BOOKS}</p>
 
 				<SubmitButton text="Submit" onClick={handleSubmit} />
 			</FormLayout>
+
+			<AlertSnackbar
+				open={isOpenAlert}
+				onClose={handleCloseAlert}
+				severity={alertProps.severity}
+				message={alertProps.message}
+			/>
 		</>
 	)
 }
@@ -55,6 +109,10 @@ const styles = {
 
 	description: {
 		marginBottom: 30,
+	},
+
+	bold: {
+		fontWeight: 'bold',
 	},
 }
 

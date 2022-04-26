@@ -20,6 +20,13 @@ export async function addBookInfo(data) {
 	return axiosClient.post('books', data)
 }
 
+// todo update api
+export async function addMultiBooks(file){
+	const formData = new FormData()
+	formData.append('file',file)
+	return axiosClient.post(`books`)
+}
+
 export async function getAllBooks() {
 	return axiosClient.get(`books`).then(res => {
 		return res.data
