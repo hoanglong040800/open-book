@@ -1,6 +1,8 @@
-import { Container, Grid, makeStyles, Typography } from '@material-ui/core'
+import { Box, Container, Grid, makeStyles, Typography } from '@material-ui/core'
 import Link from 'next/link'
 import { WEB_NAME } from 'common/constants/common.constant'
+import { URL_FILTER_BOOKS, URL_HOME } from 'common/constants'
+import { Facebook, LinkedIn, Reddit, Twitter } from '@material-ui/icons'
 
 export default function Footer() {
 	const classes = useStyle()
@@ -20,41 +22,45 @@ export default function Footer() {
 
 						<Typography variant="subtitle1" align="center" gutterBottom>
 							<span className={classes.link}>
-								<Link href="/">Home page</Link>
+								<Link href={URL_HOME}>Home</Link>
 							</span>
 							<span className={classes.whiteLine}>|</span>
 							<span className={classes.link}>
-								<Link href="/about">About us</Link>
+								<Link href={URL_FILTER_BOOKS}>Explore</Link>
 							</span>
 						</Typography>
 					</Grid>
+
 					<Grid item xs={12} md={4}>
 						<Typography variant="h6" className={classes.infoHeading}>
 							About us
 						</Typography>
 						<Typography variant="subtitle2" className={classes.info}>
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam,
-							autem voluptatibus aperiam consectetur architecto libero sit aut
-							id? Eos corrupti minima provident eum pariatur et suscipit, nemo
-							dignissimos modi veniam?
+							Open Book is a Ebook commerce platform for reading book online.
+							Our platform is believe to be one of the greatest book platform in
+							the world. With over 1,000,000 users and about 300 stores across
+							countries, we will provide you the best service you ever have. Now
+							open a book and read!
 						</Typography>
 					</Grid>
+
 					<Grid item xs={12} md={4}>
 						<Typography variant="h6" className={classes.infoHeading}>
 							Social media
 						</Typography>
-						<Typography variant="subtitle2" className={classes.info}>
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere,
-							quod?
-						</Typography>
+
+						<Box display="flex" gridGap={20}>
+							<Facebook fontSize={iconSize} />
+							<LinkedIn fontSize={iconSize} />
+							<Reddit fontSize={iconSize} />
+							<Twitter fontSize={iconSize} />
+						</Box>
 					</Grid>
 				</Grid>
+
 				<br />
-				<hr
-					style={{
-						color: 'rgba(255,255,255,0.5)',
-					}}
-				/>
+				<hr />
+
 				<Typography variant="subtitle2" className={classes.copyright}>
 					Copyright &copy; 2021 {WEB_NAME}
 				</Typography>
@@ -62,6 +68,8 @@ export default function Footer() {
 		</footer>
 	)
 }
+
+const iconSize = 'large'
 
 const useStyle = makeStyles(theme => ({
 	footer: {
