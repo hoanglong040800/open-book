@@ -41,6 +41,6 @@ export async function uploadFileWithProgress(
 		.then(res => {
 			updateProgressBar(100, fileIndex)
 
-			return { fileIndex: fileIndex, link_storage: res.data.link_storage }
+			return { fileIndex: fileIndex, data: res.data }
 		})
 }
