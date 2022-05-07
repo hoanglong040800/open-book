@@ -61,19 +61,20 @@ export default function AddMultiBooks() {
 			<HeadTitle page="add multi books" />
 
 			<FormLayout title="add multi books">
-				<div style={styles.description}>
+				<div className='mb-x-large'>
 					<p>
-						Upload your excel or csv file contains basic information and links,
-						Open Book will{' '}
-						<span style={styles.bold}>generate genres automatically</span> and
-						add all ebooks for you in a single click!
+						Upload file contains ebook information, Open Book will{' '}
+						<span className="font-weight-bold">
+							generate genres automatically
+						</span>{' '}
+						and add all ebooks for you in a single click!
 					</p>
 
 					<p>
 						Please make sure you have image & pdf links before uploading. If
 						not,{' '}
 						<Link href={URL_UPLOAD_MULTI_FILES}>
-							<a style={styles.link}>
+							<a className='link-color'>
 								click here to upload and retrieve links!
 							</a>
 						</Link>
@@ -100,20 +101,6 @@ export default function AddMultiBooks() {
 			/>
 		</>
 	)
-}
-
-const styles = {
-	link: {
-		color: 'blue',
-	},
-
-	description: {
-		marginBottom: 30,
-	},
-
-	bold: {
-		fontWeight: 'bold',
-	},
 }
 
 AddMultiBooks.auth = true

@@ -1245,43 +1245,43 @@
 /*endregion*/
 
 /*region Text Weights */
-.text-weight-light {
+.font-weight-light {
   font-weight: 300 !important;
 }
 
-.text-weight-regular {
+.font-weight-regular {
   font-weight: 400 !important;
 }
 
-.text-weight-bold {
+.font-weight-bold {
   font-weight: 600 !important;
 }
 
-.text-weight-bolder {
+.font-weight-bolder {
   font-weight: 700 !important;
 }
 
-.text-weight-black {
+.font-weight-black {
   font-weight: 900 !important;
 }
 
-.hover-text-weight-light:hover {
+.hover-font-weight-light:hover {
   font-weight: 300 !important;
 }
 
-.hover-text-weight-regular:hover {
+.hover-font-weight-regular:hover {
   font-weight: 400 !important;
 }
 
-.hover-text-weight-bold:hover {
+.hover-font-weight-bold:hover {
   font-weight: 600 !important;
 }
 
-.hover-text-weight-bolder:hover {
+.hover-font-weight-bolder:hover {
   font-weight: 700 !important;
 }
 
-.hover-text-weight-black:hover {
+.hover-font-weight-black:hover {
   font-weight: 900 !important;
 }
 
