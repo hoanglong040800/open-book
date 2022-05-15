@@ -31,6 +31,7 @@ export default function UploadMultiFiles() {
 				name: fileList[i].name,
 				percentCompleted: 0,
 				fileId: null,
+				linkStorage: '',
 			}
 
 			tempSelectedFiles.push(file)
@@ -49,6 +50,7 @@ export default function UploadMultiFiles() {
 
 			let clonedSelectedFile = selectedFiles
 			clonedSelectedFile[fileIndex].fileId = data.id
+			clonedSelectedFile[fileIndex].linkStorage = data.link_storage
 			// need to reset before setstate so UI can update
 			setSelectedFiles([])
 			setSelectedFiles(clonedSelectedFile)
@@ -68,7 +70,7 @@ export default function UploadMultiFiles() {
 	}
 
 	function handleCopyLinksToClipboard() {
-		const copiedLinks = selectedFiles.map(item => item.fileId).join('\n')
+		const copiedLinks = selectedFiles.map(item => item.linkStorage).join('\n')
 		navigator.clipboard.writeText(copiedLinks)
 		setIsAlertOpen(true)
 	}
@@ -94,9 +96,9 @@ export default function UploadMultiFiles() {
 					<ToggleButton value="PDF">PDF</ToggleButton>
 				</ToggleButtonGroup>
 
-				<p className='mt-x-large'>
-					Upload {uploadType.type} here to retreive multiple file IDs used for adding
-					multiple books later
+				<p className="mt-x-large">
+					Upload {uploadType.type} here to retreive multiple file IDs used for
+					adding multiple books later
 				</p>
 
 				<input

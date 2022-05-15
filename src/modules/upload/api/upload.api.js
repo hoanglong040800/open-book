@@ -32,7 +32,7 @@ export async function uploadFileWithProgress(
 				)
 
 				// percent only count when file upload to server, not count when file is handled in server
-				// allow max percent is 90, only change to 100 when resquest actually complete
+				// allow max percent is 90, only change to 100 when resquest is actually complete
 				percentCompleted = percentCompleted === 100 ? 90 : percentCompleted
 
 				updateProgressBar(percentCompleted, fileIndex)

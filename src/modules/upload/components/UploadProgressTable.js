@@ -16,9 +16,9 @@ export default function UploadProgressTable({
 	handleCopyLinksToClipboard,
 }) {
 	const tableWidth = {
-		index: 100,
-		name: 400,
-		fileId: 150,
+		index: 50,
+		name: 350,
+		linkStorage: 400,
 		percentCompleted: 'auto',
 	}
 
@@ -32,8 +32,8 @@ export default function UploadProgressTable({
 
 							<TableCell width={tableWidth.name}>File name</TableCell>
 
-							<TableCell width={tableWidth.fileId}>
-								File ID
+							<TableCell width={tableWidth.linkStorage}>
+								Link
 								<IconButton
 									size="small"
 									onClick={handleCopyLinksToClipboard}
@@ -58,7 +58,7 @@ export default function UploadProgressTable({
 
 									<TableCell>{file.name}</TableCell>
 
-									<TableCell>{file.fileId}</TableCell>
+									<TableCell>{file.linkStorage}</TableCell>
 
 									<TableCell>
 										{file.percentCompleted !== 0 && (
