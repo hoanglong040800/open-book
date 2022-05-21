@@ -1,17 +1,24 @@
 import Head from 'next/head'
+import { Provider as SessionProvider } from 'next-auth/client'
+import AuthGuard from 'modules/auth/components/AuthGuard'
+
+// theme
 import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import theme from 'common/themes/theme'
-import 'common/styles/global.css'
+import 'common/themes/global.css'
+import 'common/themes/utils.css'
+import 'common/themes/colors.css'
+import 'common/themes/mui-override.css'
+
 import DefaultLayout from 'common/layouts/DefaultLayout'
-import { Provider as SessionProvider } from 'next-auth/client'
-import AuthGuard from 'modules/auth/components/AuthGuard'
+import { WEB_NAME } from 'common/constants'
 
 export default function MyApp({ Component, pageProps }) {
 	return (
 		<>
 			<Head>
-				<title>Theses Share - Nơi chia sẻ khóa luận</title>
+				<title>{WEB_NAME}</title>
 				<meta
 					name="viewport"
 					content="minimum-scale=1, initial-scale=1, width=device-width"

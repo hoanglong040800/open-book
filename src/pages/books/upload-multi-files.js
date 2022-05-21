@@ -1,24 +1,24 @@
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
 import { AlertSnackbar, HeadTitle, SubmitButton } from 'common/components'
-import { USER_ROLES } from 'common/constants'
+import { ACCEPT_FILE_TYPES, USER_ROLES } from 'common/constants'
 import { FormLayout } from 'common/layouts'
 import { uploadFileWithProgress } from 'modules/upload/api/upload.api'
 import UploadProgressTable from 'modules/upload/components/UploadProgressTable'
 import { useState } from 'react'
 
-const IMAGES = {
-	type: 'images',
-	accept: 'image/png, image/gif, image/jpeg',
+const THUMBNAILS = {
+	type: 'thumbnails',
+	accept: ACCEPT_FILE_TYPES.THUMBNAIL,
 }
 
 const PDF = {
 	type: 'PDF',
-	accept: '.pdf',
+	accept: ACCEPT_FILE_TYPES.PDF,
 }
 
 export default function UploadMultiFiles() {
 	const [selectedFiles, setSelectedFiles] = useState([])
-	const [uploadType, setUploadType] = useState(IMAGES)
+	const [uploadType, setUploadType] = useState(THUMBNAILS)
 	const [isAlertOpen, setIsAlertOpen] = useState(false)
 
 	function handleUploadFiles(e) {
@@ -30,7 +30,8 @@ export default function UploadMultiFiles() {
 				file: fileList[i],
 				name: fileList[i].name,
 				percentCompleted: 0,
-				link_storage: '',
+				fileId: null,
+				linkStorage: '',
 			}
 
 			tempSelectedFiles.push(file)
@@ -41,14 +42,15 @@ export default function UploadMultiFiles() {
 
 	async function handleSubmit() {
 		selectedFiles.forEach(async (el, index) => {
-			const { fileIndex, link_storage } = await uploadFileWithProgress(
+			const { fileIndex, data } = await uploadFileWithProgress(
 				el.file,
 				index,
 				updateProgressBar,
 			)
 
 			let clonedSelectedFile = selectedFiles
-			clonedSelectedFile[fileIndex].link_storage = link_storage
+			clonedSelectedFile[fileIndex].fileId = data.id
+			clonedSelectedFile[fileIndex].linkStorage = data.link_storage
 			// need to reset before setstate so UI can update
 			setSelectedFiles([])
 			setSelectedFiles(clonedSelectedFile)
@@ -64,11 +66,11 @@ export default function UploadMultiFiles() {
 	}
 
 	function handleToggleUploadType(e, value) {
-		setUploadType(value == IMAGES.type ? IMAGES : PDF)
+		setUploadType(value == THUMBNAILS.type ? THUMBNAILS : PDF)
 	}
 
 	function handleCopyLinksToClipboard() {
-		const copiedLinks = selectedFiles.map(item => item.link_storage).join('\n')
+		const copiedLinks = selectedFiles.map(item => item.linkStorage).join('\n')
 		navigator.clipboard.writeText(copiedLinks)
 		setIsAlertOpen(true)
 	}
@@ -90,13 +92,13 @@ export default function UploadMultiFiles() {
 					size="small"
 					onChange={handleToggleUploadType}
 				>
-					<ToggleButton value="images">Images</ToggleButton>
+					<ToggleButton value="thumbnails">Thumbnails</ToggleButton>
 					<ToggleButton value="PDF">PDF</ToggleButton>
 				</ToggleButtonGroup>
 
-				<p style={{ marginTop: 30 }}>
-					Upload {uploadType.type} here to retreive multiple links used for add
-					multiple books later
+				<p className="mt-x-large">
+					Upload {uploadType.type} here to retreive multiple file IDs used for
+					adding multiple books later
 				</p>
 
 				<input
@@ -119,7 +121,7 @@ export default function UploadMultiFiles() {
 				open={isAlertOpen}
 				onClose={handleCloseAlert}
 				severity="success"
-				message="Copied links to clipboard"
+				message="Copied link to clipboard"
 			/>
 		</>
 	)

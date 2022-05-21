@@ -81,7 +81,7 @@ export default function Dashboard({}) {
 
 			<Link href={URL_UPLOAD_MULTI_FILES}>
 				<a style={styles.link}>
-					Want to prepare thumbnails/pdf links? Click here
+					Want to prepare thumbnails/pdf? Click here
 				</a>
 			</Link>
 

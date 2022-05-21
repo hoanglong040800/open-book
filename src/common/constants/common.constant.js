@@ -191,3 +191,20 @@ export const GENRES = [
 		name_en: 'business',
 	},
 ]
+
+// file type
+const FILE_TYPE = {
+	PNG: 'image/png',
+	GIF: 'image/gif',
+	JPG: 'image/jpeg, image/jpg',
+	PDF: '.pdf',
+	EXCEL: '',
+	CSV: '.csv',
+}
+
+export const ACCEPT_FILE_TYPES = {
+	EBOOK: `${FILE_TYPE.PDF}`,
+	THUMBNAIL: `${FILE_TYPE.PNG}, ${FILE_TYPE.GIF}, ${FILE_TYPE.JPG}`,
+	ADD_MULTI_BOOKS: `${FILE_TYPE.CSV}`,
+}
+// end file type

@@ -20,6 +20,16 @@ export async function addBookInfo(data) {
 	return axiosClient.post('books', data)
 }
 
+export async function addMultiBooks(file) {
+	const formData = new FormData()
+	formData.append('csv', file)
+	return axiosClient.post(`books/auto_generate/books`, formData, {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+	})
+}
+
 export async function getAllBooks() {
 	return axiosClient.get(`books`).then(res => {
 		return res.data

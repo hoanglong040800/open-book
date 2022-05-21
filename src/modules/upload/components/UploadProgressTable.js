@@ -15,29 +15,37 @@ export default function UploadProgressTable({
 	selectedFiles,
 	handleCopyLinksToClipboard,
 }) {
+	const tableWidth = {
+		index: 50,
+		name: 350,
+		linkStorage: 400,
+		percentCompleted: 'auto',
+	}
+
 	return (
 		<>
 			<TableContainer component={Paper}>
 				<Table>
 					<TableHead>
 						<TableRow>
-							<TableCell width={50}>Index</TableCell>
+							<TableCell width={tableWidth.index}>Index</TableCell>
 
-							<TableCell width={300}>File names</TableCell>
+							<TableCell width={tableWidth.name}>File name</TableCell>
 
-							<TableCell width={500}>
+							<TableCell width={tableWidth.linkStorage}>
 								Link
-								
 								<IconButton
 									size="small"
 									onClick={handleCopyLinksToClipboard}
-									style={styles.copyIcon}
+									className="ml-small"
 								>
 									<FileCopyOutlined fontSize="small" />
 								</IconButton>
 							</TableCell>
 
-							<TableCell>Percent Completed</TableCell>
+							<TableCell width={tableWidth.percentCompleted}>
+								Percent Completed
+							</TableCell>
 						</TableRow>
 					</TableHead>
 
@@ -50,7 +58,7 @@ export default function UploadProgressTable({
 
 									<TableCell>{file.name}</TableCell>
 
-									<TableCell>{file.link_storage}</TableCell>
+									<TableCell>{file.linkStorage}</TableCell>
 
 									<TableCell>
 										{file.percentCompleted !== 0 && (
@@ -60,7 +68,7 @@ export default function UploadProgressTable({
 													value={file.percentCompleted}
 												/>
 
-												<p style={styles.progressLabel}>
+												<p className="text-align-right mt-x-small">
 													{file.percentCompleted}%
 												</p>
 											</>
@@ -74,15 +82,4 @@ export default function UploadProgressTable({
 			</TableContainer>
 		</>
 	)
-}
-
-const styles = {
-	progressLabel: {
-		textAlign: 'right',
-		margin: '5px 0 0 0',
-	},
-
-	copyIcon: {
-		marginLeft: '10px',
-	},
 }

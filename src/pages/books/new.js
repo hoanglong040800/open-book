@@ -1,16 +1,18 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { MenuItem } from '@material-ui/core'
-import AlertSnackbar from 'common/components/alertsnackbar/AlertSnackbar'
-import SubmitButton from 'common/components/button/SubmitButton'
-import HeadTitle from 'common/components/headtitle/HeadTitle'
-import AutocompleteController from 'common/components/input/AutocompleteController'
-import SelectController from 'common/components/input/SelectController'
-import TextAreaController from 'common/components/input/TextAreaController'
-import TextFieldController from 'common/components/input/TextFieldController'
-import { GENRES, USER_ROLES } from 'common/constants/common.constant'
-import FormLayout from 'common/layouts/FormLayout'
-import { ADD_BOOK_SCHEMA } from 'common/schema/form-validation.schema'
-import { handleSimpleServiceError } from 'common/utils/common.util'
+import {
+	AlertSnackbar,
+	SubmitButton,
+	HeadTitle,
+	AutocompleteController,
+	SelectController,
+	TextAreaController,
+	TextFieldController,
+} from 'common/components'
+import { GENRES, USER_ROLES, ACCEPT_FILE_TYPES } from 'common/constants'
+import { FormLayout } from 'common/layouts'
+import { ADD_BOOK_SCHEMA } from 'common/schema'
+import { handleSimpleServiceError } from 'common/utils'
 import { addBook } from 'modules/books/api/books.api'
 import UploadFile from 'modules/upload/components/UploadFile'
 import { useRouter } from 'next/router'
@@ -28,25 +30,7 @@ export default function NewBook({ session }) {
 		handleSubmit,
 	} = useForm({
 		resolver: yupResolver(ADD_BOOK_SCHEMA),
-		defaultValues: {
-			name: 'Alice in Wonderland',
-			authors: 'Billy Jeans',
-			genres: [
-				{
-					id: 1,
-					name_en: 'Life',
-				},
-				{
-					id: 2,
-					name_en: 'Business',
-				},
-			],
-			publisher: 'some publisher',
-			published_year: 1901,
-			language: 'en',
-			pages: 250,
-			summary: 'Some awesome\nsummary',
-		},
+		defaultValues: {},
 	})
 	const router = useRouter()
 	const [openSnackbar, setOpenSnackbar] = useState(false)
@@ -65,9 +49,7 @@ export default function NewBook({ session }) {
 		setOpenSnackbar(true)
 	}
 
-	function onError(data){
-
-	}
+	function onError(data) {}
 
 	function handleCloseSnackbar() {
 		setOpenSnackbar(false)
@@ -83,7 +65,7 @@ export default function NewBook({ session }) {
 				<UploadFile
 					name="file"
 					label="Upload Book"
-					accept=".pdf"
+					accept={ACCEPT_FILE_TYPES.EBOOK}
 					required
 					register={register}
 					errors={errors}
@@ -92,7 +74,7 @@ export default function NewBook({ session }) {
 				<UploadFile
 					name="thumbnail"
 					label="Upload Thumbnail"
-					accept="image/png, image/gif, image/jpeg"
+					accept={ACCEPT_FILE_TYPES.THUMBNAIL}
 					required
 					register={register}
 					errors={errors}
