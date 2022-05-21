@@ -121,7 +121,7 @@ export default function UploadMultiFiles() {
 				open={isAlertOpen}
 				onClose={handleCloseAlert}
 				severity="success"
-				message="Copied File IDs to clipboard"
+				message="Copied link to clipboard"
 			/>
 		</>
 	)

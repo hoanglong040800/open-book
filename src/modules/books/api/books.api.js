@@ -20,11 +20,14 @@ export async function addBookInfo(data) {
 	return axiosClient.post('books', data)
 }
 
-// todo update api
-export async function addMultiBooks(file){
+export async function addMultiBooks(file) {
 	const formData = new FormData()
-	formData.append('file',file)
-	return axiosClient.post(`books`)
+	formData.append('csv', file)
+	return axiosClient.post(`books/auto_generate/books`, formData, {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+	})
 }
 
 export async function getAllBooks() {

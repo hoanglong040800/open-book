@@ -32,13 +32,7 @@ export default function AddMultiBooks() {
 	}
 
 	async function handleSubmit() {
-		// testing only todo delete
-		const res = {
-			status: 200,
-		}
-
-		// todo uncomment
-		// const res = await addMultiBooks(selectedFile)
+		const res = await addMultiBooks(selectedFile)
 
 		setAlertProps(
 			res.status === 200
