@@ -26,7 +26,6 @@
     "react-pdf": "^5.3.2",
     "react-usestateref": "^1.0.8",
     "slugify": "^1.6.1",
-    "xlsx": "^0.18.5",
     "yup": "^0.32.9"
   },
   "devDependencies": {

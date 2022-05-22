@@ -35,7 +35,7 @@ export const COMMON_ALERT = {
 export const ALERT_ADD_MULTI_BOOKS = {
 	SUCCESS: {
 		severity: SEVERITY.SUCCESS,
-		message: 'Add multi books successfully. Redirecting to Dashboard',
+		message: 'Add multi books successfully. Showing result',
 	},
 
 	ERROR: {

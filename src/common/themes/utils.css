@@ -1157,6 +1157,76 @@
 /*endregion*/
 /* END Flex */
 
+/* START gap */
+.gap-none {
+  gap: 0 !important;
+}
+
+.gap-x2-small {
+  gap: 2px !important;
+}
+
+.gap-x-small {
+  gap: 4px !important;
+}
+
+.gap-small {
+  gap: 8px !important;
+}
+
+.gap-12 {
+  gap: 12px !important;
+}
+
+.gap-medium {
+  gap: 16px !important;
+}
+
+.gap-large {
+  gap: 24px !important;
+}
+
+.gap-x-large {
+  gap: 32px !important;
+}
+
+.gap-x2-large {
+  gap: 40px !important;
+}
+
+.gap-x3-large {
+  gap: 48px !important;
+}
+
+.gap-x4-large {
+  gap: 56px !important;
+}
+
+.gap-x5-large {
+  gap: 64px !important;
+}
+
+.gap-x6-large {
+  gap: 64px !important;
+}
+
+.gap-x7-large {
+  gap: 64px !important;
+}
+
+.gap-x8-large {
+  gap: 64px !important;
+}
+
+.gap-x9-large {
+  gap: 64px !important;
+}
+
+.gap-x10-large {
+  gap: 64px !important;
+}
+/* END gap */
+
 /* START Text Alignments */
 /*region Text Alignments */
 .text-align-left {

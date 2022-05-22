@@ -30,6 +30,129 @@ export async function addMultiBooks(file) {
 	})
 }
 
+export async function getAddMultiBooksLog(jobId) {
+	const res = {
+		data: {
+			total: 5,
+			ebooks: [
+				{
+					name: 'book 1',
+					thumbnail: 'link 1',
+					genres: [
+						{
+							id: 2,
+							status: 1,
+							name_en: 'Comics',
+						},
+						{
+							id: 1,
+							status: 1,
+							name_en: 'Children',
+						},
+					],
+					status: false,
+					error: 'LINK_NOT_FOUND',
+				},
+				{
+					name: 'book 2',
+					thumbnail: 'link 2',
+					genres: [
+						{
+							id: 2,
+							status: 1,
+							name_en: 'Comics',
+						},
+						{
+							id: 1,
+							status: 1,
+							name_en: 'Children',
+						},
+					],
+					status: false,
+					error: 'NAME_NOT_FOUND',
+				},
+				{
+					name: 'book 3',
+					thumbnail: 'link 3',
+					genres: [
+						{
+							id: 2,
+							status: 1,
+							name_en: 'Comics',
+						},
+						{
+							id: 1,
+							status: 1,
+							name_en: 'Children',
+						},
+					],
+					status: false,
+					error: 'PREDICT_GENRE_FAILED',
+				},
+				{
+					name: 'book 4',
+					thumbnail: 'link 4',
+					genres: [
+						{
+							id: 2,
+							status: 1,
+							name_en: 'Comics',
+						},
+						{
+							id: 1,
+							status: 1,
+							name_en: 'Children',
+						},
+					],
+					status: false,
+					error: 'LINK_NOT_FOUND',
+				},
+				{
+					name: 'book 5',
+					thumbnail: 'link 5',
+					genres: [
+						{
+							id: 2,
+							status: 1,
+							name_en: 'Comics',
+						},
+						{
+							id: 1,
+							status: 1,
+							name_en: 'Children',
+						},
+					],
+					status: false,
+					error: 'THUMBNAIL_NOT_FOUND',
+				},
+				{
+					name: 'book 6',
+					thumbnail: 'link 6',
+					genres: [
+						{
+							id: 2,
+							status: 1,
+							name_en: 'Comics',
+						},
+						{
+							id: 1,
+							status: 1,
+							name_en: 'Children',
+						},
+					],
+					status: false,
+					error: 'PUBLISHED_YEAR_INVALID',
+				},
+			],
+		},
+		status: 200,
+	}
+
+	// return axiosClient.get(`books/${jobId}`)
+	await getAllBooks()
+	return res.data.ebooks
+}
+
 export async function getAllBooks() {
 	return axiosClient.get(`books`).then(res => {
 		return res.data
