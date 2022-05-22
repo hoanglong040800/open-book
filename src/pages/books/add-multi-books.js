@@ -7,7 +7,6 @@ import {
 import {
 	ACCEPT_FILE_TYPES,
 	ALERT_ADD_MULTI_BOOKS,
-	SEVERITY,
 	URL_DASHBOARD,
 	URL_UPLOAD_MULTI_FILES,
 	USER_ROLES,
@@ -19,6 +18,8 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/client'
 import { addMultiBooks, getAddMultiBooksLog } from 'modules/books/api'
 import { ebooksLogColDef } from 'modules/books/books.contant'
+import { Button } from '@material-ui/core'
+import { isNotEmpty } from 'empty-utils'
 
 export default function AddMultiBooks() {
 	const router = useRouter()
@@ -30,6 +31,7 @@ export default function AddMultiBooks() {
 		message: '',
 	})
 	const [ebooksLog, setEbooksLog] = useState([])
+	const [isAddingEbooks, setIsAddingEbooks] = useState(false)
 
 	function handleSelectFile(e) {
 		if (e.target.files.length === 0) return
@@ -39,28 +41,41 @@ export default function AddMultiBooks() {
 	}
 
 	async function handleSubmit() {
-		const res = await addMultiBooks(selectedFile)
+		try {
+			setIsAddingEbooks(true)
+			const res = await addMultiBooks(selectedFile)
 
-		setAlertProps(
-			res.status === 200
-				? ALERT_ADD_MULTI_BOOKS.SUCCESS
-				: ALERT_ADD_MULTI_BOOKS.ERROR,
-		)
-		setIsOpenAlert(true)
+			setAlertProps(
+				res.status === 200
+					? ALERT_ADD_MULTI_BOOKS.SUCCESS
+					: ALERT_ADD_MULTI_BOOKS.ERROR,
+			)
+			setIsOpenAlert(true)
 
-		// todo uncomment
-		// getEbookLogs(res.jobId)
-		getEbookLogs()
+			// todo uncomment
+			// getEbookLogs(res.jobId)
+			await getEbookLogs()
+
+			// reset input file value
+			document.getElementById('csv-file').value = ''
+		} catch (e) {
+			throw e
+		} finally {
+			setIsAddingEbooks(false)
+		}
 	}
 
 	async function getEbookLogs(jobId) {
 		const ebooksLog = await getAddMultiBooksLog(jobId)
-		console.log(ebooksLog)
 		setEbooksLog(ebooksLog)
 	}
 
 	function handleCloseAlert() {
 		setIsOpenAlert(false)
+	}
+
+	function handleGoToDashboard() {
+		router.push(URL_DASHBOARD(session.user.user_name))
 	}
 
 	return (
@@ -89,6 +104,7 @@ export default function AddMultiBooks() {
 				</div>
 
 				<input
+					id="csv-file"
 					required
 					type="file"
 					accept={ACCEPT_FILE_TYPES.ADD_MULTI_BOOKS}
@@ -97,11 +113,21 @@ export default function AddMultiBooks() {
 
 				<p>Accept {ACCEPT_FILE_TYPES.ADD_MULTI_BOOKS}</p>
 
-				<SubmitButton text="Submit" onClick={handleSubmit} />
+				<SubmitButton
+					isLoading={isAddingEbooks}
+					text="Submit"
+					onClick={handleSubmit}
+				/>
+
+				{isNotEmpty(ebooksLog) && !isAddingEbooks && (
+					<Button className="flex ml-auto" onClick={handleGoToDashboard}>
+						Go to Dashboard →
+					</Button>
+				)}
 			</FormLayout>
 
 			<TableGrid
-				title="Ebooks Log"
+				title="Add ebooks result"
 				rows={ebooksLog}
 				columns={ebooksLogColDef}
 				showOrdinalNumber
