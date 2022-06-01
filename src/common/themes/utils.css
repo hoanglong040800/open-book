@@ -601,6 +601,11 @@
 /*endregion*/
 
 /*region Margin - Vertical */
+.mv-auto {
+	margin-left: auto !important;
+	margin-right: auto !important;
+}
+
 .mv-none {
 	margin-top: 0 !important;
 	margin-bottom: 0 !important;

@@ -6,7 +6,12 @@ import { RatingDisplay, RatingItem } from 'modules/rating/components'
 import { addRating, deleteRating, getRatingByBookId } from 'modules/rating/api'
 import { DetailBookContainer } from 'modules/books/components'
 import { deleteBook, getBookBySlug } from 'modules/books/api'
-import { addBookmark, deleteBookmark, getAllBookmarksByUser } from 'modules/bookmarks'
+import {
+	addBookmark,
+	deleteBookmark,
+	getAllBookmarksByUser,
+} from 'modules/bookmarks'
+import { USER_ROLES } from 'common/constants'
 
 export const BookmarkContext = createContext()
 
@@ -23,7 +28,6 @@ export async function getServerSideProps(ctx) {
 export default function ViewBook({ session, slug }) {
 	const router = useRouter()
 	const [bookInfo, setBookInfo] = useState(null)
-	// rating
 	const [canComment, setCanComment] = useState(false)
 	const [rating, setRating] = useState({
 		comment: '',
@@ -31,7 +35,6 @@ export default function ViewBook({ session, slug }) {
 	})
 	const [ratingList, setRatingList] = useState(null)
 	const [pointOverall, setPointOverall] = useState(0)
-	// bookmark
 	const [isBookmarked, setIsBookmarked] = useState(null)
 
 	useEffect(() => {
@@ -42,10 +45,6 @@ export default function ViewBook({ session, slug }) {
 		}
 	}, [bookInfo])
 
-	/*
-	 * Books
-	 */
-
 	async function getBookInfo() {
 		const data = await getBookBySlug(slug)
 		setBookInfo(data)
@@ -54,10 +53,6 @@ export default function ViewBook({ session, slug }) {
 	function onClickRead() {
 		router.push(`/books/${bookInfo.slug}/read`)
 	}
-
-	/*
-	 * Rating
-	 */
 
 	async function initRatingsList() {
 		const data = await getRatingByBookId(bookInfo.id)
@@ -81,8 +76,9 @@ export default function ViewBook({ session, slug }) {
 	}
 
 	function checkCanComment(data, session) {
-		// logined
-		session?.user && setCanComment(true)
+		session?.user &&
+			session?.user.role === USER_ROLES.viewer &&
+			setCanComment(true)
 
 		// check already comment
 		data.length != 0 &&
@@ -104,18 +100,15 @@ export default function ViewBook({ session, slug }) {
 		}))
 	}
 
-	/*
-	 * Bookmark
-	 */
-
 	async function initIsBookmarked() {
 		const data = await getAllBookmarksByUser()
-		// check user's bookmarks contain this book
 		setIsBookmarked(data.find(item => item.id === bookInfo.id))
 	}
 
 	async function handleToggleBookmark() {
-		isBookmarked ? await deleteBookmark(bookInfo.id) : await addBookmark(bookInfo.id)
+		isBookmarked
+			? await deleteBookmark(bookInfo.id)
+			: await addBookmark(bookInfo.id)
 		setIsBookmarked(prev => !prev)
 	}
 
@@ -123,7 +116,7 @@ export default function ViewBook({ session, slug }) {
 		<>
 			<HeadTitle page="detail" />
 
-			<div style={styles.container}>
+			<div className="center-layout">
 				<BookmarkContext.Provider
 					value={{
 						state: { isBookmarked },
@@ -146,23 +139,18 @@ export default function ViewBook({ session, slug }) {
 						</>
 					)}
 
-					{ratingList && (
+					{ratingList ? (
 						<RatingDisplay
 							ratingList={ratingList}
 							pointOverall={pointOverall}
 							showDeleteButton={session?.user.id}
 							handleDeleteRating={handleDeleteRating}
 						/>
+					) : (
+						<p>No rating to display</p>
 					)}
 				</CardContainer>
 			</div>
 		</>
 	)
-}
-
-const styles = {
-	container: {
-		maxWidth: '1000px',
-		margin: '0 auto',
-	},
 }

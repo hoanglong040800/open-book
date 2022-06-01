@@ -10,6 +10,7 @@ import 'common/themes/global.css'
 import 'common/themes/utils.css'
 import 'common/themes/colors.css'
 import 'common/themes/mui-override.css'
+import 'common/themes/common.css'
 
 import DefaultLayout from 'common/layouts/DefaultLayout'
 import { WEB_NAME } from 'common/constants'
