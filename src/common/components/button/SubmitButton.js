@@ -15,7 +15,6 @@ export default function SubmitButton({
 						<CircularProgress size={15} color="inherit" />
 					</div>
 				)}
-
 				{content}
 			</div>
 		)
@@ -27,7 +26,6 @@ export default function SubmitButton({
 				<Button
 					variant="contained"
 					onClick={onSecondaryClick}
-					style={styles.secondary}
 					disabled={isLoading}
 					className="mr-medium"
 				>

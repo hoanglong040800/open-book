@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { HeadTitle, SubmitButton } from 'common/components'
-import { deleteBook, getAllBooks } from 'modules/books/api'
+import { deleteBook, getStoreBooks } from 'modules/books/api'
 import BooksManageTable from 'modules/books/components/table/BooksManageTable'
 import { Divider, Fade, Modal, Paper } from '@material-ui/core'
 import { useRouter } from 'next/router'
@@ -22,14 +22,9 @@ export default function Dashboard({}) {
 	const [selectedBook, setSelectedBook] = useState(null)
 
 	async function getAllUserBooks() {
-		const data = await getAllBooks()
-		const storeBooks = data
-			.reverse()
-			.filter(book => book.owner_id === session.user.id)
-		setAllUserBooks(storeBooks)
+		const data = await getStoreBooks(session?.user.id)
+		setAllUserBooks(data)
 	}
-
-	// add
 
 	function handleAddBookClick() {
 		router.push(URL_ADD_BOOK)
@@ -39,13 +34,9 @@ export default function Dashboard({}) {
 		router.push(URL_ADD_MULTI_BOOKS)
 	}
 
-	// edit
-
 	function handleEditClick(slug) {
 		router.push(URL_EDIT_BOOK(slug))
 	}
-
-	// delete
 
 	function handleCloseConfirmModal() {
 		setIsOpenConfirmModal(false)
@@ -80,9 +71,7 @@ export default function Dashboard({}) {
 			/>
 
 			<Link href={URL_UPLOAD_MULTI_FILES}>
-				<a style={styles.link}>
-					Want to prepare thumbnails/pdf? Click here
-				</a>
+				<a style={styles.link}>Want to prepare thumbnails/pdf? Click here</a>
 			</Link>
 
 			<BooksManageTable

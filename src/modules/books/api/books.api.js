@@ -159,6 +159,16 @@ export async function getAllBooks() {
 	})
 }
 
+export async function getStoreBooks(storeId) {
+	return axiosClient
+		.get(`books`)
+		.then(res =>
+			res.data
+				.reverse()
+				.filter(book => book.owner_id === storeId && book.status),
+		)
+}
+
 export async function getBooksByFilter(params) {
 	return axiosClient.get('books/filter', { params })
 }
