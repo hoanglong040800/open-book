@@ -1,3 +1,4 @@
+@import url(./constants.css);
 /* Utility styles for mix-ins */
 
 /* START Padding */
@@ -696,6 +697,11 @@
 .mh-none {
 	margin-left: 0 !important;
 	margin-right: 0 !important;
+}
+
+.mh-auto {
+	margin-left: auto !important;
+	margin-right: auto !important;
 }
 
 .mh-x2-small {
@@ -1530,6 +1536,10 @@
 	border-radius: 0 !important;
 }
 
+.rounded-full {
+	border-radius: 9999px !important;
+}
+
 .rounded-top {
 	border-top-left-radius: 4px;
 	border-top-right-radius: 4px;
@@ -1552,10 +1562,6 @@
 
 .bordered-none {
 	border: 0 !important;
-}
-
-.rounded-full {
-	border-radius: 9999px !important;
 }
 
 .border-width-small {

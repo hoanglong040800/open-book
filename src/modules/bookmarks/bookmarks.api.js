@@ -1,7 +1,7 @@
 import axiosClient from 'common/config/api.config'
 
 export async function getAllBookmarksByUser() {
-	return axiosClient.get('bookmark').then(res => res.data)
+	return axiosClient.get('bookmark').then(res => res.data || [])
 }
 
 export async function addBookmark(bookId) {

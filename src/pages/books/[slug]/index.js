@@ -1,17 +1,18 @@
 import { createContext, useEffect, useState } from 'react'
 import { getSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
-import { CardContainer, HeadTitle } from 'common/components'
+import { HeadTitle } from 'common/components'
 import { RatingDisplay, RatingItem } from 'modules/rating/components'
 import { addRating, deleteRating, getRatingByBookId } from 'modules/rating/api'
 import { DetailBookContainer } from 'modules/books/components'
-import { deleteBook, getBookBySlug } from 'modules/books/api'
+import { getBookBySlug } from 'modules/books/api'
 import {
 	addBookmark,
 	deleteBookmark,
 	getAllBookmarksByUser,
 } from 'modules/bookmarks'
 import { USER_ROLES } from 'common/constants'
+import { Card } from '@material-ui/core'
 
 export const BookmarkContext = createContext()
 
@@ -58,7 +59,7 @@ export default function ViewBook({ session, slug }) {
 		const data = await getRatingByBookId(bookInfo.id)
 		setPointOverall(data?.point_overall)
 		setRatingList(data?.rating)
-		checkCanComment(data, session)
+		checkCanComment(data)
 	}
 
 	async function handleSubmitRating() {
@@ -75,7 +76,7 @@ export default function ViewBook({ session, slug }) {
 		initRatingsList()
 	}
 
-	function checkCanComment(data, session) {
+	function checkCanComment(data) {
 		session?.user &&
 			session?.user.role === USER_ROLES.viewer &&
 			setCanComment(true)
@@ -126,7 +127,7 @@ export default function ViewBook({ session, slug }) {
 					<DetailBookContainer bookInfo={bookInfo} onClickRead={onClickRead} />
 				</BookmarkContext.Provider>
 
-				<CardContainer>
+				<Card className='card-container'>
 					{canComment && (
 						<>
 							<RatingItem
@@ -147,9 +148,9 @@ export default function ViewBook({ session, slug }) {
 							handleDeleteRating={handleDeleteRating}
 						/>
 					) : (
-						<p>No rating to display</p>
+						<p className='text-align-center'>No rating to display</p>
 					)}
-				</CardContainer>
+				</Card>
 			</div>
 		</>
 	)

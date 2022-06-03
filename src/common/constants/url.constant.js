@@ -24,5 +24,6 @@ export const URL_EDIT_BOOK = slug => `${URL_BOOK_DETAILS(slug)}/edit`
 export const URL_USER = '/user'
 
 export const URL_USER_PROFILE = user_name => `${URL_USER}/${user_name}`
+export const URL_EDIT_USER = user_name => `${URL_USER_PROFILE(user_name)}/edit`
 export const URL_DASHBOARD = user_name => `${URL_USER}/${user_name}/dashboard`
 // end user

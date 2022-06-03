@@ -1,7 +1,4 @@
-:root {
-	--primary: #00897b;
-	--secondary: #ff5722;
-}
+@import url('./constants.css');
 
 /* theme */
 
