@@ -4,9 +4,8 @@ import { makeStyles } from '@material-ui/styles'
 import { useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import { URL_DASHBOARD, URL_EDIT_USER, USER_ROLES } from 'common/constants'
-import { HeadTitle, SubmitButton } from 'common/components'
+import { FormContainer, HeadTitle, SubmitButton } from 'common/components'
 import { getUserProfile } from 'modules/users/api/users.api'
-import { FormLayout } from 'common/layouts'
 import { getAllBookmarksByUser } from 'modules/bookmarks'
 import { BookList } from 'modules/books/components'
 import { StorefrontTwoTone, AccountCircle } from '@material-ui/icons'
@@ -47,7 +46,7 @@ export default function ViewProfile() {
 		<>
 			<HeadTitle page="profile" />
 
-			<FormLayout title="" maxWidth={600}>
+			<FormContainer title="" maxWidth={600}>
 				<Grid container>
 					<Grid item xs={12} sm={4} className="text-align-center">
 						<div className="text-size-x7-large">
@@ -129,7 +128,7 @@ export default function ViewProfile() {
 						onClick={handleEdit}
 					/>
 				)}
-			</FormLayout>
+			</FormContainer>
 
 			{isUserProfile && !isStore && userBookmarks && (
 				<Box mt={5}>

@@ -1,10 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import AlertSnackbar from 'common/components/alertsnackbar/AlertSnackbar'
 import SubmitButton from 'common/components/button/SubmitButton'
+import FormContainer from 'common/components'
 import HeadTitle from 'common/components/headtitle/HeadTitle'
 import TextFieldController from 'common/components/input/TextFieldController'
 import { COMMON_ALERT, REGISTER_ALERT } from 'common/constants/alert.constant'
-import FormLayout from 'common/layouts/FormLayout'
 import { REGISTER_SCHEMA } from 'common/schema/form-validation.schema'
 import { fetchRegister } from 'modules/auth/api/auth.api'
 import { getSession, signIn } from 'next-auth/client'
@@ -80,7 +80,7 @@ export default function Register() {
 		<>
 			<HeadTitle page="register" />
 
-			<FormLayout title="register">
+			<FormContainer title="register">
 				<TextFieldController
 					name="user_name"
 					label="Username"
@@ -119,7 +119,7 @@ export default function Register() {
 					text="Register"
 					onClick={handleSubmit(onSubmit, onError)}
 				/>
-			</FormLayout>
+			</FormContainer>
 
 			<AlertSnackbar
 				open={openSnackbar}

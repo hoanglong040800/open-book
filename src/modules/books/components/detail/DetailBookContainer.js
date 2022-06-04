@@ -29,7 +29,7 @@ export default function DetailBookContainer({ bookInfo, onClickRead }) {
 							Read
 						</Button>
 
-						<Divider className="mv-large mh-auto width-half" />
+						<Divider className="my-large mh-auto width-half" />
 
 						<MoreInfo bookInfo={bookInfo} />
 

@@ -12,9 +12,9 @@ import {
 	SelectController,
 	TextAreaController,
 	TextFieldController,
+	FormContainer,
 } from 'common/components'
 import { GENRES, USER_ROLES } from 'common/constants'
-import { FormLayout } from 'common/layouts'
 import { EDIT_BOOK_SCHEMA } from 'common/schema'
 import { handleSimpleServiceError } from 'common/utils'
 import { getBookBySlug, updateBookInfo } from 'modules/books/api'
@@ -80,7 +80,7 @@ export default function EditBook({ slug, session }) {
 			<HeadTitle page="Edit book" />
 
 			{bookInfo && (
-				<FormLayout title="Edit book">
+				<FormContainer title="Edit book">
 					<TextFieldController
 						name="name"
 						label="Name"
@@ -150,7 +150,7 @@ export default function EditBook({ slug, session }) {
 					/>
 
 					<SubmitButton text="Edit" onClick={handleSubmit(onSubmit, onError)} />
-				</FormLayout>
+				</FormContainer>
 			)}
 
 			<AlertSnackbar

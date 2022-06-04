@@ -11,7 +11,6 @@ import {
 	URL_UPLOAD_MULTI_FILES,
 	USER_ROLES,
 } from 'common/constants'
-import { FormLayout } from 'common/layouts'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
@@ -20,6 +19,7 @@ import { addMultiBooks, getAddMultiBooksLog } from 'modules/books/api'
 import { ebooksLogColDef } from 'modules/books/books.contant'
 import { Button } from '@material-ui/core'
 import { isNotEmpty } from 'empty-utils'
+import FormContainer from 'common/components'
 
 export default function AddMultiBooks() {
 	const router = useRouter()
@@ -82,7 +82,7 @@ export default function AddMultiBooks() {
 		<>
 			<HeadTitle page="add multi books" />
 
-			<FormLayout title="add multi books">
+			<FormContainer title="add multi books">
 				<div className="mb-x-large">
 					<p>
 						Upload file contains ebook information, Open Book will{' '}
@@ -124,7 +124,7 @@ export default function AddMultiBooks() {
 						Go to Dashboard →
 					</Button>
 				)}
-			</FormLayout>
+			</FormContainer>
 
 			<TableGrid
 				title="Add ebooks result"

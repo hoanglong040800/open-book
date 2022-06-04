@@ -82,7 +82,7 @@ export default function TableGrid({
 				</Table>
 			</TableContainer>
 
-			<div className="flex justify-end mv-small">
+			<div className="flex justify-end my-small">
 				<TablePagination
 					count={rows.length}
 					page={page}

@@ -1,7 +1,6 @@
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
-import { AlertSnackbar, HeadTitle, SubmitButton } from 'common/components'
+import { AlertSnackbar, FormContainer, HeadTitle, SubmitButton } from 'common/components'
 import { ACCEPT_FILE_TYPES, USER_ROLES } from 'common/constants'
-import { FormLayout } from 'common/layouts'
 import { uploadFileWithProgress } from 'modules/upload/api/upload.api'
 import UploadProgressTable from 'modules/upload/components/UploadProgressTable'
 import { useState } from 'react'
@@ -83,7 +82,7 @@ export default function UploadMultiFiles() {
 		<>
 			<HeadTitle page={`Upload ${uploadType.type}`} />
 
-			<FormLayout title={`Upload ${uploadType.type}`}>
+			<FormContainer title={`Upload ${uploadType.type}`}>
 				<ToggleButtonGroup
 					value={uploadType.type}
 					exclusive
@@ -110,7 +109,7 @@ export default function UploadMultiFiles() {
 				/>
 
 				<SubmitButton text="Submit" onClick={handleSubmit} />
-			</FormLayout>
+			</FormContainer>
 
 			<UploadProgressTable
 				selectedFiles={selectedFiles}

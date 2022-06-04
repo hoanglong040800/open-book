@@ -8,9 +8,9 @@ import {
 	SelectController,
 	TextAreaController,
 	TextFieldController,
+	FormContainer,
 } from 'common/components'
 import { GENRES, USER_ROLES, ACCEPT_FILE_TYPES } from 'common/constants'
-import { FormLayout } from 'common/layouts'
 import { ADD_BOOK_SCHEMA } from 'common/schema'
 import { handleSimpleServiceError } from 'common/utils'
 import { addBook } from 'modules/books/api/books.api'
@@ -61,7 +61,7 @@ export default function NewBook({ session }) {
 		<>
 			<HeadTitle page="New book" />
 
-			<FormLayout title="New book">
+			<FormContainer title="New book">
 				<UploadFile
 					name="file"
 					label="Upload Book"
@@ -148,7 +148,7 @@ export default function NewBook({ session }) {
 				/>
 
 				<SubmitButton text="Add" onClick={handleSubmit(onSubmit, onError)} />
-			</FormLayout>
+			</FormContainer>
 
 			<AlertSnackbar
 				open={openSnackbar}

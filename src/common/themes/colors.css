@@ -10,6 +10,22 @@
 	background-color: var(--secondary);
 }
 
+.bg-success {
+	background-color: var(--success);
+}
+
+.bg-warning {
+	background-color: var(--warning);
+}
+
+.bg-error {
+	background-color: var(--error);
+}
+
+.bg-info {
+	background-color: var(--info);
+}
+
 .link-color {
 	color: #137cbd !important;
 }
