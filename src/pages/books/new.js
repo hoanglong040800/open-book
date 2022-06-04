@@ -8,7 +8,7 @@ import {
 	SelectController,
 	TextAreaController,
 	TextFieldController,
-	FormContainer,
+	CenteredContainer,
 } from 'common/components'
 import { GENRES, USER_ROLES, ACCEPT_FILE_TYPES } from 'common/constants'
 import { ADD_BOOK_SCHEMA } from 'common/schema'
@@ -61,7 +61,7 @@ export default function NewBook({ session }) {
 		<>
 			<HeadTitle page="New book" />
 
-			<FormContainer title="New book">
+			<CenteredContainer title="New book">
 				<UploadFile
 					name="file"
 					label="Upload Book"
@@ -148,7 +148,7 @@ export default function NewBook({ session }) {
 				/>
 
 				<SubmitButton text="Add" onClick={handleSubmit(onSubmit, onError)} />
-			</FormContainer>
+			</CenteredContainer>
 
 			<AlertSnackbar
 				open={openSnackbar}

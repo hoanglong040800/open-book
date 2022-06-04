@@ -3,6 +3,7 @@ import {
 	HeadTitle,
 	SubmitButton,
 	TableGrid,
+	CenteredContainer,
 } from 'common/components'
 import {
 	ACCEPT_FILE_TYPES,
@@ -19,7 +20,6 @@ import { addMultiBooks, getAddMultiBooksLog } from 'modules/books/api'
 import { ebooksLogColDef } from 'modules/books/books.contant'
 import { Button } from '@material-ui/core'
 import { isNotEmpty } from 'empty-utils'
-import FormContainer from 'common/components'
 
 export default function AddMultiBooks() {
 	const router = useRouter()
@@ -82,7 +82,7 @@ export default function AddMultiBooks() {
 		<>
 			<HeadTitle page="add multi books" />
 
-			<FormContainer title="add multi books">
+			<CenteredContainer title="add multi books">
 				<div className="mb-x-large">
 					<p>
 						Upload file contains ebook information, Open Book will{' '}
@@ -124,7 +124,7 @@ export default function AddMultiBooks() {
 						Go to Dashboard →
 					</Button>
 				)}
-			</FormContainer>
+			</CenteredContainer>
 
 			<TableGrid
 				title="Add ebooks result"

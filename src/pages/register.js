@@ -1,15 +1,17 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import AlertSnackbar from 'common/components/alertsnackbar/AlertSnackbar'
-import SubmitButton from 'common/components/button/SubmitButton'
-import FormContainer from 'common/components'
-import HeadTitle from 'common/components/headtitle/HeadTitle'
-import TextFieldController from 'common/components/input/TextFieldController'
-import { COMMON_ALERT, REGISTER_ALERT } from 'common/constants/alert.constant'
-import { REGISTER_SCHEMA } from 'common/schema/form-validation.schema'
-import { fetchRegister } from 'modules/auth/api/auth.api'
 import { getSession, signIn } from 'next-auth/client'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import {
+	CenteredContainer,
+	AlertSnackbar,
+	SubmitButton,
+	HeadTitle,
+	TextFieldController,
+} from 'common/components'
+import { COMMON_ALERT, REGISTER_ALERT } from 'common/constants'
+import { REGISTER_SCHEMA } from 'common/schema'
+import { fetchRegister } from 'modules/auth/api/auth.api'
 
 export async function getServerSideProps(ctx) {
 	const session = await getSession(ctx)
@@ -80,7 +82,7 @@ export default function Register() {
 		<>
 			<HeadTitle page="register" />
 
-			<FormContainer title="register">
+			<CenteredContainer title="register">
 				<TextFieldController
 					name="user_name"
 					label="Username"
@@ -119,7 +121,7 @@ export default function Register() {
 					text="Register"
 					onClick={handleSubmit(onSubmit, onError)}
 				/>
-			</FormContainer>
+			</CenteredContainer>
 
 			<AlertSnackbar
 				open={openSnackbar}

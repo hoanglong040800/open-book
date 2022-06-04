@@ -12,7 +12,7 @@ import {
 	SelectController,
 	TextAreaController,
 	TextFieldController,
-	FormContainer,
+	CenteredContainer,
 } from 'common/components'
 import { GENRES, USER_ROLES } from 'common/constants'
 import { EDIT_BOOK_SCHEMA } from 'common/schema'
@@ -80,7 +80,7 @@ export default function EditBook({ slug, session }) {
 			<HeadTitle page="Edit book" />
 
 			{bookInfo && (
-				<FormContainer title="Edit book">
+				<CenteredContainer title="Edit book">
 					<TextFieldController
 						name="name"
 						label="Name"
@@ -150,7 +150,7 @@ export default function EditBook({ slug, session }) {
 					/>
 
 					<SubmitButton text="Edit" onClick={handleSubmit(onSubmit, onError)} />
-				</FormContainer>
+				</CenteredContainer>
 			)}
 
 			<AlertSnackbar

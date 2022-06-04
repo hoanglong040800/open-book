@@ -1,15 +1,18 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Box, Button, MenuItem } from '@material-ui/core'
-import AlertSnackbar from 'common/components/alertsnackbar/AlertSnackbar'
-import HeadTitle from 'common/components/headtitle/HeadTitle'
-import SelectController from 'common/components/input/SelectController'
-import TextFieldController from 'common/components/input/TextFieldController'
-import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { getUserProfile, updateUserProfile } from 'modules/users/api/users.api'
-import { COMMON_ALERT } from 'common/constants/alert.constant'
-import { EDIT_PROFILE_SCHEMA } from 'common/schema/form-validation.schema'
 import { useRouter } from 'next/router'
+import { useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
+import { Box, Button, MenuItem } from '@material-ui/core'
+import {
+	CenteredContainer,
+	AlertSnackbar,
+	HeadTitle,
+	SelectController,
+	TextFieldController,
+} from 'common/components'
+import { getUserProfile, updateUserProfile } from 'modules/users/api/users.api'
+import { COMMON_ALERT } from 'common/constants'
+import { EDIT_PROFILE_SCHEMA } from 'common/schema'
 
 export default function EditProfile() {
 	const {
@@ -55,16 +58,13 @@ export default function EditProfile() {
 		setOpenSnackbar(true)
 	}
 
-	function onError(error) {
-	}
+	function onError(error) {}
 
 	return (
 		<>
 			<HeadTitle page="edit profile" />
 
-			<Box display="flex" flexDirection="column" mx="auto" maxWidth="500px">
-				<h1>Edit profile</h1>
-
+			<CenteredContainer title="edit profile">
 				<TextFieldController
 					name="full_name"
 					label="Full name"
@@ -92,7 +92,7 @@ export default function EditProfile() {
 						Save
 					</Button>
 				</Box>
-			</Box>
+			</CenteredContainer>
 
 			<AlertSnackbar
 				open={openSnackbar}
