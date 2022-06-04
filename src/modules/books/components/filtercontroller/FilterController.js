@@ -1,8 +1,10 @@
 import { Grid, MenuItem } from '@material-ui/core'
-import SubmitButton from 'common/components/button/SubmitButton'
-import CardContainer from 'common/components/cardcontainer/CardContainer'
-import SelectController from 'common/components/input/SelectController'
-import TextFieldController from 'common/components/input/TextFieldController'
+import {
+	SubmitButton,
+	SelectController,
+	TextFieldController,
+	CenteredContainer,
+} from 'common/components'
 import { toTitleCase } from 'common/utils/common.util'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -33,9 +35,7 @@ export function FilterController({ params, onChangeFilter, genres }) {
 	}
 
 	return (
-		<CardContainer>
-			<h1>Filter books</h1>
-
+		<CenteredContainer title="Advanced Search" type="full" gutterBottom>
 			<Grid {...props.gridContainer}>
 				<Grid {...props.gridItem}>
 					<TextFieldController
@@ -92,7 +92,7 @@ export function FilterController({ params, onChangeFilter, genres }) {
 				textSecondary="Clear"
 				onSecondaryClick={onClear}
 			/>
-		</CardContainer>
+		</CenteredContainer>
 	)
 }
 
