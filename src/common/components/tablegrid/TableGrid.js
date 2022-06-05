@@ -7,7 +7,9 @@ import {
 	TableHead,
 	TablePagination,
 	TableRow,
+	Typography,
 } from '@material-ui/core'
+import { resolvePath } from 'common/utils'
 import { useState } from 'react'
 
 export default function TableGrid({
@@ -40,7 +42,7 @@ export default function TableGrid({
 							{showOrdinalNumber && <TableCell width={50}>No.</TableCell>}
 
 							{columns.map(col => (
-								<TableCell key={col.field} width={col.width}>
+								<TableCell key={col.field} width={col.width} align={col.align}>
 									{col.headerName || col.field}
 								</TableCell>
 							))}
@@ -58,10 +60,12 @@ export default function TableGrid({
 										)}
 
 										{columns.map(col => (
-											<TableCell key={col.field}>
-												{col?.renderCell
-													? col.renderCell(row[col.field])
-													: row[col.field]}
+											<TableCell key={col.field} align={col.align}>
+												{col?.renderCell ? (
+													col.renderCell(resolvePath(row, col.field))
+												) : (
+													<Typography>{resolvePath(row, col.field)}</Typography>
+												)}
 											</TableCell>
 										))}
 									</TableRow>

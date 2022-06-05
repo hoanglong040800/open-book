@@ -9,6 +9,7 @@ import {
 import {
 	ACCEPT_FILE_TYPES,
 	ALERT_ADD_MULTI_BOOKS,
+	COMMON_ALERT,
 	URL_DASHBOARD,
 	URL_UPLOAD_MULTI_FILES,
 	USER_ROLES,
@@ -19,8 +20,7 @@ import { useRouter } from 'next/router'
 import { addMultiBooks, getAddMultiBooksLog } from 'modules/books/api'
 import { ebooksLogColDef } from 'modules/books/books.contant'
 import { Button, makeStyles, Typography } from '@material-ui/core'
-import { isNotEmpty } from 'empty-utils'
-import { Help } from '@material-ui/icons'
+import { Check, Close } from '@material-ui/icons'
 
 const useStyles = makeStyles(theme => ({
 	arrow: {
@@ -32,7 +32,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function AddMultiBooks() {
-	const mui = useStyles()
 	const router = useRouter()
 	const [selectedFile, setSeletedFile] = useState(null)
 	const [isOpenAlert, setIsOpenAlert] = useState(false)
@@ -40,7 +39,13 @@ export default function AddMultiBooks() {
 		severity: '',
 		message: '',
 	})
-	const [ebooksLog, setEbooksLog] = useState([])
+	const [log, setLog] = useState({
+		id: null,
+		total: null,
+		succeeded: null,
+		failed: null,
+		ebooks: [],
+	})
 	const [isAddingEbooks, setIsAddingEbooks] = useState(false)
 
 	function handleSelectFile(e) {
@@ -53,31 +58,27 @@ export default function AddMultiBooks() {
 	async function handleSubmit() {
 		try {
 			setIsAddingEbooks(true)
-			const res = await addMultiBooks(selectedFile)
-
-			setAlertProps(
-				res.status === 200
-					? ALERT_ADD_MULTI_BOOKS.SUCCESS
-					: ALERT_ADD_MULTI_BOOKS.ERROR,
-			)
-			setIsOpenAlert(true)
-
-			// todo uncomment
-			// getEbookLogs(res.jobId)
-			await getEbookLogs()
-
+			const data = await addMultiBooks(selectedFile)
+			await getEbookLogs(data.job_id)
+			setAlertProps(ALERT_ADD_MULTI_BOOKS.SUCCESS)
 			// reset input file value
 			document.getElementById('csv-file').value = ''
 		} catch (e) {
-			throw e
+			setAlertProps(COMMON_ALERT.error)
 		} finally {
+			setIsOpenAlert(true)
 			setIsAddingEbooks(false)
 		}
 	}
 
 	async function getEbookLogs(jobId) {
-		const ebooksLog = await getAddMultiBooksLog(jobId)
-		setEbooksLog(ebooksLog)
+		try {
+			const res = await getAddMultiBooksLog(jobId)
+
+			setLog({ ...res.data })
+		} catch (e) {
+			throw e
+		}
 	}
 
 	function handleCloseAlert() {
@@ -136,20 +137,38 @@ export default function AddMultiBooks() {
 					text="Submit"
 					onClick={handleSubmit}
 				/>
-
-				{isNotEmpty(ebooksLog) && !isAddingEbooks && (
-					<Button onClick={handleGoToDashboard} className="mt-large">
-						Go to Dashboard →
-					</Button>
-				)}
 			</CenteredContainer>
 
-			<TableGrid
-				rows={ebooksLog}
-				columns={ebooksLogColDef}
-				showOrdinalNumber
-				className="mt-large"
-			/>
+			{log?.id && !isAddingEbooks && (
+				<>
+					<div className="flex justify-between mt-x2-large align-center">
+						<div className="flex gap-medium align-center">
+							<h2 className="my-none mr-medium">Failed Ebooks</h2>
+
+							<Check color="primary" />
+							<Typography>{log?.succeeded}</Typography>
+
+							<Close color="error" />
+							<Typography>{log?.total - log?.succeeded}</Typography>
+						</div>
+
+						<div>
+							<Button onClick={handleGoToDashboard} className="ml-medium">
+								Go to Dashboard →
+							</Button>
+						</div>
+					</div>
+
+					{!log?.succeeded && (
+						<TableGrid
+							showOrdinalNumber
+							rows={log?.ebooks}
+							columns={ebooksLogColDef}
+							className="mt-large"
+						/>
+					)}
+				</>
+			)}
 
 			<AlertSnackbar
 				open={isOpenAlert}

@@ -1,5 +1,3 @@
-import { Check, Close } from '@material-ui/icons'
-
 const EbooksLogErrors = {
 	LINK_NOT_FOUND: 'Link not found',
 	NAME_NOT_FOUND: 'Name not found',
@@ -12,36 +10,27 @@ const EbooksLogErrors = {
 
 export const ebooksLogColDef = [
 	{
-		field: 'name',
-		headerName: 'First name',
-		width: 300,
-	},
-	{
-		field: 'thumbnail',
+		field: 'data.thumbnail',
 		headerName: 'Thumbnail',
-		width: 400,
+		width: 200,
+		align: 'center',
+		renderCell: url => <img src={url} width={80} />,
 	},
 	{
-		field: 'status',
-		headerName: 'Status',
-		width: 100,
-		renderCell: status => {
-			switch (status) {
-				case true:
-					return <Check color="primary" />
-				case false:
-					return <Close color="error" />
-				default:
-					return <></>
-			}
-		},
+		field: 'data.name',
+		headerName: 'Title',
+		width: 600,
 	},
+
 	{
 		field: 'error',
 		headerName: 'Error',
-		width: 200,
 		renderCell: errorCode => {
-			return EbooksLogErrors[errorCode]
+			return (
+				<p className="font-size-large text-uppercase">
+					{EbooksLogErrors[errorCode]}
+				</p>
+			)
 		},
 	},
 ]

@@ -38,7 +38,7 @@ export default function SubmitButton({
 				variant="contained"
 				color="primary"
 				onClick={onClick}
-				disable={isLoading}
+				disabled={isLoading}
 			>
 				{renderButtonContent(text)}
 			</Button>

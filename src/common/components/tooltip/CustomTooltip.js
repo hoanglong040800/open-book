@@ -30,7 +30,7 @@ export default function CustomTooltip({
 
 		switch (type) {
 			case 'helper':
-				return <Help />
+				return <Help fontSize="small" />
 
 			case 'action':
 				return <MoreHoriz />
