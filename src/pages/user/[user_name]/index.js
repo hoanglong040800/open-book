@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/styles'
 import { useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import { URL_DASHBOARD, URL_EDIT_USER, USER_ROLES } from 'common/constants'
-import { CenteredContainer, HeadTitle, SubmitButton } from 'common/components'
+import { CenteredContainer, HeadTitle } from 'common/components'
 import { getUserProfile } from 'modules/users/api/users.api'
 import { getAllBookmarksByUser } from 'modules/bookmarks'
 import { BookList } from 'modules/books/components'
@@ -48,8 +48,13 @@ export default function ViewProfile() {
 
 			<CenteredContainer type="content">
 				<Grid container>
-					<Grid item xs={12} sm={4} className="text-align-center">
-						<div className="text-size-x7-large">
+					<Grid
+						item
+						xs={12}
+						sm={4}
+						className="text-align-center flex-column align-center gap-medium px-x4-large mt-medium"
+					>
+						<div className="font-size-x7-large line-height-100">
 							{isStore ? (
 								<StorefrontTwoTone color="secondary" fontSize="inherit" />
 							) : (
@@ -62,8 +67,20 @@ export default function ViewProfile() {
 								variant="contained"
 								color="secondary"
 								onClick={handleViewDashboard}
+								className="width-full"
 							>
 								View Dashboard
+							</Button>
+						)}
+
+						{isUserProfile && (
+							<Button
+								variant="contained"
+								color="primary"
+								onClick={handleEdit}
+								className="width-full"
+							>
+								Edit {isStore ? 'Store' : 'Profile'}
 							</Button>
 						)}
 					</Grid>
@@ -121,13 +138,6 @@ export default function ViewProfile() {
 						)}
 					</Grid>
 				</Grid>
-
-				{isUserProfile && (
-					<SubmitButton
-						text={`Edit ${isStore ? 'Store' : 'Profile'}`}
-						onClick={handleEdit}
-					/>
-				)}
 			</CenteredContainer>
 
 			{isUserProfile && !isStore && userBookmarks && (
@@ -143,17 +153,17 @@ export default function ViewProfile() {
 const gridItemProperty = {
 	property: {
 		item: true,
-		xs: 4,
-		sm: 4,
-		md: 4,
-		lg: 4,
+		xs: 3,
+		sm: 3,
+		md: 3,
+		lg: 3,
 	},
 	value: {
 		item: true,
-		xs: 8,
-		sm: 8,
-		md: 8,
-		lg: 8,
+		xs: 9,
+		sm: 9,
+		md: 9,
+		lg: 9,
 	},
 }
 

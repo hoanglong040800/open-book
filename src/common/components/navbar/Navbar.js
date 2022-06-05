@@ -27,7 +27,7 @@ export default function Navbar({ onOpenDrawer }) {
 						<div className="flex">
 							<div className={classes.mobile}>
 								<IconButton onClick={onOpenDrawer}>
-									<Menu color="inherit" />
+									<Menu className="text-color-white" />
 								</IconButton>
 							</div>
 
