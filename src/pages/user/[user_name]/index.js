@@ -39,7 +39,7 @@ export default function ViewProfile() {
 	}
 
 	function handleViewDashboard() {
-		router.push(URL_DASHBOARD(session.user.user_name))
+		router.push(URL_DASHBOARD)
 	}
 
 	return (

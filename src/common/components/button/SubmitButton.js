@@ -6,6 +6,7 @@ export default function SubmitButton({
 	textSecondary,
 	onSecondaryClick,
 	isLoading = false,
+	className,
 }) {
 	function renderButtonContent(content) {
 		return (
@@ -21,7 +22,7 @@ export default function SubmitButton({
 	}
 
 	return (
-		<Box display="flex" justifyContent="flex-end" mt={3} my={2}>
+		<Box className={`flex justify-end mt-large ${className}`}>
 			{textSecondary && (
 				<Button
 					variant="contained"

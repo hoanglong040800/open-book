@@ -1,4 +1,9 @@
-// ====== WEBSITE NAME =====
+import {
+	URL_ADD_MULTI_BOOKS,
+	URL_DASHBOARD,
+	URL_UPLOAD_MULTI_FILES,
+} from './url.constant'
+
 export const WEB_NAME = 'Open Book'
 
 export const USER_ROLES = {
@@ -8,6 +13,8 @@ export const USER_ROLES = {
 }
 
 export const BOOK_LIMIT = 8
+
+// start navlink
 
 export const navlinks = [
 	{
@@ -86,6 +93,23 @@ export const navlinks = [
 		],
 	},
 ]
+
+export const storeNavLinks = [
+	{
+		text: 'Dashboard',
+		url: URL_DASHBOARD,
+	},
+	{
+		text: 'Add Books',
+		url: URL_ADD_MULTI_BOOKS,
+	},
+	{
+		text: 'Upload Files',
+		url: URL_UPLOAD_MULTI_FILES,
+	},
+]
+
+// end navlink
 
 export const GENRES = [
 	{

@@ -61,7 +61,7 @@ export default function NewBook({ session }) {
 		<>
 			<HeadTitle page="New book" />
 
-			<CenteredContainer title="New book">
+			<CenteredContainer title="New book"  type="form">
 				<UploadFile
 					name="file"
 					label="Upload Book"

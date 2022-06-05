@@ -1,4 +1,5 @@
-import { Button, Card, Divider, Grid } from '@material-ui/core'
+import { Button, Divider, Grid } from '@material-ui/core'
+import { CenteredContainer } from 'common/components'
 import Loading from 'common/components/loading/Loading'
 import GenreList from './GenreList'
 import ImageContainer from './ImageContainer'
@@ -8,7 +9,7 @@ import ReadMore from './Readmore'
 
 export default function DetailBookContainer({ bookInfo, onClickRead }) {
 	return (
-		<Card className='card-container'>
+		<CenteredContainer type='content'>
 			{bookInfo ? (
 				<Grid container spacing={4}>
 					<Grid item container xs={12} md={4} lg={3}>
@@ -39,6 +40,6 @@ export default function DetailBookContainer({ bookInfo, onClickRead }) {
 			) : (
 				<Loading />
 			)}
-		</Card>
+		</CenteredContainer>
 	)
 }

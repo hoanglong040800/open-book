@@ -64,7 +64,7 @@ export default function EditProfile() {
 		<>
 			<HeadTitle page="edit profile" />
 
-			<CenteredContainer title="edit profile">
+			<CenteredContainer title="edit profile"  type="form">
 				<TextFieldController
 					name="full_name"
 					label="Full name"

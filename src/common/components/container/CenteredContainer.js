@@ -7,32 +7,31 @@ const styleConfig = [
 	},
 	{
 		type: 'content',
-		maxWidth: 1100,
+		maxWidth: 1000,
+		marginBottom: 24,
 	},
 	{
 		type: 'full',
 		maxWidth: 'auto',
+		marginBottom: 24,
 	},
 ]
 
 export default function CenteredContainer({
 	title = '',
-	type = 'form',
-	gutterBottom = false,
+	type = 'full',
 	className = '',
 	style,
 	children,
 }) {
-	const customClassName = `${gutterBottom && 'mb-x-large'}`
 	const customStyle = styleConfig.find(sc => sc.type == type)
 
 	return (
 		<div
-			className={`flex flex-column mx-auto py-large px-x3-large shadow-container bg-white 
-									${customClassName} ${className}`}
+			className={`flex flex-column mx-auto py-large px-x3-large shadow-container bg-white ${className}`}
 			style={{ ...customStyle, ...style }}
 		>
-			<h1>{toTitleCase(title)}</h1>
+			{title && <h1 className="mt-none">{toTitleCase(title)}</h1>}
 			{children}
 		</div>
 	)

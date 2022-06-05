@@ -1,54 +1,48 @@
 import {
 	AppBar,
-	Box,
 	Container,
 	IconButton,
 	makeStyles,
 	Toolbar,
 } from '@material-ui/core'
-import NavLink from './NavLink'
-import NavProfile from './NavProfile'
-import { useSession } from 'next-auth/client'
-import NavLogo from './NavLogo'
 import { Menu } from '@material-ui/icons'
-import NavSearchBar from './search/NavSearchBar'
+import { USER_ROLES } from 'common/constants'
+import { useSession } from 'next-auth/client'
+import NavLink from './link/NavLink'
 import NavAuthButton from './NavAuthButton'
-import { checkRole } from 'common/utils/common.util'
-import { USER_ROLES } from 'common/constants/common.constant'
-import StoreNavLink from './StoreNavLink'
+import NavLogo from './NavLogo'
+import NavProfile from './NavProfile'
+import NavSearchBar from './NavSearchBar'
 
 export default function Navbar({ onOpenDrawer }) {
 	const classes = useStyles()
 	const [session] = useSession()
-	const isStore = checkRole(session, USER_ROLES.store)
 
 	return (
 		<AppBar position="fixed" color="primary">
 			<Toolbar>
 				<Container maxWidth="xl">
-					<Box className={classes.toolbar}>
+					<div className="flex justify-between align-center flex-1">
 						{/* left side */}
-						<Box display="flex">
-							<Box className={classes.mobile}>
+						<div className="flex">
+							<div className={classes.mobile}>
 								<IconButton onClick={onOpenDrawer}>
 									<Menu color="inherit" />
 								</IconButton>
-							</Box>
-							<Box className={classes.desktop}>
-								<Box mr={1}>
-									<NavLogo />
-								</Box>
+							</div>
 
-								{isStore ? <StoreNavLink /> : <NavLink />}
-							</Box>
-						</Box>
+							<div className={classes.desktop}>
+								<NavLogo className="mr-medium" />
+								<NavLink />
+							</div>
+						</div>
 
 						{/* right side */}
-						<Box display="flex" alignItems="center">
-							<NavSearchBar />
+						<div className="flex align-center">
+							{session?.user.role === USER_ROLES.viewer && <NavSearchBar />}
 							{session ? <NavProfile /> : <NavAuthButton />}
-						</Box>
-					</Box>
+						</div>
+					</div>
 				</Container>
 			</Toolbar>
 		</AppBar>
@@ -56,13 +50,6 @@ export default function Navbar({ onOpenDrawer }) {
 }
 
 const useStyles = makeStyles(theme => ({
-	toolbar: {
-		display: 'flex',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		flex: 1,
-	},
-
 	desktop: {
 		marginRight: theme.spacing(1),
 

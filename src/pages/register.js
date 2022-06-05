@@ -82,7 +82,7 @@ export default function Register() {
 		<>
 			<HeadTitle page="register" />
 
-			<CenteredContainer title="register">
+			<CenteredContainer title="register" type="form">
 				<TextFieldController
 					name="user_name"
 					label="Username"

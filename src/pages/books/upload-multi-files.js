@@ -82,7 +82,7 @@ export default function UploadMultiFiles() {
 		<>
 			<HeadTitle page={`Upload ${uploadType.type}`} />
 
-			<CenteredContainer title={`Upload ${uploadType.type}`}>
+			<CenteredContainer title={`Upload ${uploadType.type}`}  type="form">
 				<ToggleButtonGroup
 					value={uploadType.type}
 					exclusive

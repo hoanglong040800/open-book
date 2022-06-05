@@ -35,7 +35,7 @@ export function FilterController({ params, onChangeFilter, genres }) {
 	}
 
 	return (
-		<CenteredContainer title="Advanced Search" type="full" gutterBottom>
+		<CenteredContainer title="Advanced Search">
 			<Grid {...props.gridContainer}>
 				<Grid {...props.gridItem}>
 					<TextFieldController

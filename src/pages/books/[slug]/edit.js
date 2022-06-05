@@ -80,7 +80,7 @@ export default function EditBook({ slug, session }) {
 			<HeadTitle page="Edit book" />
 
 			{bookInfo && (
-				<CenteredContainer title="Edit book">
+				<CenteredContainer title="Edit book"  type="form">
 					<TextFieldController
 						name="name"
 						label="Name"

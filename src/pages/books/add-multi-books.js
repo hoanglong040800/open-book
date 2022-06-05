@@ -75,14 +75,14 @@ export default function AddMultiBooks() {
 	}
 
 	function handleGoToDashboard() {
-		router.push(URL_DASHBOARD(session.user.user_name))
+		router.push(URL_DASHBOARD)
 	}
 
 	return (
 		<>
 			<HeadTitle page="add multi books" />
 
-			<CenteredContainer title="add multi books">
+			<CenteredContainer title="add multi books"  type="form">
 				<div className="mb-x-large">
 					<p>
 						Upload file contains ebook information, Open Book will{' '}
