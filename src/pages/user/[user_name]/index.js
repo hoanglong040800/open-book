@@ -58,7 +58,7 @@ export default function ViewProfile() {
 							{isStore ? (
 								<StorefrontTwoTone color="secondary" fontSize="inherit" />
 							) : (
-								<AccountCircle fontSize="inherit" />
+								<AccountCircle color="primary" fontSize="inherit" />
 							)}
 						</div>
 
@@ -153,24 +153,24 @@ export default function ViewProfile() {
 const gridItemProperty = {
 	property: {
 		item: true,
-		xs: 3,
-		sm: 3,
-		md: 3,
-		lg: 3,
+		xs: 4,
+		sm: 4,
+		md: 4,
+		lg: 4,
 	},
 	value: {
 		item: true,
-		xs: 9,
-		sm: 9,
-		md: 9,
-		lg: 9,
+		xs: 8,
+		sm: 8,
+		md: 8,
+		lg: 8,
 	},
 }
 
 const useStyle = makeStyles(theme => ({
 	infoContainer: {
 		borderLeft: `4px solid ${theme.palette.primary.light}`,
-		paddingLeft: '30px',
+		paddingLeft: '40px',
 	},
 
 	[theme.breakpoints.down('xs')]: {

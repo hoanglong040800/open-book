@@ -11,12 +11,12 @@ import {
 import { useState } from 'react'
 
 export default function TableGrid({
-	title = '',
 	columns,
 	rows,
 	showOrdinalNumber = false,
 	rowsPerPage = 5,
 	rowsPerPageOptions = [5, 10, 15],
+	className,
 }) {
 	const [page, setPage] = useState(0)
 	const emptyRows =
@@ -32,14 +32,11 @@ export default function TableGrid({
 	}
 
 	return (
-		<>
-			<h2 className="text-align-center">{title}</h2>
-
+		<div className={className}>
 			<TableContainer component={Paper}>
 				<Table>
 					<TableHead>
 						<TableRow>
-							{/* ordinal number */}
 							{showOrdinalNumber && <TableCell width={50}>No.</TableCell>}
 
 							{columns.map(col => (
@@ -56,7 +53,6 @@ export default function TableGrid({
 							.map((row, index) => (
 								<>
 									<TableRow key={index}>
-										{/* ordinal number */}
 										{showOrdinalNumber && (
 											<TableCell>{page * rowsPerPage + index + 1}</TableCell>
 										)}
@@ -93,6 +89,6 @@ export default function TableGrid({
 					component={Paper}
 				/>
 			</div>
-		</>
+		</div>
 	)
 }

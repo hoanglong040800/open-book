@@ -4,6 +4,7 @@ import {
 	SubmitButton,
 	TableGrid,
 	CenteredContainer,
+	CustomTooltip,
 } from 'common/components'
 import {
 	ACCEPT_FILE_TYPES,
@@ -15,15 +16,24 @@ import {
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { useSession } from 'next-auth/client'
 import { addMultiBooks, getAddMultiBooksLog } from 'modules/books/api'
 import { ebooksLogColDef } from 'modules/books/books.contant'
-import { Button } from '@material-ui/core'
+import { Button, makeStyles, Typography } from '@material-ui/core'
 import { isNotEmpty } from 'empty-utils'
+import { Help } from '@material-ui/icons'
+
+const useStyles = makeStyles(theme => ({
+	arrow: {
+		color: theme.palette.common.black,
+	},
+	tooltip: {
+		backgroundColor: theme.palette.common.black,
+	},
+}))
 
 export default function AddMultiBooks() {
+	const mui = useStyles()
 	const router = useRouter()
-	const [session] = useSession()
 	const [selectedFile, setSeletedFile] = useState(null)
 	const [isOpenAlert, setIsOpenAlert] = useState(false)
 	const [alertProps, setAlertProps] = useState({
@@ -82,36 +92,44 @@ export default function AddMultiBooks() {
 		<>
 			<HeadTitle page="add multi books" />
 
-			<CenteredContainer title="add multi books"  type="form">
-				<div className="mb-x-large">
-					<p>
-						Upload file contains ebook information, Open Book will{' '}
-						<span className="font-weight-bold">
-							generate genres automatically
-						</span>{' '}
-						and add all ebooks for you in a single click!
-					</p>
+			<CenteredContainer type="form">
+				<div className="flex align-center gap-small">
+					<h1>Add Multiple Books</h1>
 
-					<p>
-						Please make sure you have image & pdf links before uploading. If
-						not,{' '}
-						<Link href={URL_UPLOAD_MULTI_FILES}>
-							<a className="link-color">
-								click here to upload and retrieve links!
-							</a>
-						</Link>
-					</p>
+					<CustomTooltip type="helper">
+						<Typography>
+							Upload file contains ebook information, Open Book will{' '}
+							<span className="font-weight-bold">
+								generate genres automatically
+							</span>{' '}
+							and add all ebooks for you in a single click!
+						</Typography>
+
+						<Typography>
+							Please make sure you have image & pdf links before uploading. If
+							not,{' '}
+							<Link href={URL_UPLOAD_MULTI_FILES}>
+								<a className="link-color-dark-theme font-weight-bold">
+									click here to upload and retrieve links!
+								</a>
+							</Link>
+						</Typography>
+					</CustomTooltip>
 				</div>
 
-				<input
-					id="csv-file"
-					required
-					type="file"
-					accept={ACCEPT_FILE_TYPES.ADD_MULTI_BOOKS}
-					onChange={handleSelectFile}
-				/>
+				<div className="flex mx-auto">
+					<div>
+						<input
+							id="csv-file"
+							required
+							type="file"
+							accept={ACCEPT_FILE_TYPES.ADD_MULTI_BOOKS}
+							onChange={handleSelectFile}
+						/>
 
-				<p>Accept {ACCEPT_FILE_TYPES.ADD_MULTI_BOOKS}</p>
+						<Typography>Accept {ACCEPT_FILE_TYPES.ADD_MULTI_BOOKS}</Typography>
+					</div>
+				</div>
 
 				<SubmitButton
 					isLoading={isAddingEbooks}
@@ -120,17 +138,17 @@ export default function AddMultiBooks() {
 				/>
 
 				{isNotEmpty(ebooksLog) && !isAddingEbooks && (
-					<Button className="flex ml-auto" onClick={handleGoToDashboard}>
+					<Button onClick={handleGoToDashboard} className="mt-large">
 						Go to Dashboard →
 					</Button>
 				)}
 			</CenteredContainer>
 
 			<TableGrid
-				title="Add ebooks result"
 				rows={ebooksLog}
 				columns={ebooksLogColDef}
 				showOrdinalNumber
+				className="mt-large"
 			/>
 
 			<AlertSnackbar
