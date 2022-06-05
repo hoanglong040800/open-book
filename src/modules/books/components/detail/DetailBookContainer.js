@@ -1,5 +1,5 @@
 import { Button, Divider, Grid } from '@material-ui/core'
-import CardContainer from 'common/components/cardcontainer/CardContainer'
+import { CenteredContainer } from 'common/components'
 import Loading from 'common/components/loading/Loading'
 import GenreList from './GenreList'
 import ImageContainer from './ImageContainer'
@@ -7,23 +7,30 @@ import MainInfo from './MainInfo'
 import MoreInfo from './MoreInfo'
 import ReadMore from './Readmore'
 
-export default function DetailBookContainer({ bookInfo,onClickRead }) {
+export default function DetailBookContainer({ bookInfo, onClickRead }) {
 	return (
-		<CardContainer>
+		<CenteredContainer type='content'>
 			{bookInfo ? (
 				<Grid container spacing={4}>
-					<Grid {...props.imgSection}>
+					<Grid item container xs={12} md={4} lg={3}>
 						<ImageContainer thumbnail={bookInfo.thumbnail.link_storage} />
 					</Grid>
 
-					<Grid item {...props.infoSection}>
+					<Grid item xs={12} md={8} lg={9}>
 						<MainInfo bookInfo={bookInfo} />
 
 						<GenreList genres={bookInfo.genres} />
 
-						<Button {...props.btn} onClick={onClickRead}>Read</Button>
+						<Button
+							variant="contained"
+							color="secondary"
+							className="mt-x-large mt-12"
+							onClick={onClickRead}
+						>
+							Read
+						</Button>
 
-						<Divider style={styles.divider} />
+						<Divider className="my-large mh-auto width-half" />
 
 						<MoreInfo bookInfo={bookInfo} />
 
@@ -33,39 +40,6 @@ export default function DetailBookContainer({ bookInfo,onClickRead }) {
 			) : (
 				<Loading />
 			)}
-		</CardContainer>
+		</CenteredContainer>
 	)
-}
-
-const styles = {
-	btn: {
-		margin: '30px 0 10px 0',
-	},
-
-	divider: {
-		margin: '20px 10vw',
-	},
-}
-
-const props = {
-	btn: {
-		variant: 'contained',
-		color: 'secondary',
-		style: styles.btn,
-	},
-
-	imgSection: {
-		container: true,
-		item: true,
-		justifyContent: 'center',
-		xs: 12,
-		md: 4,
-		lg: 3,
-	},
-
-	infoSection: {
-		xs: 12,
-		md: 8,
-		lg: 9,
-	},
 }

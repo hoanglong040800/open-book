@@ -11,7 +11,6 @@ export default function NavProfile() {
 	const [session] = useSession()
 	const mui = useStyles()
 	const [anchorEl, setAnchorEl] = useState(null)
-	const isStore = checkRole(session, USER_ROLES.store)
 
 	function handleOpen(e) {
 		setAnchorEl(e.currentTarget)
@@ -45,7 +44,7 @@ export default function NavProfile() {
 	return (
 		<>
 			<IconButton size="medium" onClick={handleOpen}>
-				{isStore ? (
+				{session?.user.role === USER_ROLES.store ? (
 					<StorefrontTwoTone fontSize="large" className={mui.icon} />
 				) : (
 					<AccountCircle fontSize="large" className={mui.icon} />

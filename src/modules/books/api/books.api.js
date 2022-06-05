@@ -23,17 +23,31 @@ export async function addBookInfo(data) {
 export async function addMultiBooks(file) {
 	const formData = new FormData()
 	formData.append('csv', file)
-	return axiosClient.post(`books/auto_generate/books`, formData, {
-		headers: {
-			'Content-Type': 'multipart/form-data',
-		},
-	})
+	return axiosClient
+		.post(`books/auto_generate/books`, formData, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		})
+		.then(res => res.data)
+}
+
+export async function getAddMultiBooksLog(jobId) {
+	return axiosClient.get(`jobs/${jobId}`)
 }
 
 export async function getAllBooks() {
-	return axiosClient.get(`books`).then(res => {
-		return res.data
-	})
+	return axiosClient.get(`books`).then(res => res.data)
+}
+
+export async function getStoreBooks(storeId) {
+	return axiosClient
+		.get(`books`)
+		.then(res =>
+			res.data
+				.reverse()
+				.filter(book => book.owner_id === storeId && book.status),
+		)
 }
 
 export async function getBooksByFilter(params) {

@@ -1,7 +1,4 @@
-:root {
-	--primary: #00897b;
-	--secondary: #ff5722;
-}
+@import url('./constants.css');
 
 /* theme */
 
@@ -13,12 +10,36 @@
 	background-color: var(--secondary);
 }
 
+.bg-success {
+	background-color: var(--success);
+}
+
+.bg-warning {
+	background-color: var(--warning);
+}
+
+.bg-error {
+	background-color: var(--error);
+}
+
+.bg-info {
+	background-color: var(--info);
+}
+
 .link-color {
 	color: #137cbd !important;
 }
 
 .link-color:hover {
 	color: #106ba3 !important;
+}
+
+.link-color-dark-theme {
+	color: #6fc0f3 !important;
+}
+
+.link-color-dark-theme:hover {
+	color: #b3e2ff !important;
 }
 
 /* common */

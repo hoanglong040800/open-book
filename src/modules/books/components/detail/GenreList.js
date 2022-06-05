@@ -1,51 +1,31 @@
 import { Button } from '@material-ui/core'
+import { URL_FILTER_BOOKS } from 'common/constants'
 import { toTitleCase } from 'common/utils/common.util'
 import { useRouter } from 'next/router'
-import React from 'react'
 
 export default function GenreList({ genres }) {
 	const router = useRouter()
 
 	function onClickButton(id) {
 		router.push({
-			pathname: '/books/filter',
+			pathname: URL_FILTER_BOOKS,
 			query: { genre: id },
 		})
 	}
 
 	return (
-		<div style={styles.container}>
-			{genres.map((genre, index) => (
+		<div className="flex flex-wrap gap-small mt-medium">
+			{genres.map(genre => (
 				<Button
 					key={genre.id}
+					variant="outlined"
+					color="primary"
+					className="font-weight-regular rounded-full"
 					onClick={() => onClickButton(genre.id)}
-					{...props.btn}
 				>
 					{toTitleCase(genre.name_en)}
 				</Button>
 			))}
 		</div>
 	)
-}
-
-const styles = {
-	btn: {
-		borderRadius: '50px',
-		fontWeight: 'normal',
-	},
-
-	container: {
-		display: 'flex',
-		flexWrap: 'wrap',
-		gap: '10px',
-		marginTop: '20px',
-	},
-}
-
-const props = {
-	btn: {
-		variant: 'outlined',
-		color: 'primary',
-		style: styles.btn,
-	},
 }

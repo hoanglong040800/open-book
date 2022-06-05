@@ -17,9 +17,6 @@ export function filterObject(obj, callback) {
 	)
 }
 
-export function checkRole(session,role) {
-	if (!session) return false
-
-	if (session?.user?.role === role) return true
-	else return false
+export function resolvePath(object, path, defaultValue = null) {
+	return path.split('.').reduce((o, p) => (o ? o[p] : defaultValue), object)
 }

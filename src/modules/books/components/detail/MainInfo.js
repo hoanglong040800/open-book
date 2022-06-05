@@ -21,15 +21,12 @@ export default function MainInfo({ bookInfo: { name, authors } }) {
 				<Typography variant="h4">{name}</Typography>
 
 				<IconButton color="secondary" onClick={handleToggleBookmark}>
-					{
-						/* only viewer can see bookmark */
-						session?.user.role === USER_ROLES.viewer &&
-							(isBookmarked ? (
-								<Bookmark className={mui.bookmark} />
-							) : (
-								<BookmarkBorder className={mui.bookmark} />
-							))
-					}
+					{session?.user.role === USER_ROLES.viewer &&
+						(isBookmarked ? (
+							<Bookmark className={mui.bookmark} />
+						) : (
+							<BookmarkBorder className={mui.bookmark} />
+						))}
 				</IconButton>
 			</Box>
 

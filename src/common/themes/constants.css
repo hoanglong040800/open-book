@@ -1,0 +1,43 @@
+:root {
+	/* pixel */
+	--x2-small: 2px !important;
+	--x-small: 4px !important;
+	--small: 8px !important;
+	--medium: 16px !important;
+	--large: 24px !important;
+	--x-large: 32px !important;
+	--x2-large: 40px !important;
+	--x3-large: 48px !important;
+	--x4-large: 56px !important;
+	--x5-large: 64px !important;
+	--x6-large: 72px !important;
+	--x7-large: 80px !important;
+	--x8-large: 88px !important;
+	--x9-large: 96px !important;
+
+	/* layout */
+	--xs: 0px,
+	--sm: 480px,
+	--md: 768px,
+	--lg: 1024px,
+	--xl: 1280px,
+
+	/* animation speed */
+	--anim-speed-fast: 0.2s;
+	--anim-speed-normal: 0.3s;
+	--anim-speed-slow: 0.5s;
+
+	/* theme color */
+	--primary: #26a69a;
+	--primary-light: #80cbc4;
+	--primary-dark: #00897b;
+
+	--secondary: #ff5722;
+	--secondary-light: #ff8a65;
+	--secondary-dark: #e64a19;
+
+	--success: #26a69a;
+	--warning: #fffda1;
+	--error: #ef5350;
+	--info: #5691ff;
+}

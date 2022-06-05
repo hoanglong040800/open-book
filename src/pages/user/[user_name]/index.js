@@ -3,10 +3,9 @@ import { Box, Button, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
-import { USER_ROLES } from 'common/constants'
-import { HeadTitle, SubmitButton } from 'common/components'
+import { URL_DASHBOARD, URL_EDIT_USER, USER_ROLES } from 'common/constants'
+import { CenteredContainer, HeadTitle } from 'common/components'
 import { getUserProfile } from 'modules/users/api/users.api'
-import { FormLayout } from 'common/layouts'
 import { getAllBookmarksByUser } from 'modules/bookmarks'
 import { BookList } from 'modules/books/components'
 import { StorefrontTwoTone, AccountCircle } from '@material-ui/icons'
@@ -22,7 +21,7 @@ export default function ViewProfile() {
 
 	useEffect(() => {
 		initUserInfo()
-		initUserBookmarks()
+		session?.user.role === USER_ROLES.viewer && initUserBookmarks()
 	}, [])
 
 	async function initUserInfo() {
@@ -36,25 +35,30 @@ export default function ViewProfile() {
 	}
 
 	function handleEdit() {
-		router.push(`/user/${session.user.user_name}/edit`)
+		router.push(URL_EDIT_USER(session.user.user_name))
 	}
 
 	function handleViewDashboard() {
-		router.push(`/user/${session.user.user_name}/dashboard`)
+		router.push(URL_DASHBOARD)
 	}
 
 	return (
 		<>
 			<HeadTitle page="profile" />
 
-			<FormLayout title="" maxWidth={600}>
+			<CenteredContainer type="content">
 				<Grid container>
-					<Grid item xs={12} sm={4} className={classes.profileTitle}>
-						<div className={classes.avatar}>
+					<Grid
+						item
+						xs={12}
+						sm={4}
+						className="text-align-center flex-column align-center gap-medium px-x4-large mt-medium"
+					>
+						<div className="font-size-x7-large line-height-100">
 							{isStore ? (
 								<StorefrontTwoTone color="secondary" fontSize="inherit" />
 							) : (
-								<AccountCircle fontSize="inherit" />
+								<AccountCircle color="primary" fontSize="inherit" />
 							)}
 						</div>
 
@@ -63,8 +67,20 @@ export default function ViewProfile() {
 								variant="contained"
 								color="secondary"
 								onClick={handleViewDashboard}
+								className="width-full"
 							>
 								View Dashboard
+							</Button>
+						)}
+
+						{isUserProfile && (
+							<Button
+								variant="contained"
+								color="primary"
+								onClick={handleEdit}
+								className="width-full"
+							>
+								Edit {isStore ? 'Store' : 'Profile'}
 							</Button>
 						)}
 					</Grid>
@@ -122,27 +138,14 @@ export default function ViewProfile() {
 						)}
 					</Grid>
 				</Grid>
+			</CenteredContainer>
 
-				{
-					// only owner can edit
-					isUserProfile && (
-						<SubmitButton
-							text={`Edit ${isStore ? 'Store' : 'Profile'}`}
-							onClick={handleEdit}
-						/>
-					)
-				}
-			</FormLayout>
-
-			{
-				// bookmarks for viewer only
-				isUserProfile && !isStore && userBookmarks && (
-					<Box mt={5}>
-						<h1>Your bookmarks list</h1>
-						<BookList list={userBookmarks} hasMore={false} />
-					</Box>
-				)
-			}
+			{isUserProfile && !isStore && userBookmarks && (
+				<Box mt={5}>
+					<h1>Your bookmarks list</h1>
+					<BookList list={userBookmarks} hasMore={false} />
+				</Box>
+			)}
 		</>
 	)
 }
@@ -151,31 +154,23 @@ const gridItemProperty = {
 	property: {
 		item: true,
 		xs: 4,
-		sm: 5,
+		sm: 4,
 		md: 4,
-		lg: 3,
+		lg: 4,
 	},
 	value: {
 		item: true,
 		xs: 8,
-		sm: 7,
+		sm: 8,
 		md: 8,
-		lg: 9,
+		lg: 8,
 	},
 }
 
 const useStyle = makeStyles(theme => ({
-	avatar: {
-		fontSize: 50,
-	},
-
-	profileTitle: {
-		textAlign: 'center',
-	},
-
 	infoContainer: {
 		borderLeft: `4px solid ${theme.palette.primary.light}`,
-		paddingLeft: '30px',
+		paddingLeft: '40px',
 	},
 
 	[theme.breakpoints.down('xs')]: {
