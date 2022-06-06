@@ -31,15 +31,3 @@ export const COMMON_ALERT = {
 		message: 'Something is wrong. Please try again',
 	},
 }
-
-export const ALERT_ADD_MULTI_BOOKS = {
-	SUCCESS: {
-		severity: SEVERITY.SUCCESS,
-		message: 'Add multi books successfully. Showing failed result...',
-	},
-
-	ERROR: {
-		severity: SEVERITY.ERROR,
-		message: 'Something is wrong. Please try again',
-	},
-}

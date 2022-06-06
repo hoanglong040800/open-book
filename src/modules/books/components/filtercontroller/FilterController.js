@@ -1,6 +1,6 @@
 import { Grid, MenuItem } from '@material-ui/core'
 import {
-	SubmitButton,
+	FooterButtons,
 	SelectController,
 	TextFieldController,
 	CenteredContainer,
@@ -86,7 +86,7 @@ export function FilterController({ params, onChangeFilter, genres }) {
 				</Grid>
 			</Grid>
 
-			<SubmitButton
+			<FooterButtons
 				text="Filter"
 				onClick={handleSubmit(onChangeFilter)}
 				textSecondary="Clear"

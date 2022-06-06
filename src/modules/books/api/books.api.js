@@ -33,7 +33,10 @@ export async function addMultiBooks(file) {
 }
 
 export async function getAddMultiBooksLog(jobId) {
-	return axiosClient.get(`jobs/${jobId}`)
+	return axiosClient.get(`jobs/${jobId}`).then(res => {
+		const data = res.data
+		return { ...res, data: { ...data, failed: data.total - data.succeeded } }
+	})
 }
 
 export async function getAllBooks() {

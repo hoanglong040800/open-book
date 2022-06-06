@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { HeadTitle, SubmitButton } from 'common/components'
+import { HeadTitle, FooterButtons } from 'common/components'
 import { deleteBook, getStoreBooks } from 'modules/books/api'
 import BooksManageTable from 'modules/books/components/table/BooksManageTable'
 import { Divider, Fade, Modal, Paper } from '@material-ui/core'
@@ -63,7 +63,7 @@ export default function Dashboard({}) {
 
 			<h1>Dashboard of my {!isLoadingSession && session.user.full_name}</h1>
 
-			<SubmitButton
+			<FooterButtons
 				text="Add Book"
 				onClick={handleAddBookClick}
 				onSecondaryClick={handleAddMultiClick}
@@ -96,7 +96,7 @@ export default function Dashboard({}) {
 
 						<Divider />
 
-						<SubmitButton
+						<FooterButtons
 							text="Confirm"
 							onClick={() => handleDeleteBook(selectedBook?.id)}
 							textSecondary="Cancel"

@@ -1,10 +1,12 @@
 import { Box, Button, CircularProgress } from '@material-ui/core'
 
-export default function SubmitButton({
+export default function FooterButtons({
 	text = 'Submit',
 	onClick,
+	primaryDisabled = false,
 	textSecondary,
 	onSecondaryClick,
+	secondaryDisabled = false,
 	isLoading = false,
 	className,
 }) {
@@ -27,7 +29,7 @@ export default function SubmitButton({
 				<Button
 					variant="contained"
 					onClick={onSecondaryClick}
-					disabled={isLoading}
+					disabled={isLoading || secondaryDisabled}
 					className="mr-medium"
 				>
 					{renderButtonContent(textSecondary)}
@@ -38,7 +40,7 @@ export default function SubmitButton({
 				variant="contained"
 				color="primary"
 				onClick={onClick}
-				disabled={isLoading}
+				disabled={isLoading || primaryDisabled}
 			>
 				{renderButtonContent(text)}
 			</Button>

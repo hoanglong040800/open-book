@@ -6,7 +6,7 @@ import slugify from 'slugify'
 import { MenuItem } from '@material-ui/core'
 import {
 	AlertSnackbar,
-	SubmitButton,
+	FooterButtons,
 	HeadTitle,
 	AutocompleteController,
 	SelectController,
@@ -149,7 +149,7 @@ export default function EditBook({ slug, session }) {
 						errors={errors}
 					/>
 
-					<SubmitButton text="Edit" onClick={handleSubmit(onSubmit, onError)} />
+					<FooterButtons text="Edit" onClick={handleSubmit(onSubmit, onError)} />
 				</CenteredContainer>
 			)}
 

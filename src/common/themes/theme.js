@@ -36,6 +36,36 @@ const theme = createTheme({
 		button: {
 			textTransform: 'inherit',
 		},
+
+		h1: {
+			fontSize: '2.5rem',
+			fontWeight: 'bolder',
+		},
+
+		h2: {
+			fontSize: '2.3rem',
+			fontWeight: 'bolder',
+		},
+
+		h3: {
+			fontSize: '2rem',
+			fontWeight: 'bolder',
+		},
+
+		h4: {
+			fontSize: '1.8rem',
+			fontWeight: 'bold',
+		},
+
+		h5: {
+			fontSize: '1.5rem',
+			fontWeight: 'bold',
+		},
+
+		h6: {
+			fontSize: '1.3rem',
+			fontWeight: 'bold',
+		},
 	},
 })
 

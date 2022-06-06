@@ -1,7 +1,7 @@
 import React from 'react'
 import Rating from '@material-ui/lab/Rating'
 import { makeStyles, Typography } from '@material-ui/core'
-import SubmitButton from 'common/components/button/SubmitButton'
+import { FooterButtons } from 'common/components'
 
 export default function RatingItem({
 	comment,
@@ -32,7 +32,7 @@ export default function RatingItem({
 				className={mui.textarea}
 			/>
 
-			<SubmitButton text="Send" onClick={handleSubmitRating} />
+			<FooterButtons text="Send" onClick={handleSubmitRating} />
 		</>
 	)
 }
