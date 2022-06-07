@@ -27,7 +27,6 @@ export default function FooterButtons({
 		<Box className={`flex justify-end mt-large ${className}`}>
 			{textSecondary && (
 				<Button
-					variant="contained"
 					onClick={onSecondaryClick}
 					disabled={isLoading || secondaryDisabled}
 					className="mr-medium"

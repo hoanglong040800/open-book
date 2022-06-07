@@ -21,13 +21,14 @@ import { addMultiBooks, getAddMultiBooksLog } from 'modules/books/api'
 import { ebooksLogColDef } from 'modules/books/books.contant'
 import { Button, Typography } from '@material-ui/core'
 import { Check, Close } from '@material-ui/icons'
+import EditBookModal from 'modules/books/components/action-modal/EditBookModal'
 
 export default function AddMultiBooks() {
 	const router = useRouter()
 	const [selectedFile, setSelectedFile] = useState(null)
 	const [isOpenAlert, setIsOpenAlert] = useState(false)
 	const [alertProps, setAlertProps] = useState({
-		severity: 'success',
+		severity: '',
 		message: '',
 	})
 	const [log, setLog] = useState({
@@ -39,6 +40,8 @@ export default function AddMultiBooks() {
 		ebooks: [],
 	})
 	const [isAddingEbooks, setIsAddingEbooks] = useState(false)
+	const [isOpenEditBookModal, setIsOpenEditBookModal] = useState(true)
+	const [selectedBook, setSelectedBook] = useState(null)
 
 	function handleSelectFile(e) {
 		if (e.target.files.length === 0) return
@@ -58,13 +61,14 @@ export default function AddMultiBooks() {
 					severity: SEVERITY.SUCCESS,
 					message: 'Add multiple books successfully',
 				})
+				setIsOpenAlert(true)
 			}, 1000)
 		} catch (e) {
 			setAlertProps(COMMON_ALERT.error)
+			setIsOpenAlert(true)
 		} finally {
 			document.getElementById('csv-file').value = ''
 			setSelectedFile(null)
-			setIsOpenAlert(true)
 			setIsAddingEbooks(false)
 		}
 	}
@@ -88,6 +92,10 @@ export default function AddMultiBooks() {
 
 	function handleGoToDashboard() {
 		router.push(URL_DASHBOARD)
+	}
+
+	function handleSubmitEditBook(data) {
+		console.log(data)
 	}
 
 	return (
@@ -178,6 +186,12 @@ export default function AddMultiBooks() {
 					)}
 				</>
 			)}
+
+			<EditBookModal
+				isOpen={isOpenEditBookModal}
+				onSubmit={handleSubmitEditBook}
+				onClose={() => setIsOpenEditBookModal(false)}
+			/>
 
 			<AlertSnackbar
 				open={isOpenAlert}
