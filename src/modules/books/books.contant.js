@@ -4,7 +4,7 @@ const EbooksLogErrors = {
 	THUMBNAIL_NOT_FOUND: 'Thumbnail not found',
 	LINK_INVALID: 'Link is invalid',
 	THUMBNAIL_INVALID: 'Thumbnail is invalid',
-	PUBLISHED_YEAR_INVALID: 'Published year is invalid',
+	PUBLISHED_YEAR_INVALID: 'Published year must be greater or equal to 1902',
 	PREDICT_GENRE_FAILED: "Can't predict genres",
 }
 
@@ -21,16 +21,11 @@ export const ebooksLogColDef = [
 		headerName: 'Title',
 		width: 600,
 	},
-
 	{
 		field: 'error',
 		headerName: 'Error',
 		renderCell: errorCode => {
-			return (
-				<p className="font-size-large text-uppercase">
-					{EbooksLogErrors[errorCode]}
-				</p>
-			)
+			return <p className="font-size-large">{EbooksLogErrors[errorCode]}</p>
 		},
 	},
 ]

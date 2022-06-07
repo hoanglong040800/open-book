@@ -18,5 +18,6 @@ export function filterObject(obj, callback) {
 }
 
 export function resolvePath(object, path, defaultValue = null) {
+	if (path === '') return object
 	return path.split('.').reduce((o, p) => (o ? o[p] : defaultValue), object)
 }

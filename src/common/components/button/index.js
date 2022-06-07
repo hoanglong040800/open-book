@@ -1,3 +1,3 @@
-import SubmitButton from './SubmitButton'
+import FooterButtons from './FooterButtons'
 
-export { SubmitButton }
+export { FooterButtons }

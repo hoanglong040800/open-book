@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { MenuItem } from '@material-ui/core'
 import {
 	AlertSnackbar,
-	SubmitButton,
+	FooterButtons,
 	HeadTitle,
 	AutocompleteController,
 	SelectController,
@@ -147,7 +147,7 @@ export default function NewBook({ session }) {
 					errors={errors}
 				/>
 
-				<SubmitButton text="Add" onClick={handleSubmit(onSubmit, onError)} />
+				<FooterButtons text="Add" onClick={handleSubmit(onSubmit, onError)} />
 			</CenteredContainer>
 
 			<AlertSnackbar

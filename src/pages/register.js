@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import {
 	CenteredContainer,
 	AlertSnackbar,
-	SubmitButton,
+	FooterButtons,
 	HeadTitle,
 	TextFieldController,
 } from 'common/components'
@@ -117,7 +117,7 @@ export default function Register() {
 					errors={errors}
 				/>
 
-				<SubmitButton
+				<FooterButtons
 					text="Register"
 					onClick={handleSubmit(onSubmit, onError)}
 				/>

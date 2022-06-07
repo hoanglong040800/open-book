@@ -1,5 +1,5 @@
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
-import { AlertSnackbar, CenteredContainer, HeadTitle, SubmitButton } from 'common/components'
+import { AlertSnackbar, CenteredContainer, HeadTitle, FooterButtons } from 'common/components'
 import { ACCEPT_FILE_TYPES, USER_ROLES } from 'common/constants'
 import { uploadFileWithProgress } from 'modules/upload/api/upload.api'
 import UploadProgressTable from 'modules/upload/components/UploadProgressTable'
@@ -82,7 +82,7 @@ export default function UploadMultiFiles() {
 		<>
 			<HeadTitle page={`Upload ${uploadType.type}`} />
 
-			<CenteredContainer title={`Upload ${uploadType.type}`}  type="form">
+			<CenteredContainer title={`Upload ${uploadType.type}`}  type="form" className='mb-large'>
 				<ToggleButtonGroup
 					value={uploadType.type}
 					exclusive
@@ -108,7 +108,7 @@ export default function UploadMultiFiles() {
 					onChange={handleUploadFiles}
 				/>
 
-				<SubmitButton text="Submit" onClick={handleSubmit} />
+				<FooterButtons text="Submit" onClick={handleSubmit} />
 			</CenteredContainer>
 
 			<UploadProgressTable

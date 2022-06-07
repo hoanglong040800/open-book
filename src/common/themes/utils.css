@@ -536,6 +536,10 @@
 	margin: 0 !important;
 }
 
+.m-auto {
+	margin: auto !important;
+}
+
 .m-x2-small {
 	margin: 2px !important;
 }
@@ -1588,6 +1592,10 @@
 	border-style: dashed !important;
 	border-width: 1px;
 }
+
+.outline-none{
+	outline: none !important;
+}
 /*endregion*/
 /* END Borders */
 
@@ -2085,10 +2093,24 @@
 	-webkit-box-orient: vertical !important;
 	overflow: hidden;
 }
+.overflow-scroll {
+	overflow-x: scroll;
+}
+
+.overflow-x-scroll {
+	overflow-x: scroll;
+}
 
 .overflow-y-scroll {
 	overflow-y: scroll;
-	max-height: 30vh; /* you can overwrite this by setting the `style={maxHeight=[height]}` */
+}
+
+.overflow-x-hidden {
+	overflow-x: hidden;
+}
+
+.overflow-y-hidden {
+	overflow-y: hidden;
 }
 
 /* Whitespaces */
@@ -2136,3 +2158,10 @@
 .content-visibility-auto {
 	content-visibility: auto;
 }
+
+/* vertical-align */
+.vertical-align-middle {
+	vertical-align: middle !important;
+}
+
+/* end vertical-align */

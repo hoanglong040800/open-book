@@ -1,15 +1,15 @@
 import {
 	AlertSnackbar,
 	HeadTitle,
-	SubmitButton,
+	FooterButtons,
 	TableGrid,
 	CenteredContainer,
 	CustomTooltip,
 } from 'common/components'
 import {
 	ACCEPT_FILE_TYPES,
-	ALERT_ADD_MULTI_BOOKS,
 	COMMON_ALERT,
+	SEVERITY,
 	URL_DASHBOARD,
 	URL_UPLOAD_MULTI_FILES,
 	USER_ROLES,
@@ -17,23 +17,20 @@ import {
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { addMultiBooks, getAddMultiBooksLog } from 'modules/books/api'
+import { isNotEmpty } from 'empty-utils'
+import {
+	addMultiBooks,
+	getAddMultiBooksLog,
+	updateBookCreateByJob,
+} from 'modules/books/api'
 import { ebooksLogColDef } from 'modules/books/books.contant'
-import { Button, makeStyles, Typography } from '@material-ui/core'
-import { Check, Close } from '@material-ui/icons'
-
-const useStyles = makeStyles(theme => ({
-	arrow: {
-		color: theme.palette.common.black,
-	},
-	tooltip: {
-		backgroundColor: theme.palette.common.black,
-	},
-}))
+import { Button, IconButton, Typography } from '@material-ui/core'
+import { Check, Close, Create } from '@material-ui/icons'
+import EditBookModal from 'modules/books/components/action-modal/EditBookModal'
 
 export default function AddMultiBooks() {
 	const router = useRouter()
-	const [selectedFile, setSeletedFile] = useState(null)
+	const [selectedFile, setSelectedFile] = useState(null)
 	const [isOpenAlert, setIsOpenAlert] = useState(false)
 	const [alertProps, setAlertProps] = useState({
 		severity: '',
@@ -44,29 +41,57 @@ export default function AddMultiBooks() {
 		total: null,
 		succeeded: null,
 		failed: null,
+		file: {},
 		ebooks: [],
 	})
 	const [isAddingEbooks, setIsAddingEbooks] = useState(false)
+	const [isOpenEditBookModal, setIsOpenEditBookModal] = useState(false)
+	const [selectedBook, setSelectedBook] = useState(null)
+	const finalColDef = [
+		...ebooksLogColDef,
+		{
+			field: '', // return full object
+			headerName: 'Action',
+			width: 150,
+			align: 'center',
+			renderCell: ebook => (
+				<IconButton
+					size="small"
+					color="primary"
+					onClick={() => onEditClick(ebook)}
+				>
+					<Create fontSize="small" color="primary" />
+				</IconButton>
+			),
+		},
+	]
 
 	function handleSelectFile(e) {
 		if (e.target.files.length === 0) return
 
-		const file = e.target.files[0]
-		setSeletedFile(file)
+		setSelectedFile(e.target.files[0])
 	}
 
 	async function handleSubmit() {
 		try {
 			setIsAddingEbooks(true)
 			const data = await addMultiBooks(selectedFile)
-			await getEbookLogs(data.job_id)
-			setAlertProps(ALERT_ADD_MULTI_BOOKS.SUCCESS)
-			// reset input file value
-			document.getElementById('csv-file').value = ''
+
+			// log need more time to created
+			setTimeout(async () => {
+				await getEbookLogs(data.job_id)
+				setAlertProps({
+					severity: SEVERITY.SUCCESS,
+					message: 'Add multiple books successfully',
+				})
+				setIsOpenAlert(true)
+			}, 1000)
 		} catch (e) {
 			setAlertProps(COMMON_ALERT.error)
-		} finally {
 			setIsOpenAlert(true)
+		} finally {
+			document.getElementById('csv-file').value = ''
+			setSelectedFile(null)
 			setIsAddingEbooks(false)
 		}
 	}
@@ -75,7 +100,10 @@ export default function AddMultiBooks() {
 		try {
 			const res = await getAddMultiBooksLog(jobId)
 
-			setLog({ ...res.data })
+			setLog({
+				...res.data,
+				file: { ...res.data.file, localFileName: selectedFile?.name || '' },
+			})
 		} catch (e) {
 			throw e
 		}
@@ -89,9 +117,45 @@ export default function AddMultiBooks() {
 		router.push(URL_DASHBOARD)
 	}
 
+	async function handleSubmitEditBook(data) {
+		try {
+			const payload = {
+				...selectedBook.data,
+				...data,
+			}
+			await updateBookCreateByJob(
+				selectedBook.job_jd,
+				selectedBook.sequence_id,
+				payload,
+			)
+
+			setAlertProps({
+				severity: 'success',
+				message: 'Re-add book successfully',
+			})
+
+			setLog({
+				...log,
+				succeeded: ++log.succeeded,
+				failed: --log.failed,
+				ebooks: log.ebooks.filter(e => e.id !== selectedBook.id),
+			})
+		} catch (e) {
+			setAlertProps(COMMON_ALERT.error)
+			throw e
+		} finally {
+			setIsOpenAlert(true)
+		}
+	}
+
+	function onEditClick(ebook) {
+		setSelectedBook(ebook)
+		setIsOpenEditBookModal(true)
+	}
+
 	return (
 		<>
-			<HeadTitle page="add multi books" />
+			<HeadTitle page="Add Multi Books" />
 
 			<CenteredContainer type="form">
 				<div className="flex align-center gap-small">
@@ -132,43 +196,58 @@ export default function AddMultiBooks() {
 					</div>
 				</div>
 
-				<SubmitButton
+				<FooterButtons
 					isLoading={isAddingEbooks}
 					text="Submit"
 					onClick={handleSubmit}
+					primaryDisabled={!selectedFile}
 				/>
 			</CenteredContainer>
 
 			{log?.id && !isAddingEbooks && (
 				<>
-					<div className="flex justify-between mt-x2-large align-center">
-						<div className="flex gap-medium align-center">
-							<h2 className="my-none mr-medium">Failed Ebooks</h2>
+					<CenteredContainer className="mt-x2-large">
+						<div className="flex justify-between align-center">
+							<div className="flex gap-medium align-center">
+								<Typography>
+									Result of{' '}
+									<span className="font-weight-bold">
+										{log?.file.localFileName}
+									</span>
+								</Typography>
 
-							<Check color="primary" />
-							<Typography>{log?.succeeded}</Typography>
+								<Check color="primary" />
+								<Typography>{log?.succeeded}</Typography>
 
-							<Close color="error" />
-							<Typography>{log?.total - log?.succeeded}</Typography>
+								<Close color="error" />
+								<Typography>{log?.failed}</Typography>
+							</div>
+
+							<div>
+								<Button onClick={handleGoToDashboard} className="ml-medium">
+									Go to Dashboard →
+								</Button>
+							</div>
 						</div>
+					</CenteredContainer>
 
-						<div>
-							<Button onClick={handleGoToDashboard} className="ml-medium">
-								Go to Dashboard →
-							</Button>
-						</div>
-					</div>
-
-					{!log?.succeeded && (
+					{isNotEmpty(log?.failed) && (
 						<TableGrid
 							showOrdinalNumber
 							rows={log?.ebooks}
-							columns={ebooksLogColDef}
+							columns={finalColDef}
 							className="mt-large"
 						/>
 					)}
 				</>
 			)}
+
+			<EditBookModal
+				isOpen={isOpenEditBookModal}
+				onSubmit={handleSubmitEditBook}
+				onClose={() => setIsOpenEditBookModal(false)}
+				selectedBook={selectedBook?.data}
+			/>
 
 			<AlertSnackbar
 				open={isOpenAlert}
