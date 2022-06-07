@@ -17,10 +17,15 @@ import {
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { addMultiBooks, getAddMultiBooksLog } from 'modules/books/api'
+import { isNotEmpty } from 'empty-utils'
+import {
+	addMultiBooks,
+	getAddMultiBooksLog,
+	updateBookCreateByJob,
+} from 'modules/books/api'
 import { ebooksLogColDef } from 'modules/books/books.contant'
-import { Button, Typography } from '@material-ui/core'
-import { Check, Close } from '@material-ui/icons'
+import { Button, IconButton, Typography } from '@material-ui/core'
+import { Check, Close, Create } from '@material-ui/icons'
 import EditBookModal from 'modules/books/components/action-modal/EditBookModal'
 
 export default function AddMultiBooks() {
@@ -40,8 +45,26 @@ export default function AddMultiBooks() {
 		ebooks: [],
 	})
 	const [isAddingEbooks, setIsAddingEbooks] = useState(false)
-	const [isOpenEditBookModal, setIsOpenEditBookModal] = useState(true)
+	const [isOpenEditBookModal, setIsOpenEditBookModal] = useState(false)
 	const [selectedBook, setSelectedBook] = useState(null)
+	const finalColDef = [
+		...ebooksLogColDef,
+		{
+			field: '', // return full object
+			headerName: 'Action',
+			width: 150,
+			align: 'center',
+			renderCell: ebook => (
+				<IconButton
+					size="small"
+					color="primary"
+					onClick={() => onEditClick(ebook)}
+				>
+					<Create fontSize="small" color="primary" />
+				</IconButton>
+			),
+		},
+	]
 
 	function handleSelectFile(e) {
 		if (e.target.files.length === 0) return
@@ -79,7 +102,7 @@ export default function AddMultiBooks() {
 
 			setLog({
 				...res.data,
-				file: { ...res.data.file, localFileName: selectedFile.name },
+				file: { ...res.data.file, localFileName: selectedFile?.name || '' },
 			})
 		} catch (e) {
 			throw e
@@ -94,8 +117,40 @@ export default function AddMultiBooks() {
 		router.push(URL_DASHBOARD)
 	}
 
-	function handleSubmitEditBook(data) {
-		console.log(data)
+	async function handleSubmitEditBook(data) {
+		try {
+			const payload = {
+				...selectedBook.data,
+				...data,
+			}
+			await updateBookCreateByJob(
+				selectedBook.job_jd,
+				selectedBook.sequence_id,
+				payload,
+			)
+
+			setAlertProps({
+				severity: 'success',
+				message: 'Re-add book successfully',
+			})
+
+			setLog({
+				...log,
+				succeeded: ++log.succeeded,
+				failed: --log.failed,
+				ebooks: log.ebooks.filter(e => e.id !== selectedBook.id),
+			})
+		} catch (e) {
+			setAlertProps(COMMON_ALERT.error)
+			throw e
+		} finally {
+			setIsOpenAlert(true)
+		}
+	}
+
+	function onEditClick(ebook) {
+		setSelectedBook(ebook)
+		setIsOpenEditBookModal(true)
 	}
 
 	return (
@@ -176,11 +231,11 @@ export default function AddMultiBooks() {
 						</div>
 					</CenteredContainer>
 
-					{log?.failed && (
+					{isNotEmpty(log?.failed) && (
 						<TableGrid
 							showOrdinalNumber
 							rows={log?.ebooks}
-							columns={ebooksLogColDef}
+							columns={finalColDef}
 							className="mt-large"
 						/>
 					)}
@@ -191,6 +246,7 @@ export default function AddMultiBooks() {
 				isOpen={isOpenEditBookModal}
 				onSubmit={handleSubmitEditBook}
 				onClose={() => setIsOpenEditBookModal(false)}
+				selectedBook={selectedBook?.data}
 			/>
 
 			<AlertSnackbar

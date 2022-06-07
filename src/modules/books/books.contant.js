@@ -4,7 +4,7 @@ const EbooksLogErrors = {
 	THUMBNAIL_NOT_FOUND: 'Thumbnail not found',
 	LINK_INVALID: 'Link is invalid',
 	THUMBNAIL_INVALID: 'Thumbnail is invalid',
-	PUBLISHED_YEAR_INVALID: 'Published year must be greater than 1900',
+	PUBLISHED_YEAR_INVALID: 'Published year must be greater or equal to 1902',
 	PREDICT_GENRE_FAILED: "Can't predict genres",
 }
 

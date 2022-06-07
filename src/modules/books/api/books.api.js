@@ -39,6 +39,10 @@ export async function getAddMultiBooksLog(jobId) {
 	})
 }
 
+export async function updateBookCreateByJob(jobId, sequenceId, payload) {
+	return axiosClient.put(`jobs/${jobId}/books/${sequenceId}`, payload)
+}
+
 export async function getAllBooks() {
 	return axiosClient.get(`books`).then(res => res.data)
 }

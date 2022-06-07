@@ -7,25 +7,42 @@ import {
 	TextAreaController,
 	TextFieldController,
 } from 'common/components'
-import { EDIT_BOOK_SCHEMA } from 'common/schema'
+import { ADD_FAILED_BOOK_SCHEMA } from 'common/schema'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
-export default function EditBookModal({ isOpen, onSubmit, onClose }) {
+export default function EditBookModal({
+	isOpen,
+	onSubmit,
+	onClose,
+	selectedBook,
+}) {
 	const {
 		control,
 		formState: { errors },
+		reset,
 		handleSubmit,
 	} = useForm({
-		// resolver: yupResolver(EDIT_BOOK_SCHEMA),
-		defaultValues: {},
+		resolver: yupResolver(ADD_FAILED_BOOK_SCHEMA),
 	})
 
+	useEffect(() => {
+		if (isOpen) {
+			reset(selectedBook)
+		}
+	}, [isOpen])
+
 	function onError(err) {
-		console.log(err)
+		throw err
+	}
+
+	function _onSubmit(data) {
+		onSubmit(data)
+		onClose()
 	}
 
 	return (
-		<ActionModal title="Edit Book" isOpen={isOpen} onClose={onClose}>
+		<ActionModal title="Re-add Book" isOpen={isOpen} onClose={onClose}>
 			<TextFieldController
 				name="name"
 				label="Name"
@@ -84,7 +101,7 @@ export default function EditBookModal({ isOpen, onSubmit, onClose }) {
 
 			<FooterButtons
 				text="Add"
-				onClick={onSubmit}
+				onClick={handleSubmit(_onSubmit, onError)}
 				textSecondary="Cancel"
 				onSecondaryClick={onClose}
 			/>
