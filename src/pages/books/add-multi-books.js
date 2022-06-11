@@ -31,8 +31,8 @@ import EditBookModal from 'modules/books/components/action-modal/EditBookModal'
 export default function AddMultiBooks() {
 	const router = useRouter()
 	const [selectedFile, setSelectedFile] = useState(null)
-	const [isOpenAlert, setIsOpenAlert] = useState(false)
-	const [alertProps, setAlertProps] = useState({
+	const [alertConfig, setAlertConfig] = useState({
+		isOpen: false,
 		severity: '',
 		message: '',
 	})
@@ -47,6 +47,8 @@ export default function AddMultiBooks() {
 	const [isAddingEbooks, setIsAddingEbooks] = useState(false)
 	const [isOpenEditBookModal, setIsOpenEditBookModal] = useState(false)
 	const [selectedBook, setSelectedBook] = useState(null)
+	const [isReAddingEbook, setIsReAddingEbook] = useState(false)
+
 	const finalColDef = [
 		...ebooksLogColDef,
 		{
@@ -77,59 +79,53 @@ export default function AddMultiBooks() {
 			setIsAddingEbooks(true)
 			const data = await addMultiBooks(selectedFile)
 
-			// log need more time to created
-			setTimeout(async () => {
-				await getEbookLogs(data.job_id)
-				setAlertProps({
+			const getEbookLogsInterval = setInterval(async () => {
+				const ebookLog = await getAddMultiBooksLog(data.job_id)
+
+				if (!ebookLog.done) return
+
+				setLog({
+					...ebookLog,
+					file: { ...ebookLog.file, localFileName: selectedFile?.name || '' },
+				})
+
+				setAlertConfig({
+					open: true,
 					severity: SEVERITY.SUCCESS,
 					message: 'Add multiple books successfully',
 				})
-				setIsOpenAlert(true)
+
+				document.getElementById('csv-file').value = ''
+				setSelectedFile(null)
+				setIsAddingEbooks(false)
+				clearInterval(getEbookLogsInterval)
 			}, 1000)
 		} catch (e) {
-			setAlertProps(COMMON_ALERT.error)
-			setIsOpenAlert(true)
-		} finally {
-			document.getElementById('csv-file').value = ''
-			setSelectedFile(null)
+			setAlertConfig({ ...COMMON_ALERT.error, open: true })
 			setIsAddingEbooks(false)
 		}
-	}
-
-	async function getEbookLogs(jobId) {
-		try {
-			const res = await getAddMultiBooksLog(jobId)
-
-			setLog({
-				...res.data,
-				file: { ...res.data.file, localFileName: selectedFile?.name || '' },
-			})
-		} catch (e) {
-			throw e
-		}
-	}
-
-	function handleCloseAlert() {
-		setIsOpenAlert(false)
 	}
 
 	function handleGoToDashboard() {
 		router.push(URL_DASHBOARD)
 	}
 
-	async function handleSubmitEditBook(data) {
+	async function handleSubmitReAddBook(data) {
 		try {
+			setIsReAddingEbook(true)
 			const payload = {
 				...selectedBook.data,
 				...data,
 			}
+
 			await updateBookCreateByJob(
 				selectedBook.job_jd,
 				selectedBook.sequence_id,
 				payload,
 			)
 
-			setAlertProps({
+			setAlertConfig({
+				open: true,
 				severity: 'success',
 				message: 'Re-add book successfully',
 			})
@@ -140,11 +136,12 @@ export default function AddMultiBooks() {
 				failed: --log.failed,
 				ebooks: log.ebooks.filter(e => e.id !== selectedBook.id),
 			})
+
+			setIsOpenEditBookModal(false)
 		} catch (e) {
-			setAlertProps(COMMON_ALERT.error)
-			throw e
+			setAlertConfig({ ...COMMON_ALERT.error, open: true })
 		} finally {
-			setIsOpenAlert(true)
+			setIsReAddingEbook(false)
 		}
 	}
 
@@ -244,16 +241,15 @@ export default function AddMultiBooks() {
 
 			<EditBookModal
 				isOpen={isOpenEditBookModal}
-				onSubmit={handleSubmitEditBook}
+				onSubmit={handleSubmitReAddBook}
 				onClose={() => setIsOpenEditBookModal(false)}
 				selectedBook={selectedBook?.data}
+				isSubmitting={isReAddingEbook}
 			/>
 
 			<AlertSnackbar
-				open={isOpenAlert}
-				onClose={handleCloseAlert}
-				severity={alertProps.severity}
-				message={alertProps.message}
+				{...alertConfig}
+				onClose={() => setAlertConfig({ ...alertConfig, open: false })}
 			/>
 		</>
 	)

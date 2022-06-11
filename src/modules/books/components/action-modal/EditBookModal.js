@@ -16,6 +16,7 @@ export default function EditBookModal({
 	onSubmit,
 	onClose,
 	selectedBook,
+	isSubmitting
 }) {
 	const {
 		control,
@@ -104,6 +105,7 @@ export default function EditBookModal({
 				onClick={handleSubmit(_onSubmit, onError)}
 				textSecondary="Cancel"
 				onSecondaryClick={onClose}
+				loading={isSubmitting}
 			/>
 		</ActionModal>
 	)
