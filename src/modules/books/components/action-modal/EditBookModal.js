@@ -8,14 +8,17 @@ import {
 	TextFieldController,
 } from 'common/components'
 import { ADD_FAILED_BOOK_SCHEMA } from 'common/schema'
+import { useState } from 'react'
+import { memo } from 'react'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
-export default function EditBookModal({
+function EditBookModal({
 	isOpen,
 	onSubmit,
 	onClose,
 	selectedBook,
+	isSubmitting=false,
 }) {
 	const {
 		control,
@@ -34,11 +37,6 @@ export default function EditBookModal({
 
 	function onError(err) {
 		throw err
-	}
-
-	function _onSubmit(data) {
-		onSubmit(data)
-		onClose()
 	}
 
 	return (
@@ -101,10 +99,13 @@ export default function EditBookModal({
 
 			<FooterButtons
 				text="Add"
-				onClick={handleSubmit(_onSubmit, onError)}
+				onClick={handleSubmit(onSubmit, onError)}
+				isLoading={isSubmitting}
 				textSecondary="Cancel"
 				onSecondaryClick={onClose}
 			/>
 		</ActionModal>
 	)
 }
+
+export default memo(EditBookModal)

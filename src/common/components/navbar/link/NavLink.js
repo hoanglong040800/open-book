@@ -14,6 +14,7 @@ export default function NavLink() {
 				<div className="flex align-center mx-small">
 					{storeNavLinks.map(item => (
 						<Button
+							key={item.url}
 							onClick={() => router.push(item.url)}
 							className="text-color-white font-size-large font-weight-bold mx-x-small"
 						>

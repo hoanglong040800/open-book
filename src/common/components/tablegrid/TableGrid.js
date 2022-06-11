@@ -53,23 +53,21 @@ export default function TableGrid({
 						{rows
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((row, index) => (
-								<>
-									<TableRow key={index}>
-										{showOrdinalNumber && (
-											<TableCell>{page * rowsPerPage + index + 1}</TableCell>
-										)}
+								<TableRow key={index}>
+									{showOrdinalNumber && (
+										<TableCell>{page * rowsPerPage + index + 1}</TableCell>
+									)}
 
-										{columns.map(col => (
-											<TableCell key={col.field} align={col.align}>
-												{col?.renderCell ? (
-													col.renderCell(resolvePath(row, col.field))
-												) : (
-													<Typography>{resolvePath(row, col.field)}</Typography>
-												)}
-											</TableCell>
-										))}
-									</TableRow>
-								</>
+									{columns.map(col => (
+										<TableCell key={col.field} align={col.align}>
+											{col?.renderCell ? (
+												col.renderCell(resolvePath(row, col.field))
+											) : (
+												<Typography>{resolvePath(row, col.field)}</Typography>
+											)}
+										</TableCell>
+									))}
+								</TableRow>
 							))}
 
 						{/* display empty rows */}

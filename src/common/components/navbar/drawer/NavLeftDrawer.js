@@ -18,7 +18,7 @@ export default function NavLeftDrawer({ open, onClose }) {
 				{session?.user.role === USER_ROLES.store ? (
 					<>
 						{storeNavLinks.map(item => (
-							<ListItem button onClick={() => router.push(item.url)}>
+							<ListItem button key={item.url} onClick={() => router.push(item.url)}>
 								<ListItemText primary={item.text} />
 							</ListItem>
 						))}
