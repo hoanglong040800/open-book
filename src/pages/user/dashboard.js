@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
-import { HeadTitle, FooterButtons } from 'common/components'
+import { HeadTitle, FooterButtons, TableGrid } from 'common/components'
 import { deleteBook, getStoreBooks } from 'modules/books/api'
-import BooksManageTable from 'modules/books/components/table/BooksManageTable'
-import { Divider, Fade, Modal, Paper } from '@material-ui/core'
+import { Divider, Fade, IconButton, Modal, Paper } from '@material-ui/core'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/client'
 import {
@@ -13,6 +12,8 @@ import {
 	URL_UPLOAD_MULTI_FILES,
 } from 'common/constants'
 import Link from 'next/link'
+import { dashboardColDef } from 'modules/books/books.contant'
+import { Create, DeleteOutline } from '@material-ui/icons'
 
 export default function Dashboard({}) {
 	const router = useRouter()
@@ -20,6 +21,33 @@ export default function Dashboard({}) {
 	const [allUserBooks, setAllUserBooks] = useState([])
 	const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false)
 	const [selectedBook, setSelectedBook] = useState(null)
+	const finalDashboardColDef = [
+		...dashboardColDef,
+		{
+			field: '',
+			headerName: 'Action',
+			align: 'center',
+			renderCell: row => (
+				<div className="flex justify-center align-center gap-medium">
+					<IconButton
+						size="small"
+						color="primary"
+						onClick={() => handleEditClick(row.slug)}
+					>
+						<Create fontSize="small" color="primary" />
+					</IconButton>
+
+					<IconButton
+						size="small"
+						color="secondary"
+						onClick={() => handleDeleteClick(row)}
+					>
+						<DeleteOutline fontSize="small" color="secondary" />
+					</IconButton>
+				</div>
+			),
+		},
+	]
 
 	async function getAllUserBooks() {
 		const data = await getStoreBooks(session?.user.id)
@@ -74,11 +102,7 @@ export default function Dashboard({}) {
 				<a style={styles.link}>Want to prepare thumbnails/pdf? Click here</a>
 			</Link>
 
-			<BooksManageTable
-				rows={allUserBooks}
-				onEditClick={handleEditClick}
-				onDeleteClick={handleDeleteClick}
-			/>
+			<TableGrid columns={finalDashboardColDef} rows={allUserBooks} />
 
 			<Modal
 				open={isOpenConfirmModal}
