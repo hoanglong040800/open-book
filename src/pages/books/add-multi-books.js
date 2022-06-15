@@ -24,7 +24,7 @@ import {
 	updateBookCreateByJob,
 } from 'modules/books/api'
 import { ebooksLogColDef } from 'modules/books/books.contant'
-import { Button, IconButton, Typography } from '@material-ui/core'
+import { Button, IconButton, Switch, Typography } from '@material-ui/core'
 import { Check, Close, Create } from '@material-ui/icons'
 import EditBookModal from 'modules/books/components/action-modal/EditBookModal'
 
@@ -48,6 +48,7 @@ export default function AddMultiBooks() {
 	const [isOpenEditBookModal, setIsOpenEditBookModal] = useState(false)
 	const [selectedBook, setSelectedBook] = useState(null)
 	const [isReAddingEbook, setIsReAddingEbook] = useState(false)
+	const [isConcurrent, setIsConcurrent] = useState(true)
 
 	const finalColDef = [
 		...ebooksLogColDef,
@@ -80,7 +81,7 @@ export default function AddMultiBooks() {
 			const data = await addMultiBooks(selectedFile)
 
 			const getEbookLogsInterval = setInterval(async () => {
-				const ebookLog = await getAddMultiBooksLog(data.job_id)
+				const ebookLog = await getAddMultiBooksLog(data.job_id, isConcurrent)
 
 				if (!ebookLog.done) return
 
@@ -150,6 +151,10 @@ export default function AddMultiBooks() {
 		setIsOpenEditBookModal(true)
 	}
 
+	function handleChangeConcurrentMode() {
+		setIsConcurrent(!isConcurrent)
+	}
+
 	return (
 		<>
 			<HeadTitle page="Add Multi Books" />
@@ -180,7 +185,16 @@ export default function AddMultiBooks() {
 				</div>
 
 				<div className="flex mx-auto">
-					<div>
+					<div clasName="flex-column">
+						<div className="mb-medium">
+							<Switch
+								checked={isConcurrent}
+								color="primary"
+								onChange={handleChangeConcurrentMode}
+							/>
+							<label>Concurrent Mode</label>
+						</div>
+
 						<input
 							id="csv-file"
 							required
