@@ -17,8 +17,8 @@ export default function UploadProgressTable({
 }) {
 	const tableWidth = {
 		index: 50,
-		name: 350,
-		linkStorage: 400,
+		name: 250,
+		linkStorage: 600,
 		percentCompleted: 'auto',
 	}
 

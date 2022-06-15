@@ -65,10 +65,6 @@ export async function getBooksBySearch(params) {
 	return axiosClient.get('books/search', { params })
 }
 
-export async function getBookById(id) {
-	return axiosClient.get(`books/${id}`).then(res => res.data)
-}
-
 export async function getBookBySlug(slug) {
 	return axiosClient.get(`books/slug/${slug}`).then(res => res.data)
 }
