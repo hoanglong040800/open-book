@@ -26,17 +26,26 @@ export default function BookCard({ item }) {
 					/>
 
 					<CardContent>
-						<Typography {...props.title}>{name}</Typography>
+						<Typography
+							variant="h6"
+							style={{ height: 70, letterSpacing: 0.5, overflow: 'hidden' }}
+						>
+							{name}
+						</Typography>
 
-						<section className={mui.lowerSection}>
-							<div className={mui.infoContainer}>
-								<Typography {...props.info}>{point}</Typography>
+						<section className="flex justify-between">
+							<div className="flex align-center gap-medium">
+								<Typography variant="body1" color="textSecondary">
+									{point}
+								</Typography>
 								<Star color="secondary" />
 							</div>
 
-							<div className={mui.infoContainer}>
+							<div className="flex align-center gap-medium">
 								<Visibility />
-								<Typography {...props.info}>{view}</Typography>
+								<Typography variant="body1" color="textSecondary">
+									{view}
+								</Typography>
 							</div>
 						</section>
 					</CardContent>
@@ -44,27 +53,6 @@ export default function BookCard({ item }) {
 			</Card>
 		</Link>
 	)
-}
-
-const styles = {
-	title: {
-		height: '70px',
-		letterSpacing: 0.5,
-		overflow: 'hidden',
-	},
-}
-
-const props = {
-	title: {
-		gutterBottom: true,
-		variant: 'h6',
-		style: styles.title,
-	},
-
-	info: {
-		variant: 'body1',
-		color: 'textSecondary',
-	},
 }
 
 const useStyles = makeStyles(theme => ({
@@ -76,17 +64,6 @@ const useStyles = makeStyles(theme => ({
 		height: 250,
 		objectFit: 'contain',
 		borderBottom: '1px solid #ccc',
-	},
-
-	lowerSection: {
-		display: 'flex',
-		justifyContent: 'space-between',
-	},
-
-	infoContainer: {
-		display: 'flex',
-		alignItems: 'center',
-		gap: 10,
 	},
 
 	[theme.breakpoints.down('sm')]: {

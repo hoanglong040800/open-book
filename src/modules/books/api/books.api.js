@@ -20,9 +20,10 @@ export async function addBookInfo(data) {
 	return axiosClient.post('books', data)
 }
 
-export async function addMultiBooks(file) {
+export async function addMultiBooks(file, isConcurrent = true) {
 	const formData = new FormData()
 	formData.append('csv', file)
+	formData.append('is_concurrent', isConcurrent)
 	return axiosClient
 		.post(`books/auto_generate/books`, formData, {
 			headers: {
@@ -63,10 +64,6 @@ export async function getBooksByFilter(params) {
 
 export async function getBooksBySearch(params) {
 	return axiosClient.get('books/search', { params })
-}
-
-export async function getBookById(id) {
-	return axiosClient.get(`books/${id}`).then(res => res.data)
 }
 
 export async function getBookBySlug(slug) {

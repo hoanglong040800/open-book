@@ -39,32 +39,32 @@ const theme = createTheme({
 
 		h1: {
 			fontSize: '2.5rem',
-			fontWeight: 'bolder',
+			fontWeight: '900',
 		},
 
 		h2: {
-			fontSize: '2.3rem',
-			fontWeight: 'bolder',
+			fontSize: '2rem',
+			fontWeight: '900',
 		},
 
 		h3: {
-			fontSize: '2rem',
-			fontWeight: 'bolder',
+			fontSize: '1.8rem',
+			fontWeight: '700',
 		},
 
 		h4: {
-			fontSize: '1.8rem',
-			fontWeight: 'bold',
+			fontSize: '1.5rem',
+			fontWeight: '700',
 		},
 
 		h5: {
-			fontSize: '1.5rem',
-			fontWeight: 'bold',
+			fontSize: '1.3rem',
+			fontWeight: '500',
 		},
 
 		h6: {
-			fontSize: '1.3rem',
-			fontWeight: 'bold',
+			fontSize: '1.1rem',
+			fontWeight: '500',
 		},
 	},
 })

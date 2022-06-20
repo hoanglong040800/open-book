@@ -21,6 +21,7 @@ export default function TableGrid({
 	className,
 }) {
 	const [page, setPage] = useState(0)
+	const [rowsPerPageState, setRowsPerPageState] = useState(rowsPerPage)
 	const emptyRows =
 		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
 
@@ -29,7 +30,7 @@ export default function TableGrid({
 	}
 
 	function handleChangeRowsPerPage(event) {
-		setRowsPerPage(parseInt(event.target.value, 10))
+		setRowsPerPageState(parseInt(event.target.value, 10))
 		setPage(0)
 	}
 
@@ -41,8 +42,8 @@ export default function TableGrid({
 						<TableRow>
 							{showOrdinalNumber && <TableCell width={50}>No.</TableCell>}
 
-							{columns.map(col => (
-								<TableCell key={col.field} width={col.width} align={col.align}>
+							{columns.map((col, index) => (
+								<TableCell key={index} width={col.width} align={col.align}>
 									{col.headerName || col.field}
 								</TableCell>
 							))}
@@ -84,7 +85,7 @@ export default function TableGrid({
 				<TablePagination
 					count={rows.length}
 					page={page}
-					rowsPerPage={rowsPerPage}
+					rowsPerPage={rowsPerPageState}
 					rowsPerPageOptions={rowsPerPageOptions}
 					onPageChange={handleChangePage}
 					onRowsPerPageChange={handleChangeRowsPerPage}

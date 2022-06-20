@@ -1,5 +1,12 @@
+import { Typography } from '@material-ui/core'
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
-import { AlertSnackbar, CenteredContainer, HeadTitle, FooterButtons } from 'common/components'
+import {
+	AlertSnackbar,
+	CenteredContainer,
+	HeadTitle,
+	FooterButtons,
+	CustomTooltip,
+} from 'common/components'
 import { ACCEPT_FILE_TYPES, USER_ROLES } from 'common/constants'
 import { uploadFileWithProgress } from 'modules/upload/api/upload.api'
 import UploadProgressTable from 'modules/upload/components/UploadProgressTable'
@@ -82,31 +89,41 @@ export default function UploadMultiFiles() {
 		<>
 			<HeadTitle page={`Upload ${uploadType.type}`} />
 
-			<CenteredContainer title={`Upload ${uploadType.type}`}  type="form" className='mb-large'>
-				<ToggleButtonGroup
-					value={uploadType.type}
-					exclusive
-					orientation="horizontal"
-					color="secondary"
-					size="small"
-					onChange={handleToggleUploadType}
-				>
-					<ToggleButton value="thumbnails">Thumbnails</ToggleButton>
-					<ToggleButton value="PDF">PDF</ToggleButton>
-				</ToggleButtonGroup>
+			<CenteredContainer type="form" className="mb-large">
+				<div className="flex align-center gap-small">
+					<h1>{`Upload ${uploadType.type}`}</h1>
 
-				<p className="mt-x-large">
-					Upload {uploadType.type} here to retreive multiple file IDs used for
-					adding multiple books later
-				</p>
+					<CustomTooltip type="helper">
+						<Typography>
+							Upload {uploadType.type} here to retreive multiple file links used
+							for adding multiple books later
+						</Typography>
+					</CustomTooltip>
+				</div>
 
-				<input
-					multiple
-					required
-					type="file"
-					accept={uploadType.accept}
-					onChange={handleUploadFiles}
-				/>
+				<div className="flex justify-center">
+					<div className='flex-column align-start gap-medium'>
+						<ToggleButtonGroup
+							value={uploadType.type}
+							exclusive
+							orientation="horizontal"
+							color="secondary"
+							size="small"
+							onChange={handleToggleUploadType}
+						>
+							<ToggleButton value="thumbnails">Thumbnails</ToggleButton>
+							<ToggleButton value="PDF">PDF</ToggleButton>
+						</ToggleButtonGroup>
+
+						<input
+							multiple
+							required
+							type="file"
+							accept={uploadType.accept}
+							onChange={handleUploadFiles}
+						/>
+					</div>
+				</div>
 
 				<FooterButtons text="Submit" onClick={handleSubmit} />
 			</CenteredContainer>
